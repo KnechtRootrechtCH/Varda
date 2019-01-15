@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { withNamespaces } from 'react-i18next';
 
 import { 
     AppBar,
@@ -20,6 +21,7 @@ import {
     Tv,
     ViewList } from '@material-ui/icons';
 
+@withNamespaces()
 class Navigation extends React.Component {
 
     state = {
@@ -36,6 +38,7 @@ class Navigation extends React.Component {
 
     render () {
         const classes = this.props.classes;
+        const t = this.props.t;
 
         return (
             <div className={classes.root}>
