@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import {Helmet} from 'react-helmet';
 import MetaTags from 'react-meta-tags';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -8,6 +9,10 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 import Navigation from './components/Navigation'
+import PrivateRoute from './components/PrivateRoute'
+import Protected from './components/Protected'
+
+import Signin from './components/Signin'
 
 @inject('ThemeStore')
 @observer
@@ -34,6 +39,12 @@ class App extends Component {
 
         <MuiThemeProvider theme={theme}>
           <Navigation/>
+          <Router>
+            <Switch>
+              <Route exact path="/signin" component={Signin}/>
+              <PrivateRoute path="/" component={Protected}/>
+            </Switch>
+          </Router>
         </MuiThemeProvider>
       </div>
     );

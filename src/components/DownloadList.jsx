@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-class Browse extends React.Component {
+class DownloadList extends React.Component {
 
     render () {
-        console.debug(`${this.constructor.name}.render()`, open);
+        console.debug(`${this.constructor.name}.render()`);
         const classes = this.props.classes;
 
         return (
             <div className={classes.root}>
-                Browse
+                DownloadList
             </div>
         );
      }
@@ -21,8 +21,8 @@ const styles = theme => ({
     },
 });
 
-Browse.propTypes = {
+DownloadList.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Browse);
+export default withStyles(styles)(DownloadList);

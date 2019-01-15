@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-class Login extends React.Component {
+class Protected extends React.Component {
 
     render () {
-        console.debug(`${this.constructor.name}.render()`, open);
+        console.debug(`${this.constructor.name}.render()`);
         const classes = this.props.classes;
 
         return (
             <div className={classes.root}>
-                Login
+                Protected
             </div>
         );
      }
@@ -21,8 +21,8 @@ const styles = theme => ({
     },
 });
 
-Login.propTypes = {
+Protected.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(Protected);

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-class Component extends React.Component {
+class Browse extends React.Component {
 
     render () {
         console.debug(`${this.constructor.name}.render()`);
@@ -10,7 +10,7 @@ class Component extends React.Component {
 
         return (
             <div className={classes.root}>
-                Component
+                Browse
             </div>
         );
      }
@@ -21,8 +21,8 @@ const styles = theme => ({
     },
 });
 
-Component.propTypes = {
+Browse.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Component);
+export default withStyles(styles)(Browse);

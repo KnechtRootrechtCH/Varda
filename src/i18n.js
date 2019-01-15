@@ -18,6 +18,7 @@ i18n.init({
                 title: 'Varda - Download List',
 
                 common: {
+                    initializing: 'Initializing',
                     discover: 'Discover',
                     movies: 'Movies',
                     movie: 'Movie',
@@ -32,6 +33,7 @@ i18n.init({
                 title: 'Varda - Download Liste',
 
                 common: {
+                    initializing: 'Initialisierung',
                     discover: 'Entdecken',
                     movies: 'Filme',
                     movie: 'Film',
