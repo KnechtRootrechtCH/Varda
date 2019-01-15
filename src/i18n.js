@@ -2,9 +2,9 @@ import i18n from 'i18next';
 
 i18n.init({
     debug: true,
-  
-    lng: 'de-CH',
-    
+
+    lng: navigator.language.trim().substring(0, 2),
+
     react: {
         wait: false,
         bindI18n: 'languageChanged loaded',
@@ -13,14 +13,35 @@ i18n.init({
     },
 
     resources: {
-        'en-US': {
+        'en': {
             'translation': {
-                title: 'Varda - Download List'
+                title: 'Varda - Download List',
+
+                common: {
+                    discover: 'Discover',
+                    movies: 'Movies',
+                    movie: 'Movie',
+                    seriesPlural: 'Series',
+                    series: 'Series',
+                    list: 'Download List',
+                },
+
+
             }
         },
-        'de-CH': {
+        'de': {
             'translation': {
-                title: 'Varda - Download Liste'
+                title: 'Varda - Download Liste',
+
+                common: {
+                    discover: 'Entdecken',
+                    movies: 'Filme',
+                    movie: 'Film',
+                    seriesPlural: 'Serien',
+                    series: 'Serie',
+                    list: 'Download Liste',
+                },
+
             }
         }
     }

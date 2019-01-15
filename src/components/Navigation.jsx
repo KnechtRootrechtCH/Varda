@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { withNamespaces } from 'react-i18next';
 
-import { 
+import {
     AppBar,
     IconButton,
     List,
@@ -14,7 +14,7 @@ import {
     Typography,
     SwipeableDrawer } from '@material-ui/core';
 
-import { 
+import {
     Explore,
     Menu,
     Movie,
@@ -48,26 +48,26 @@ class Navigation extends React.Component {
                         <Menu />
                     </IconButton>
                     <Typography variant="h6" color="inherit">
-                        Varda
+                        {t('title')}
                     </Typography>
                     </Toolbar>
                     <SwipeableDrawer open={this.state.drawer} onClose={this.toggleDrawer(false)} onOpen={this.toggleDrawer(true)}>
                         <List>
                             <ListItem button key='discover'>
                                 <ListItemIcon><Explore/></ListItemIcon>
-                                <ListItemText primary='Discover'/>
+                                <ListItemText primary={t('common.discover')}/>
                             </ListItem>
                             <ListItem button key='movies'>
                                 <ListItemIcon><Movie/></ListItemIcon>
-                                <ListItemText primary='Movies'/>
+                                <ListItemText primary={t('common.movies')}/>
                             </ListItem>
                             <ListItem button key='series'>
                                 <ListItemIcon><Tv/></ListItemIcon>
-                                <ListItemText primary='Series'/>
+                                <ListItemText primary={t('common.seriesPlural')}/>
                             </ListItem>
                             <ListItem button key='list'>
                                 <ListItemIcon><ViewList/></ListItemIcon>
-                                <ListItemText primary='Download List'/>
+                                <ListItemText primary={t('common.list')}/>
                             </ListItem>
                         </List>
                     </SwipeableDrawer>
