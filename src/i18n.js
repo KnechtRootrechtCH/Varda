@@ -3,7 +3,7 @@ import i18n from 'i18next';
 i18n.init({
     debug: true,
 
-    lng: navigator.language.trim().substring(0, 2),
+    lng: navigator.language.trim(),
 
     react: {
         wait: false,
@@ -25,8 +25,6 @@ i18n.init({
                     series: 'Series',
                     list: 'Download List',
                 },
-
-
             }
         },
         'de': {
@@ -41,7 +39,6 @@ i18n.init({
                     series: 'Serie',
                     list: 'Download Liste',
                 },
-
             }
         }
     }
