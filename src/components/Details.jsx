@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-class Component extends React.Component {
+class Details extends React.Component {
 
     render () {
-        console.debug(`${this.constructor.name}.render()`);
+        console.debug(`${this.constructor.name}.render()`, this.props);
         const classes = this.props.classes;
 
         return (
             <div className={classes.root}>
-                Component
+                Details {this.props.match.params.contentType}:{this.props.match.params.itemId}
             </div>
         );
      }
@@ -21,8 +21,8 @@ const styles = theme => ({
     },
 });
 
-Component.propTypes = {
+Details.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Component);
+export default withStyles(styles)(Details);

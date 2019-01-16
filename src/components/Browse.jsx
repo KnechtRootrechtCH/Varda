@@ -5,12 +5,11 @@ import { withStyles } from '@material-ui/core/styles';
 class Browse extends React.Component {
 
     render () {
-        console.debug(`${this.constructor.name}.render()`);
         const classes = this.props.classes;
 
         return (
             <div className={classes.root}>
-                Browse
+                Browse {this.props.match.params.contentType}
             </div>
         );
      }

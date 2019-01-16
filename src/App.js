@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-
-import {Helmet} from 'react-helmet';
 import MetaTags from 'react-meta-tags';
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import {inject, observer} from 'mobx-react';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { inject, observer } from 'mobx-react';
+import { withStyles } from '@material-ui/core/styles';
 
-import Navigation from './components/Navigation'
-import ProtectedContent from './components/ProtectedContent'
+
+import PrivateRouter from './components/PrivateRouter'
 
 @inject('ThemeStore')
 @observer
@@ -34,9 +33,9 @@ class App extends Component {
         </Helmet>
 
         <MuiThemeProvider theme={theme}>
-          <Navigation/>
-          <ProtectedContent/>
+            <PrivateRouter/>
         </MuiThemeProvider>
+
       </div>
     );
   }
