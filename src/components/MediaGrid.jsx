@@ -23,7 +23,7 @@ class MediaGrid extends React.Component {
                 <Grid container spacing={8}>
                     { this.props.MovieDbStore.items.map((item, index) => {
                         return (
-                            <Grid key={index} item xs={12}>
+                            <Grid key={index} item xs={12} sm={6} md={4} lg={3} xl={2}>
                                 <MediaCard item={item}/>
                             </Grid>
                         )
