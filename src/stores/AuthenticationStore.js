@@ -3,45 +3,65 @@ import {fire, googleAuthProvider} from '../config/fire'
 
 class AuthenticationStore {
     @observable user = null;
+    @observable dataUserId = null;
     @observable initialized = false;
     @observable message = null;
     @observable details = null;
 
     constructor() {
         fire.auth().onAuthStateChanged((user) => {
-            this.initialized = true;
-            this.user = user;
+            this.onAuthStateChanged(user);
         });
     }
 
+    @action onAuthStateChanged(user) {
+        console.debug('AuthenticationStore.onAuthStateChanged()', user)
+        this.initialized = true;
+        this.user = user;
+        if(user) {
+            this.dataUserId = user.uid
+        }
+    }
+
     @action authWithGoogle() {
+        console.debug('AuthenticationStore.authWithGoogle()')
         fire.auth().signInWithPopup(googleAuthProvider).then((result) => {
-            this.setMessage("signInSuccess");
-            console.debug("AuthenticationStore.authWithGoogle() : successfull")
+            this.clearMessage();
+            console.debug('AuthenticationStore.authWithGoogle() : successfull')
         }).catch((error) => {
-            this.setMessage("signInError", error);
+            console.debug('AuthenticationStore.authWithGoogle() : failed')
+            this.setMessage('signInError', error);
         });
     }
 
     @action authWithMail(mail, password) {
+        console.debug('AuthenticationStore.authWithMail()', mail, password);
         fire.auth().signInWithEmailAndPassword(mail, password).then(
             (user) => {
-                this.setMessage("signInSuccess");
-                console.debug("AuthenticationStore.authWithMail() : successfull", user)
+                this.clearMessage();
+                console.debug('AuthenticationStore.authWithMail() : successfull', user)
             },
             (error) => {
-                this.setMessage("signInError", error);
+                console.debug('AuthenticationStore.authWithMail() : failed', error)
+                this.setMessage('signInError', error);
             }
           );
     }
 
     @action signOut() {
-        console.debug("AuthenticationStore.signOut()", this.user)
+        console.debug('AuthenticationStore.signOut()', this.user)
         fire.auth().signOut().then((result) => {
-            this.setMessage("singedOutSuccess");
+            console.debug('AuthenticationStore.signOut() : successfull')
+            this.clearMessage();
         }, function(error) {
-            this.setMessage("singedOutError", error);
+            console.error('AuthenticationStore.signOut() : failed!', error)
+            this.setMessage('singedOutError', error);
         });
+    }
+
+    @action clearMessage = () => {
+        this.message = null;
+        this.details = null;
     }
 
     @action setMessage = (message, details) => {

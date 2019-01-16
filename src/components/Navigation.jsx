@@ -16,6 +16,7 @@ import {
     SwipeableDrawer } from '@material-ui/core';
 
 import {
+    ExitToApp,
     Explore,
     Menu,
     Movie,
@@ -32,7 +33,7 @@ class Navigation extends React.Component {
     }
 
     toggleDrawer = (open) => () => {
-        // console.debug(`${this.constructor.name}.toggleDrawer()`, open);
+        console.debug(`${this.constructor.name}.toggleDrawer()`, open);
         if (!this.props.AuthenticationStore.initialized) {
             open = false;
         }
@@ -41,6 +42,13 @@ class Navigation extends React.Component {
         });
     };
 
+    handleSignOut = () => {
+        this.props.AuthenticationStore.signOut();
+        this.setState({
+            drawer: false,
+        });
+    }
+
     render () {
         const classes = this.props.classes;
         const t = this.props.t;
@@ -48,13 +56,8 @@ class Navigation extends React.Component {
         return (
             <AppBar className={classes.root} position="fixed">
                 <Toolbar>
-                <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleDrawer(true)}>
-                    { this.props.AuthenticationStore.authenticated ?
-                        <Menu />
-                    :
-                        <div/>
-                    }
-
+                <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleDrawer(true)} disabled={!this.props.AuthenticationStore.authenticated}>
+                    <Menu />
                 </IconButton>
                 <Typography variant="h6" color="inherit">
                     {t('title')}
@@ -77,6 +80,10 @@ class Navigation extends React.Component {
                         <ListItem button key='list'>
                             <ListItemIcon><ViewList/></ListItemIcon>
                             <ListItemText primary={t('common.list')}/>
+                        </ListItem>
+                        <ListItem button key='signout' onClick={this.handleSignOut}>
+                            <ListItemIcon><ExitToApp/></ListItemIcon>
+                            <ListItemText primary={t('authentication.signOut')}/>
                         </ListItem>
                     </List>
                 </SwipeableDrawer>

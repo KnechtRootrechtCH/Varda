@@ -26,6 +26,16 @@ i18n.init({
                     series: 'Series',
                     list: 'Download List',
                 },
+
+                authentication: {
+                    mail: 'Mail',
+                    password: 'Password',
+                    signIn: 'Sign in',
+                    signOut: 'Sign out',
+                    signUp: 'Signup here.',
+                    noAccount: 'Don\'t have an account?',
+                    signInError: 'Authentification failed.'
+                }
             }
         },
         'de': {
@@ -41,6 +51,16 @@ i18n.init({
                     series: 'Serie',
                     list: 'Download Liste',
                 },
+
+                authentication: {
+                    mail: 'Email',
+                    password: 'Passwort',
+                    signIn: 'Login',
+                    signOut: 'Logout',
+                    signUp: 'Hier registrieren.',
+                    noAccount: 'Noch keinen Account?',
+                    signInError: 'Authentifizierung fehlgeschlagen.'
+                }
             }
         }
     }
