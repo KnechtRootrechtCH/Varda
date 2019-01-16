@@ -15,7 +15,7 @@ import {
     Clear,
     Search } from '@material-ui/icons';
 
-import ItemGrid from './ItemGrid';
+import MediaGrid from './MediaGrid';
 
 @withNamespaces()
 @inject('ConfigurationStore')
@@ -46,7 +46,8 @@ class Browse extends React.Component {
 
     loadItems = () => {
         const mediaType = this.props.match.params.mediaType;
-        this.props.MovieDbStore.loadItems(mediaType, this.state.search)
+        this.props.MovieDbStore.clearItems();
+        this.props.MovieDbStore.loadItems(mediaType, this.state.search);
     }
 
     handleChange = (value) => {
@@ -88,7 +89,7 @@ class Browse extends React.Component {
                     <IconButton className={classes.iconButton} aria-label="search" onClick={this.updateSearch}>
                         <Search />
                     </IconButton>
-                    <InputBase 
+                    <InputBase
                         className={classes.input}
                         value={this.state.search}
                         placeholder={t(placeholderKey)}
@@ -98,7 +99,7 @@ class Browse extends React.Component {
                         <Clear />
                     </IconButton>
                 </Paper>
-                <ItemGrid/>
+                <MediaGrid/>
             </div>
         );
      }
@@ -106,16 +107,16 @@ class Browse extends React.Component {
 
 const styles = theme => ({
     root: {
-        padding: 25,
+        padding: theme.spacing.unit,
     },
     paper: {
         padding: '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: '100%',
+        width: '99%',
     },
     input: {
-        marginLeft: 8,
+        marginLeft: theme.spacing.unit,
         flex: 1,
     },
     iconButton: {

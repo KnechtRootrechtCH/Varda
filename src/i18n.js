@@ -41,6 +41,10 @@ i18n.init({
                     searchAll: 'Search movies, series or actor…',
                     searchMovies: 'Search movie…',
                     searchTv: 'Search tv series…',
+
+                    card: {
+                        add: 'Add',
+                    },
                 }
             }
         },
@@ -72,6 +76,10 @@ i18n.init({
                     searchAll: 'Film, Serie oder Schauspieler suchen…',
                     searchMovies: 'Film suchen…',
                     searchTv: 'Serie suchen…',
+
+                    card: {
+                        add: 'Hinzufügen',
+                    },
                 }
             }
         }

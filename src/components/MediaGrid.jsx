@@ -4,27 +4,27 @@ import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 
-import {
-    Grid,
-    Card } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
+
+import MediaCard from './MediaCard';
 
 @withNamespaces()
 @inject('MovieDbStore')
 @observer
-class ItemGrid extends React.Component {
+class MediaGrid extends React.Component {
 
     render () {
-        console.debug(`${this.constructor.name}.render()`, this.props.MovieDbStore.items);
+        // console.debug(`${this.constructor.name}.render()`, this.props.MovieDbStore.items);
         const classes = this.props.classes;
-        const t = this.props.t;
+        // const t = this.props.t;
 
         return (
             <div className={classes.root}>
-                <Grid container>
+                <Grid container spacing={8}>
                     { this.props.MovieDbStore.items.map((item, index) => {
                         return (
                             <Grid key={index} item xs={12}>
-                                item grid
+                                <MediaCard item={item}/>
                             </Grid>
                         )
                     })}
@@ -36,11 +36,13 @@ class ItemGrid extends React.Component {
 
 const styles = theme => ({
     root: {
+        paddingTop: theme.spacing.unit,
+        paddingBottom: theme.spacing.unit,
     },
 });
 
-ItemGrid.propTypes = {
+MediaGrid.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ItemGrid);
+export default withStyles(styles)(MediaGrid);
