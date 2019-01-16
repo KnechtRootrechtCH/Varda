@@ -1,6 +1,8 @@
 import {observable, action, computed} from 'mobx';
 import {fire, googleAuthProvider} from '../config/fire'
 
+import ConfigurationStore from './ConfigurationStore';
+
 class AuthenticationStore {
     @observable user = null;
     @observable dataUserId = null;
@@ -16,11 +18,12 @@ class AuthenticationStore {
 
     @action onAuthStateChanged(user) {
         console.debug('AuthenticationStore.onAuthStateChanged()', user)
-        this.initialized = true;
         this.user = user;
         if(user) {
-            this.dataUserId = user.uid
+            this.dataUserId = user.uid;
+            ConfigurationStore.init();
         }
+        this.initialized = true;
     }
 
     @action authWithGoogle() {

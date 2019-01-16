@@ -8,11 +8,17 @@ import { Provider } from 'mobx-react';
 
 import App from './App';
 import AuthenticationStore from './stores/AuthenticationStore';
+import ConfigurationStore from './stores/ConfigurationStore';
+import MovieDbStore from './stores/MovieDbStore';
 import ThemeStore from './stores/ThemeStore';
 import i18n from './i18n.js';
 
 const Root = (
-    <Provider AuthenticationStore={AuthenticationStore} ThemeStore={ThemeStore}>
+    <Provider 
+        AuthenticationStore={AuthenticationStore} 
+        ConfigurationStore={ConfigurationStore}
+        MovieDbStore={MovieDbStore}
+        ThemeStore={ThemeStore}>
         <I18nextProvider i18n={i18n}>
             <App/>
         </I18nextProvider>

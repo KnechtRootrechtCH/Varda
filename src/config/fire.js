@@ -9,13 +9,10 @@ const config = {
     messagingSenderId: '629129663242'
 };
 
-const firestoreSettings = {
-    timestampsInSnapshots: true
-};
-
 const fire = firebase.initializeApp(config)
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
-const firestore = fire.firestore();
-firestore.settings(firestoreSettings);
+const firestore = firebase.firestore();
+const settings = { timestampsInSnapshots: true };
+firestore.settings(settings);
 
 export {fire, googleAuthProvider, firestore};

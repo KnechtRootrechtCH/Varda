@@ -15,7 +15,7 @@ i18n.init({
     resources: {
         'en': {
             'translation': {
-                title: 'Varda - Download List',
+                title: 'Varda',
 
                 common: {
                     initializing: 'Initializing',
@@ -35,12 +35,18 @@ i18n.init({
                     signUp: 'Signup here.',
                     noAccount: 'Don\'t have an account?',
                     signInError: 'Authentification failed.'
+                },
+
+                browse: {
+                    searchAll: 'Search movies, series or actor…',
+                    searchMovies: 'Search movie…',
+                    searchTv: 'Search tv series…',
                 }
             }
         },
         'de': {
             'translation': {
-                title: 'Varda - Download Liste',
+                title: 'Varda',
 
                 common: {
                     initializing: 'Initialisierung',
@@ -60,6 +66,12 @@ i18n.init({
                     signUp: 'Hier registrieren.',
                     noAccount: 'Noch keinen Account?',
                     signInError: 'Authentifizierung fehlgeschlagen.'
+                },
+
+                browse: {
+                    searchAll: 'Film, Serie oder Schauspieler suchen…',
+                    searchMovies: 'Film suchen…',
+                    searchTv: 'Serie suchen…',
                 }
             }
         }

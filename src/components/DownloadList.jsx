@@ -10,7 +10,7 @@ class DownloadList extends React.Component {
 
         return (
             <div className={classes.root}>
-                DownloadList: {this.props.contentType}
+                DownloadList: {this.props.mediaType}
             </div>
         );
      }

@@ -12,6 +12,7 @@ import Navigation from './Navigation';
 import SignIn from './SignIn';
 
 @inject('AuthenticationStore')
+@inject('ConfigurationStore')
 @observer
 class PrivateRouter extends React.Component {
     render () {
@@ -25,6 +26,8 @@ class PrivateRouter extends React.Component {
                         <Initializing/>
                     : !this.props.AuthenticationStore.authenticated ?
                         <SignIn/>
+                    : !this.props.ConfigurationStore.initialized ?
+                            <Initializing/>
                     :
                         <Switch>
                             <Route
@@ -33,11 +36,11 @@ class PrivateRouter extends React.Component {
                                 component={Browse}/>
                             <Route
                                 exact
-                                path='/browse/:contentType'
+                                path='/browse/:mediaType'
                                 component={Browse}/>
                             <Route
                                 exact
-                                path='/browse/:contentType/:itemId'
+                                path='/browse/:mediaType/:itemId'
                                 component={Details}/>
                             <Route
                                 exact
@@ -45,11 +48,11 @@ class PrivateRouter extends React.Component {
                                 component={DownloadList}/>
                             <Route
                                 exact
-                                path='/list/:contentType'
+                                path='/list/:mediaType'
                                 component={DownloadList}/>
                             <Route
                                 exact
-                                path='/list/:contentType/:itemId'
+                                path='/list/:mediaType/:itemId'
                                 component={DownloadList}/>
                             <Route
                                 path='/'
