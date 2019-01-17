@@ -10,7 +10,10 @@ import {
     CardActions,
     CardContent,
     CardMedia,
+    IconButton,
     Typography } from '@material-ui/core';
+
+import { Star } from '@material-ui/icons';
 
 import constants from '../config/constants';
 import ImageService from '../service/ImageService';
@@ -46,6 +49,15 @@ class ItemCard extends React.Component {
                     </CardContent>
                 </CardActionArea>
                 <CardActions className={classes.actions}>
+                    <IconButton aria-label={t('common.priority.3')}>
+                        <Star />
+                    </IconButton>
+                    <IconButton aria-label={t('common.priority.2')}>
+                        <Star />
+                    </IconButton>
+                    <IconButton aria-label={t('common.priority.1')}>
+                        <Star />
+                    </IconButton>
                     <Button size='small' color='primary' variant='text'>
                         {t('browse.card.add')}
                     </Button>
@@ -65,7 +77,7 @@ const styles = theme => ({
         padding: theme.spacing.unit,
     },
     actions: {
-        float: 'right',
+        display: 'flex',
     }
 });
 
