@@ -4,6 +4,10 @@ export default Object.freeze({
         MOVIE: 'movie',
         PERSON: 'person',
     },
+    STATUS: {
+        NONE: '',
+        QUEUED: 'queued',
+    },
     JOB: {
         DIRECTOR: 'director',
     },

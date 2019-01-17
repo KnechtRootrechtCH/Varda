@@ -25,6 +25,11 @@ i18n.init({
                     seriesPlural: 'Series',
                     series: 'Series',
                     list: 'Download List',
+                    priority: {
+                        1: 'High',
+                        2: 'Medium',
+                        3: 'Low',
+                    },
                 },
 
                 authentication: {
@@ -60,6 +65,11 @@ i18n.init({
                     seriesPlural: 'Serien',
                     series: 'Serie',
                     list: 'Download Liste',
+                    priority: {
+                        1: 'Hoch',
+                        2: 'Mittel',
+                        3: 'Tief',
+                    },
                 },
 
                 authentication: {

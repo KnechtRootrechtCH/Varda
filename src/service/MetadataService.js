@@ -1,16 +1,35 @@
 import * as Moment from 'moment';
 
 class MetadataService {
+    
+    getKey (item) {
+        const mediaType = this.getMediaType(item);
+        const id = item.id;
+        return `${mediaType}:${id}`;
+    }
+
+    getMediaType (item) {
+        if (this.isMovie(item)) {
+            return 'movie';
+        } else if (this.isTv(item)) {
+            return 'tv';
+        } else if (this.isTvSeason(item)) {
+            return 'season';
+        } else {
+            return 'invalid';
+        }
+    }
+
     isMovie (item) {
         return item && item.title;
     }
 
     isTv (item) {
-        return item && item.name && item.episode_count === null;
+        return item && item.name && !item.episode_count;
     }
 
     isTvSeason (item) {
-        return item && item.name && item.episode_count !== null;
+        return item && item.name && item.episode_count;
     }
 
     getTitle (item) {
