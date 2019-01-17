@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 

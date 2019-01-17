@@ -1,4 +1,3 @@
-import constants from '../config/constants';
 
 class ImageService {
     getBackdropImage (item, size) {

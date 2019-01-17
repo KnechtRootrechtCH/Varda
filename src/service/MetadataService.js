@@ -1,5 +1,4 @@
 import * as Moment from 'moment';
-import constants from '../config/constants';
 
 class MetadataService {
     isMovie (item) {

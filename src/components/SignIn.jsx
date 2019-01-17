@@ -59,17 +59,17 @@ class SignIn extends React.Component {
         return (
             <div className={classes.root}>
                 <form>
-                    <Grid container className={classes.grid} spacing={24}>
-                        <Grid item xs={12}>
-                            <TextField 
+                    <Grid container className={classes.container} spacing={24}>
+                        <Grid item className={classes.item} xs={12}>
+                            <TextField
                                 id='email'
-                                type='text' 
-                                label={t('authentication.mail')} 
-                                error={error} 
-                                onChange={this.handleChange('mail')} 
+                                type='text'
+                                label={t('authentication.mail')}
+                                error={error}
+                                onChange={this.handleChange('mail')}
                                 autoComplete='username'/>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item className={classes.item} xs={12}>
                             <TextField id='password'
                                 type='password'
                                 label={t('authentication.password')}
@@ -77,12 +77,12 @@ class SignIn extends React.Component {
                                 onChange={this.handleChange('password')}
                                 autoComplete='current-password'/>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item className={classes.item} xs={12}>
                             <Button variant='outlined' onClick={this.handleSignin} disabled={buttonDisabled}>
                                 {t('authentication.signIn')}
                             </Button>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item className={classes.item} xs={12}>
                             <Typography variant='body2'>
                                 {t('authentication.noAccount')}
                             </Typography>
@@ -90,7 +90,7 @@ class SignIn extends React.Component {
                                 {t('authentication.signUp')}
                             </Link>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item className={classes.item} xs={12}>
                             <img className={classes.googleAuth} onClick={this.handleSigninWithGoogleAuth} src='https://developers.google.com/identity/images/btn_google_signin_light_normal_web.png' alt='Sign in with google'/>
                         </Grid>
                     </Grid>
@@ -102,10 +102,13 @@ class SignIn extends React.Component {
 
 const styles = theme => ({
     root: {
-        textAlign: 'center',
+        padding: 20,
     },
-    grid: {
-        margin: 20,
+    container: {
+
+    },
+    item: {
+        textAlign: 'center',
     },
     googleAuth: {
         cursor: 'pointer',
