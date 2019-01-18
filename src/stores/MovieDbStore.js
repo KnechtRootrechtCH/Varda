@@ -14,6 +14,10 @@ class MovieDbStore {
     @observable totalPages = 0;
     @observable totalItems = 0;
 
+    @observable mediaType = null;
+    @observable queryType = null;
+    @observable searchString = null;
+
     constructor() {
         const locale = navigator.language.trim();
         this.locale = locale.substring(0, 2);
@@ -31,6 +35,7 @@ class MovieDbStore {
         this.loading = true;
         const apiKey = ConfigurationStore.configuration.movieDbApiKey;
 
+
         let queryType = searchString && searchString.length >= 2 ? 'search' : 'popular'
         if (!mediaType) {
             if (queryType === 'search') {
@@ -39,6 +44,10 @@ class MovieDbStore {
                 mediaType = 'movie';
             }
         }
+
+        this.mediaType = mediaType;
+        this.queryType = queryType;
+        this.searchString = searchString;
 
         let query = null;
         if (queryType === 'search') {

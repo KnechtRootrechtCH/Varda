@@ -52,7 +52,7 @@ i18n.init({
                 },
 
                 browse: {
-                    searchAll: 'Search movies, series or actor…',
+                    searchAll: 'Search…',
                     searchMovies: 'Search movie…',
                     searchTv: 'Search tv series…',
 
@@ -104,7 +104,7 @@ i18n.init({
                 },
 
                 browse: {
-                    searchAll: 'Film, Serie oder Schauspieler suchen…',
+                    searchAll: 'Suchen…',
                     searchMovies: 'Film suchen…',
                     searchTv: 'Serie suchen…',
 

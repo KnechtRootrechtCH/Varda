@@ -104,7 +104,7 @@ class ItemCard extends React.Component {
                     </CardMedia>
                 </CardActionArea>
                 <CardContent className={classes.content}>
-                        <Typography className={classes.title} variant='h5' component='h2'>
+                        <Typography className={classes.title} variant='subtitle2' component='h2'>
                             {title}
                         </Typography>
                         <Typography className={classes.relaseDate} color='textSecondary'>

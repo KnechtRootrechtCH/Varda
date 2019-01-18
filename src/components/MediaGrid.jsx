@@ -36,8 +36,7 @@ class MediaGrid extends React.Component {
 
 const styles = theme => ({
     root: {
-        paddingTop: theme.spacing.unit,
-        paddingBottom: theme.spacing.unit,
+        padding: theme.spacing.unit,
     },
 });
 

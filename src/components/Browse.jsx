@@ -1,21 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { debounce } from 'lodash';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 
-import {
-    Divider,
-    InputBase,
-    IconButton,
-    Paper } from '@material-ui/core';
-
-import {
-    Clear,
-    Search } from '@material-ui/icons';
+import { Typography } from '@material-ui/core';
 
 import MediaGrid from './MediaGrid';
+import constants from '../config/constants'
 
 @withNamespaces()
 @inject('ConfigurationStore')
@@ -57,20 +49,6 @@ class Browse extends React.Component {
         this.props.MovieDbStore.loadItems(mediaType, this.state.search);
     }
 
-    handleChange = (value) => {
-        this.setState({
-            search: value,
-        });
-        this.update();
-    }
-
-    handleClear = () => {
-        this.setState({
-            search: '',
-        });
-        this.loadItems();
-    }
-
     handleScroll = () => {
         const d = document.documentElement
         const offset = d.scrollTop + window.innerHeight
@@ -83,41 +61,25 @@ class Browse extends React.Component {
         }
     }
 
-    update = debounce(() => {
-        this.loadItems();
-    }, 500)
-
     render () {
         // console.debug(`${this.constructor.name}.render()`, this.props);
         const classes = this.props.classes;
         const t = this.props.t;
 
         const mediaType = this.props.match.params.mediaType;
+        let titleKey = 'common.discover'
 
-        let placeholderKey = 'browse.searchAll';
-        if (mediaType === 'movie') {
-            placeholderKey = 'browse.searchMovies'
-        }
-        if (mediaType === 'tv') {
-            placeholderKey = 'browse.searchTv'
+        if (mediaType === constants.MEDIA_TYPE.MOVIE) {
+            titleKey = 'common.movies'
+        } else if (mediaType === constants.MEDIA_TYPE.TV) {
+            titleKey = 'common.seriesPlural'
         }
 
         return (
             <div className={classes.root}>
-                <Paper className={classes.paper} elecation={1}>
-                    <IconButton className={classes.iconButton} aria-label="search" onClick={this.updateSearch}>
-                        <Search />
-                    </IconButton>
-                    <InputBase
-                        className={classes.input}
-                        value={this.state.search}
-                        placeholder={t(placeholderKey)}
-                        onChange={({ target: { value } }) => this.handleChange(value)}/>
-                    <Divider className={classes.divider} />
-                    <IconButton className={classes.iconButton} aria-label="clear" onClick={this.handleClear}>
-                        <Clear />
-                    </IconButton>
-                </Paper>
+                <Typography className={classes.title} variant='subtitle1' component='h2'>
+                        {t(titleKey)}
+                </Typography>
                 <MediaGrid/>
             </div>
         );
@@ -126,25 +88,13 @@ class Browse extends React.Component {
 
 const styles = theme => ({
     root: {
-        padding: theme.spacing.unit,
+        padding: 0,
     },
-    paper: {
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%',
-    },
-    input: {
+    title: {
+        marginTop: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        marginBottom: 0,
         marginLeft: theme.spacing.unit,
-        flex: 1,
-    },
-    iconButton: {
-        padding: theme.spacing.unit / 2,
-        margin: theme.spacing.unit / 2,
-    },
-    divider: {
-        width: 1,
-        height: 28,
-        margin: 4,
     },
 });
 
