@@ -22,8 +22,8 @@ class ThemeStore {
   @observable secondary = {};
   @observable type = '';
 
-  @observable defaultPrimary = amber;
-  @observable defaultSecondary = red;
+  @observable defaultPrimary = red;
+  @observable defaultSecondary = amber;
   @observable defaultType = 'dark';
 
   constructor () {

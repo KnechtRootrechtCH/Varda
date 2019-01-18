@@ -46,16 +46,22 @@ class MovieDbStore {
         } else {
             query = `https://api.themoviedb.org/3/${mediaType}/${queryType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}`;
         }
+        this.page++;
         // console.debug('MovieDbStore.search() : query =>', query);
 
         axios(query).then((response) => {
             if (response.status === 200) {
-                this.items = response.data.results;
+                const results = response.data.results;
+                results.forEach((result) => {
+                    this.items.push(result);
+                })
+
                 this.page = response.data.page;
                 this.totalItems = response.data.total_results;
                 this.totalPages = response.data.total_pages;
                 this.loading = false;
-                console.debug('MovieDbStore.search() : items loaded from movieDb', this.items.length);
+
+                console.debug('MovieDbStore.search() : items loaded from movieDb', this.items.length, this.page);
             } else {
                 this.loading = false;
                 console.error('MovieDbStore.search() : error loading data from movieDb', response);

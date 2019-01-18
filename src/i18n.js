@@ -30,6 +30,15 @@ i18n.init({
                         2: 'Medium',
                         3: 'Low',
                     },
+                    status: {
+                        none: '',
+                        queued: 'queued',
+                        notReleased: 'unreleased',
+                        notAvailable: 'not yet available',
+                        notFound: 'not found',
+                        downloading: 'downloading',
+                        downloaded: 'done',
+                    },
                 },
 
                 authentication: {
@@ -49,6 +58,9 @@ i18n.init({
 
                     card: {
                         add: 'Add',
+                        edit: 'Edit',
+                        remove: 'Remove',
+                        markDownloaded: 'Mark as downloaded',
                     },
                 }
             }
@@ -70,6 +82,15 @@ i18n.init({
                         2: 'Mittel',
                         3: 'Tief',
                     },
+                    status: {
+                        none: '',
+                        queued: 'hinzugefügt',
+                        notReleased: 'unveröffentlicht',
+                        notAvailable: 'noch nicht erhältlich',
+                        notFound: 'noch nicht gefunden',
+                        downloading: 'wird heruntergeladen',
+                        downloaded: 'erledigt',
+                    },
                 },
 
                 authentication: {
@@ -89,6 +110,9 @@ i18n.init({
 
                     card: {
                         add: 'Hinzufügen',
+                        edit: 'Bearbeiten',
+                        remove: 'Entfernen',
+                        markDownloaded: 'Als erledigt markieren',
                     },
                 }
             }

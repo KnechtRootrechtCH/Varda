@@ -5,8 +5,13 @@ export default Object.freeze({
         PERSON: 'person',
     },
     STATUS: {
-        NONE: '',
+        REMOVED: 'removed',
         QUEUED: 'queued',
+        NOT_RELEASED: 'notReleased',
+        NOT_AVAILABLE: 'notAvailable',
+        NOT_FOUND: 'notFound',
+        DOWNLOADING: 'downloading',
+        DOWNLOADED: 'downloaded',
     },
     JOB: {
         DIRECTOR: 'director',

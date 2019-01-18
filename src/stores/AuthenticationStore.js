@@ -18,7 +18,7 @@ class AuthenticationStore {
     }
 
     @action onAuthStateChanged(user) {
-        console.debug('AuthenticationStore.onAuthStateChanged()', user);
+        // console.debug('AuthenticationStore.onAuthStateChanged()', user);
         this.user = user;
         if(user) {
             this.dataUserId = user.uid;
@@ -65,7 +65,7 @@ class AuthenticationStore {
     }
 
     @action logAccess() {
-        console.debug('AuthenticationStore.logAccess()', this.user);
+        // console.debug('AuthenticationStore.logAccess()', this.user);
         const userAgent = window.navigator.userAgent;
         const access = {
             time: Moment().format('dddd DD.MM.YYYY HH:mm:ss ZZ'),
@@ -76,21 +76,21 @@ class AuthenticationStore {
         doc.set({
             access: access,
             mail: this.user.email,
-        }, { 
-            merge: true 
+        }, {
+            merge: true
         });
 
-        const accessYear = Moment().format('YYYY');
-        const accessMonth = Moment().format('MM');
-        const accessDay = Moment().format('DD');
+        const accessYearMonth = Moment().format('YYYY-MM');
+        const accessDay = Moment().format('DD - dddd');
         const accessTime = Moment().format('HH-mm-ss ZZ');
-        const accessObject= {};
-        accessObject[accessTime] = userAgent;
+
         doc.collection('access')
-            .doc(accessYear)
-            .collection(accessMonth)
-            .doc(accessDay)
-            .set(accessObject, {
+            .doc(accessYearMonth)
+            .collection(accessDay)
+            .doc(accessTime)
+            .set({
+                userAgent: userAgent,
+            }, {
                 merge: true
             });
         }

@@ -28,18 +28,25 @@ class Browse extends React.Component {
 
     componentDidMount = () => {
         if (this.props.ConfigurationStore.initialized) {
-            console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
+            // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
             this.loadItems();
         }
+        // console.debug(`${this.constructor.name}.componentDidMount() => adding scroll event listener`);
+        window.addEventListener('scroll', this.handleScroll)
+    }
+
+    componentWillUnmount = () => {
+        // console.debug(`${this.constructor.name}.componentWillUnmount() => removing scroll event listener`);
+        window.removeEventListener('scroll', this.handleScroll)
     }
 
     componentDidUpdate (prevProps) {
         if (!prevProps.ConfigurationStore.initialized && this.props.ConfigurationStore.initialized) {
-            console.debug(`${this.constructor.name}.componentDidUpdate() : Config store initialized => Load items`);
+            // console.debug(`${this.constructor.name}.componentDidUpdate() : Config store initialized => Load items`);
             this.loadItems();
         }
         if (prevProps.match.params.mediaType !== this.props.match.params.mediaType) {
-            console.debug(`${this.constructor.name}.componentDidUpdate() : Media type changed => Load items`);
+            // console.debug(`${this.constructor.name}.componentDidUpdate() : Media type changed => Load items`);
             this.loadItems();
         }
     }
@@ -62,6 +69,18 @@ class Browse extends React.Component {
             search: '',
         });
         this.loadItems();
+    }
+
+    handleScroll = () => {
+        const d = document.documentElement
+        const offset = d.scrollTop + window.innerHeight
+        const height = d.offsetHeight
+
+        if (offset >= height - 100) {
+            // console.debug(`${this.constructor.name}.handleScroll() : load next page!`);
+            const mediaType = this.props.match.params.mediaType;
+            this.props.MovieDbStore.loadItems(mediaType, this.state.search);
+        }
     }
 
     update = debounce(() => {
@@ -110,17 +129,17 @@ const styles = theme => ({
         padding: theme.spacing.unit,
     },
     paper: {
-        padding: '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: '99%',
+        width: '100%',
     },
     input: {
         marginLeft: theme.spacing.unit,
         flex: 1,
     },
     iconButton: {
-        padding: 10,
+        padding: theme.spacing.unit / 2,
+        margin: theme.spacing.unit / 2,
     },
     divider: {
         width: 1,
