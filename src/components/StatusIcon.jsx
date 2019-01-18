@@ -33,7 +33,8 @@ class StatusIcon extends React.Component {
 
     handleStatusChange = (status) => {
         const item = this.props.item;
-        this.props.DownloadStatusStore.updateStatus(item, status);
+        const previous = this.props.statusItem ? this.props.statusItem.status : '';
+        this.props.DownloadStatusStore.updateStatus(item, status, previous);
         this.handleItemEditClose();
     }
 

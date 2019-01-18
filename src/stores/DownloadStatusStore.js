@@ -31,7 +31,7 @@ class DownloadStatusStore {
         }
     }
 
-    @action updateStatus(item, status) {
+    @action updateStatus(item, status, previousStatus) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateFormated(item, 'YYYY-MM-DD');
@@ -51,10 +51,10 @@ class DownloadStatusStore {
         });
 
         this.updateItemData(key, item);
-        this.logTransaction(key, 'updateStatus', status, title);
+        this.logTransaction(key, 'updateStatus', title, status, previousStatus);
     }
 
-    @action updatePriority(item, priority) {
+    @action updatePriority(item, priority, previousPrority) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
         console.debug('DownloadStatusStore.updatePriority()', key, priority);
@@ -68,7 +68,7 @@ class DownloadStatusStore {
         });
 
         this.updateItemData(key, item);
-        this.logTransaction(key, 'updatePriority', priority, title);
+        this.logTransaction(key, 'updatePriority', title, priority, previousPrority);
     }
 
     @action updateItemData(key, item) {
@@ -83,8 +83,8 @@ class DownloadStatusStore {
             .set(item);
     }
 
-    @action logTransaction(key, transaction, payload, title){
-        console.debug('DownloadStatusStore.logTransaction()', transaction, payload);
+    @action logTransaction(key, transaction, title, newValue, previousValue){
+        console.debug('DownloadStatusStore.logTransaction()', transaction, newValue);
 
         const yearMonth = Moment().format('YYYY-MM');
         const day = Moment().format('DD - dddd');
@@ -100,7 +100,8 @@ class DownloadStatusStore {
             .doc(dateTimeString)
             .set({
                 transaction: transaction,
-                payload: payload,
+                newValue: newValue,
+                previousValue: previousValue,
             }, {
                 merge: true
             });
@@ -115,7 +116,8 @@ class DownloadStatusStore {
             .set({
                 key: key,
                 transaction: transaction,
-                payload: payload,
+                newValue: newValue,
+                previousValue: previousValue,
                 title: title,
             }, {
                 merge: true

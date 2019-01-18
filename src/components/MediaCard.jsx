@@ -42,13 +42,15 @@ class ItemCard extends React.Component {
 
     handleStatusChange = (status) => {
         const item = this.props.item;
-        this.props.DownloadStatusStore.updateStatus(item, status);
+        const previous = this.props.statusItem ? this.props.statusItem.status : '';
+        this.props.DownloadStatusStore.updateStatus(item, status, previous);
     }
 
     handlePriorityChange = (priority) => {
         console.debug(`${this.constructor.name}.handlePriorityChange()`, priority);
         const item = this.props.item;
-        this.props.DownloadStatusStore.updatePriority(item, priority);
+        const previous = this.props.statusItem ? this.props.statusItem.priority : 0;
+        this.props.DownloadStatusStore.updatePriority(item, priority, previous);
     }
 
     handlePriorityHover = (priority) => {
