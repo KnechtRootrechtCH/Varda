@@ -34,6 +34,8 @@ import {
     Tv,
     ViewList } from '@material-ui/icons';
 
+import { DeathStarVariant } from 'mdi-material-ui/'
+
 @withNamespaces()
 @inject('AuthenticationStore')
 @inject('MovieDbStore')
@@ -120,6 +122,7 @@ class Navigation extends React.Component {
         const t = this.props.t;
         const location = this.props.location.pathname.toLowerCase();
 
+        const isDesktop = isWidthUp('sm', this.props.width);
         const showHeader = isWidthUp('sm', this.props.width) || ! this.state.search;
         let showSearch = true;
         let placeholderKey = 'browse.searchAll';
@@ -136,17 +139,18 @@ class Navigation extends React.Component {
 
         return (
             <AppBar className={classes.root} position="fixed">
-                <Toolbar>
-                    <Fade in={true}>
+                <Toolbar className={classes.toolbar}>
+                    <Fade in={isDesktop} mountOnEnter={true} unmountOnExit={true}>
                         <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleDrawer(true)}>
                             <Menu />
                         </IconButton>
                     </Fade>
-                    <Fade in={showHeader} mountOnEnter={true} unmountOnExit={true}>
-                        <Typography variant='h5' component='h2' color="inherit">
+                    { this.state.searchButton &&
+                        <Typography className={classes.header} variant='h5' component='h2' color="inherit">
+                            <DeathStarVariant className={classes.logo} color='secondary'/>
                             {t('title')}
                         </Typography>
-                    </Fade>
+                    }
                     { showSearch &&
                         <div className={classes.search}>
                             <Fade in={this.state.searchButton} mountOnEnter={true} unmountOnExit={true}>
@@ -218,14 +222,28 @@ const styles = theme => ({
     root: {
         flexGrow: 1,
     },
+    toolbar: {
+        minHeight: 48,
+        height: 48,
+        paddingLeft: theme.spacing.unit,
+        paddingRight: theme.spacing.unit,
+    },
     menuButton: {
-        marginLeft: -12,
+        marginLeft: 0,
         marginRight: theme.spacing.unit,
         padding: theme.spacing.unit / 2,
     },
+    header: {
+
+    },
+    logo: {
+        verticalAlign: 'middle',
+        marginBottom: 3,
+        marginRight: theme.spacing.unit / 2,
+    },
     search: {
         marginLeft: 'auto',
-        marginRight: -12,
+        marginRight: 0,
     },
     searchButton: {
         padding: theme.spacing.unit / 2,
