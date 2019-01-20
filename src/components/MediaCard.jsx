@@ -12,6 +12,7 @@ import {
     CardActions,
     CardContent,
     CardMedia,
+    Fade,
     Typography } from '@material-ui/core';
 
 import {
@@ -28,6 +29,7 @@ import MetadataService from '../service/MetadataService';
 @withNamespaces()
 @inject('ConfigurationStore')
 @inject('DownloadStatusStore')
+@inject('MovieDbStore')
 @observer
 class ItemCard extends React.Component {
 
@@ -95,58 +97,60 @@ class ItemCard extends React.Component {
         const selected = statusItem && statusItem.status && statusItem.status !== constants.STATUS.REMOVED ? true : false;
 
         return (
-            <Card className={classes.root}>
-                <CardActionArea component={Link} to={route}>
-                    <CardMedia
-                        className={classes.media}
-                        image={image}
-                        title={title}>
-                    </CardMedia>
-                </CardActionArea>
-                <CardContent className={classes.content}>
-                        <Typography className={classes.title} variant='subtitle2' component='h2'>
-                            {title}
-                        </Typography>
-                        <Typography className={classes.relaseDate} color='textSecondary'>
-                            {release}
-                            { isMovie &&
-                                <Movie className={classes.mediaTypeIcon} color='inherit'/>
-                            }
-                            { isTv &&
-                                <Tv className={classes.mediaTypeIcon} color='secondary'/>
-                            }
+            <Fade in={this.props.MovieDbStore.page > 0 || !this.props.MovieDbStore.loading}>
+                <Card className={classes.root}>
+                    <CardActionArea component={Link} to={route}>
+                        <CardMedia
+                            className={classes.media}
+                            image={image}
+                            title={title}>
+                        </CardMedia>
+                    </CardActionArea>
+                    <CardContent className={classes.content}>
+                            <Typography className={classes.title} variant='subtitle2' component='h2'>
+                                {title}
+                            </Typography>
+                            <Typography className={classes.relaseDate} color='textSecondary'>
+                                {release}
+                                { isMovie &&
+                                    <Movie className={classes.mediaTypeIcon} color='inherit'/>
+                                }
+                                { isTv &&
+                                    <Tv className={classes.mediaTypeIcon} color='secondary'/>
+                                }
 
-                        </Typography>
-                </CardContent>
-                <CardActions className={classes.actions}>
-                    { selected &&
-                        <StatusIcon item={item} statusItem={statusItem}/>
-                    }
-                    { selected ?
-                        <div className={classes.actionRight}>
-                        { priorities.map((p) => {
-                            return (
-                                <Star
-                                    key={p}
-                                    className={priority <= p ? classes.priorityIconActive : classes.priorityIcon}
-                                    onMouseOut={() => this.handlePriorityHover(100)}
-                                    onMouseOver={() => this.handlePriorityHover(p)}
-                                    onClick={() => this.handlePriorityChange(p)}/>
-                            )
-                        })}
-                        </div>
-                    :
-                        <Button
-                            className={classes.actionRight}
-                            onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}
-                            size='small'
-                            color='primary'
-                            variant='text'>
-                            {t('browse.card.add')}
-                        </Button>
-                    }
-                </CardActions>
-            </Card>
+                            </Typography>
+                    </CardContent>
+                    <CardActions className={classes.actions}>
+                        { selected &&
+                            <StatusIcon item={item} statusItem={statusItem}/>
+                        }
+                        { selected ?
+                            <div className={classes.actionRight}>
+                            { priorities.map((p) => {
+                                return (
+                                    <Star
+                                        key={p}
+                                        className={priority <= p ? classes.priorityIconActive : classes.priorityIcon}
+                                        onMouseOut={() => this.handlePriorityHover(100)}
+                                        onMouseOver={() => this.handlePriorityHover(p)}
+                                        onClick={() => this.handlePriorityChange(p)}/>
+                                )
+                            })}
+                            </div>
+                        :
+                            <Button
+                                className={classes.actionRight}
+                                onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}
+                                size='small'
+                                color='primary'
+                                variant='text'>
+                                {t('browse.card.add')}
+                            </Button>
+                        }
+                    </CardActions>
+                </Card>
+            </Fade>
         );
      }
 }

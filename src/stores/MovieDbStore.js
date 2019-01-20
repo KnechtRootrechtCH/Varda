@@ -25,60 +25,68 @@ class MovieDbStore {
     }
 
     @action clearItems() {
-        this.items = [];
+        console.debug('MovieDbStore.clearItems()');
+        // this.items = [];
         this.page = 0;
         this.totalPages = 0;
         this.totalReults = 0;
     }
 
     @action loadItems(mediaType, searchString) {
-        this.loading = true;
-        const apiKey = ConfigurationStore.configuration.movieDbApiKey;
+        setTimeout(() => {
+            this.loading = true;
+            const apiKey = ConfigurationStore.configuration.movieDbApiKey;
 
 
-        let queryType = searchString && searchString.length >= 2 ? 'search' : 'popular'
-        if (!mediaType) {
+            let queryType = searchString && searchString.length >= 2 ? 'search' : 'popular'
+            if (!mediaType) {
+                if (queryType === 'search') {
+                    mediaType = 'multi';
+                } else {
+                    mediaType = 'movie';
+                }
+            }
+
+            this.mediaType = mediaType;
+            this.queryType = queryType;
+            this.searchString = searchString;
+
+            let query = null;
             if (queryType === 'search') {
-                mediaType = 'multi';
+                query = `https://api.themoviedb.org/3/${queryType}/${mediaType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}&query=${searchString}`;
             } else {
-                mediaType = 'movie';
+                query = `https://api.themoviedb.org/3/${mediaType}/${queryType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}`;
             }
-        }
+            // console.debug('MovieDbStore.search() : query =>', query);
 
-        this.mediaType = mediaType;
-        this.queryType = queryType;
-        this.searchString = searchString;
+            axios(query).then((response) => {
+                if (response.status === 200) {
+                    if (this.page === 0) {
+                        this.items = [];
+                    }
 
-        let query = null;
-        if (queryType === 'search') {
-            query = `https://api.themoviedb.org/3/${queryType}/${mediaType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}&query=${searchString}`;
-        } else {
-            query = `https://api.themoviedb.org/3/${mediaType}/${queryType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}`;
-        }
-        this.page++;
-        // console.debug('MovieDbStore.search() : query =>', query);
+                    const results = response.data.results;
+                    results.forEach((result) => {
+                        this.items.push(result);
+                    })
 
-        axios(query).then((response) => {
-            if (response.status === 200) {
-                const results = response.data.results;
-                results.forEach((result) => {
-                    this.items.push(result);
-                })
+                    this.page = response.data.page;
+                    this.totalItems = response.data.total_results;
+                    this.totalPages = response.data.total_pages;
+                    this.loading = false;
 
-                this.page = response.data.page;
-                this.totalItems = response.data.total_results;
-                this.totalPages = response.data.total_pages;
+                    console.debug('MovieDbStore.search() : items loaded from movieDb', this.items.length, this.page);
+                } else {
+                    this.loading = false;
+                    this.items = [];
+                    console.error('MovieDbStore.search() : error loading data from movieDb', response);
+                }
+            }).catch(function (error) {
                 this.loading = false;
-
-                console.debug('MovieDbStore.search() : items loaded from movieDb', this.items.length, this.page);
-            } else {
-                this.loading = false;
-                console.error('MovieDbStore.search() : error loading data from movieDb', response);
-            }
-        }).catch(function (error) {
-            this.loading = false;
-            console.error('MovieDbStore.search() : error loading data from movieDb', error);
-        });
+                this.items = [];
+                console.error('MovieDbStore.search() : error loading data from movieDb', error);
+            });
+        }, 0);
     }
 }
 

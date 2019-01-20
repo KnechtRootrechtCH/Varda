@@ -19,12 +19,14 @@ i18n.init({
 
                 common: {
                     initializing: 'Initializing',
+                    loading: 'Loading',
                     discover: 'Discover',
                     movies: 'Movies',
                     movie: 'Movie',
                     seriesPlural: 'Series',
                     series: 'Series',
                     list: 'Download List',
+                    listShort: 'List',
                     priority: {
                         1: 'High',
                         2: 'Medium',
@@ -71,12 +73,14 @@ i18n.init({
 
                 common: {
                     initializing: 'Initialisierung',
+                    loading: 'Lade',
                     discover: 'Entdecken',
                     movies: 'Filme',
                     movie: 'Film',
                     seriesPlural: 'Serien',
                     series: 'Serie',
                     list: 'Download Liste',
+                    listShort: 'Liste',
                     priority: {
                         1: 'Hoch',
                         2: 'Mittel',

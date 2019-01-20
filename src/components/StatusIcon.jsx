@@ -79,7 +79,7 @@ class StatusIcon extends React.Component {
                     t(`common.status.${status}`)}
                 </span>
                 <Menu
-                    id="editMenu"
+                    id='editMenu'
                     anchorEl={this.state.editMenuAnchor}
                     open={Boolean(this.state.editMenuAnchor)}
                     onClose={this.handleItemEditClose}>
