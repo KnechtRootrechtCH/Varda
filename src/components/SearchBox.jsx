@@ -8,9 +8,7 @@ import { withNamespaces } from 'react-i18next';
 
 import { InputBase } from '@material-ui/core';
 
-import {
-    Clear,
-    Search } from '@material-ui/icons';
+import { Search } from '@material-ui/icons';
 
 @withNamespaces()
 @inject('MovieDbStore')
