@@ -22,7 +22,7 @@ class AuthenticationStore {
         this.user = user;
         if(user) {
             this.dataUserId = user.uid;
-            ConfigurationStore.init();
+            ConfigurationStore.init(user.uid);
             this.logAccess();
         }
         this.initialized = true;
@@ -107,6 +107,13 @@ class AuthenticationStore {
 
     @computed get authenticated () {
         return this.user !== null;
+    }
+
+    @computed get photoUrl () {
+        if (this.user) {
+            return this.user.photoURL;
+        }
+        return null;
     }
 }
 

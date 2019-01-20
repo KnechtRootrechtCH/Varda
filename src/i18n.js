@@ -27,6 +27,8 @@ i18n.init({
                     series: 'Series',
                     list: 'Download List',
                     listShort: 'List',
+                    settings: 'Settings',
+                    search: 'Search',
                     priority: {
                         1: 'High',
                         2: 'Medium',
@@ -64,6 +66,12 @@ i18n.init({
                         remove: 'Remove',
                         markDownloaded: 'Mark as downloaded',
                     },
+                },
+
+                settings: {
+                    darkTheme: 'Dark theme',
+                    on: 'On',
+                    off: 'Off',
                 }
             }
         },
@@ -81,6 +89,8 @@ i18n.init({
                     series: 'Serie',
                     list: 'Download Liste',
                     listShort: 'Liste',
+                    settings: 'Einstellungen',
+                    search: 'Suchen',
                     priority: {
                         1: 'Hoch',
                         2: 'Mittel',
@@ -100,8 +110,8 @@ i18n.init({
                 authentication: {
                     mail: 'Email',
                     password: 'Passwort',
-                    signIn: 'Login',
-                    signOut: 'Logout',
+                    signIn: 'Einloggen',
+                    signOut: 'Ausloggen',
                     signUp: 'Hier registrieren.',
                     noAccount: 'Noch keinen Account?',
                     signInError: 'Authentifizierung fehlgeschlagen.'
@@ -118,6 +128,12 @@ i18n.init({
                         remove: 'Entfernen',
                         markDownloaded: 'Als erledigt markieren',
                     },
+                },
+
+                settings: {
+                    darkTheme: 'Dunkles Design',
+                    on: 'Ein',
+                    off: 'Aus',
                 }
             }
         }

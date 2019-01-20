@@ -16,7 +16,6 @@ import {
     ListItemText } from '@material-ui/core';
 
 import {
-    ExitToApp,
     Explore,
     Movie,
     Tv,
@@ -41,11 +40,6 @@ class Navigation extends React.Component {
         if (desktop) {
             return;
         }
-        this.props.ThemeStore.setDrawerState(false);
-    }
-
-    handleSignOut = () => {
-        this.props.AuthenticationStore.signOut();
         this.props.ThemeStore.setDrawerState(false);
     }
 
@@ -109,6 +103,7 @@ class Navigation extends React.Component {
                         </ListItemIcon>
                         <ListItemText primary={t('common.seriesPlural')}/>
                     </ListItem>
+                    <Divider/>
                     <ListItem
                         button
                         component={Link}
@@ -119,15 +114,6 @@ class Navigation extends React.Component {
                             <ViewList className={loc === 'list' ? classes.drawerIconActive : null}/>
                         </ListItemIcon>
                         <ListItemText primary={t('common.list')}/>
-                    </ListItem>
-                    <Divider/>
-                    <ListItem
-                        button
-                        onClick={this.handleSignOut}>
-                        <ListItemIcon>
-                            <ExitToApp/>
-                        </ListItemIcon>
-                        <ListItemText primary={t('authentication.signOut')}/>
                     </ListItem>
                 </List>
             </Drawer>

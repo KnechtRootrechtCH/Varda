@@ -37,7 +37,6 @@ class MovieDbStore {
             this.loading = true;
             const apiKey = ConfigurationStore.configuration.movieDbApiKey;
 
-
             let queryType = searchString && searchString.length >= 2 ? 'search' : 'popular'
             if (!mediaType) {
                 if (queryType === 'search') {

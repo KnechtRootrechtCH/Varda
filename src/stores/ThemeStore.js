@@ -1,7 +1,5 @@
 import {observable, action} from 'mobx';
 
-import LocalStorageService from '../service/LocalStorageService';
-
 import { createMuiTheme } from '@material-ui/core/styles';
 import {red, pink, purple, deepPurple} from '@material-ui/core/colors';
 import {indigo, blue, lightBlue, cyan} from '@material-ui/core/colors';
@@ -22,67 +20,39 @@ class ThemeStore {
     @observable secondary = {};
     @observable type = '';
 
-    @observable defaultPrimary = cyan;
+    @observable defaultPrimary = indigo;
     @observable defaultSecondary = orange;
     @observable defaultType = 'dark';
 
     @observable drawerState = false;
 
     constructor () {
-        this.setDefaultTheme();
-
-        // TODO: add theme settings page
-        /*
-        const primary = LocalStorageService.loadPrimaryColor();
-        if (primary && primary['500']) {
-          this.primary = primary;
-        }
-
-        const secondary = LocalStorageService.loadSecondaryColor();
-        if (secondary && secondary['500']) {
-          this.secondary = secondary;
-        }
-
-        const type = LocalStorageService.loadThemeType();
-        if (type) {
-          this.type = type;
-        }
-        */
-
+        this.loadTheme();
         this.applyTheme();
-    }
-
-    @action setDefaultTheme() {
-        this.setType(this.defaultType);
-        this.setPrimary(this.defaultPrimary);
-        this.setSecondary(this.defaultSecondary);
     }
 
     @action setPrimary(color) {
         this.primary = color;
+        this.saveTheme();
+        this.applyTheme();
     }
 
     @action setSecondary(color) {
         this.secondary = color;
+        this.saveTheme();
+        this.applyTheme();
     }
 
     @action setType(type) {
         this.type = type;
+        this.saveTheme();
+        this.applyTheme();
     }
 
     @action applyTheme() {
         const theme = createMuiTheme({
             typography: {
                 useNextVariants: true,
-                h6: {
-                    textTransform: 'uppercase',
-                },
-                subtitle1: {
-                    textTransform: 'uppercase',
-                },
-                caption: {
-                    textTransform: 'uppercase',
-                },
             },
             palette: {
                 type: this.type,
@@ -96,14 +66,33 @@ class ThemeStore {
         });
         console.debug('ThemeStore.applyTheme() : ', theme);
         this.theme = theme;
-        LocalStorageService.savePrimaryColor(this.primary);
-        LocalStorageService.saveSecondaryColor(this.secondary);
-        LocalStorageService.saveThemeType(this.type);
+    }
+
+    @action saveTheme() {
+        const theme = {
+            type: this.type,
+            primary: this.primary,
+            secondary: this.secondary,
+        }
+        localStorage.setItem('varda.theme', JSON.stringify(theme));
+    }
+
+    @action loadTheme() {
+        const theme = JSON.parse(localStorage.getItem('varda.theme'));
+        if (theme) {
+            this.type = theme.type;
+            this.primary = theme.primary;
+            this.secondary = theme.secondary;
+            return;
+        }
+        this.type = this.defaultType;
+        this.primary = this.defaultPrimary;
+        this.secondary = this.defaultSecondary;
     }
 
     @action setDrawerState(state) {
-        this.drawerState = state;
-        localStorage.setItem('varda.drawerState', JSON.stringify(state));
+      this.drawerState = state;
+      localStorage.setItem('varda.drawerState', JSON.stringify(state));
     }
 
     @action loadDrawerState() {

@@ -2,15 +2,43 @@ import { observable, action } from 'mobx';
 import { firestore } from '../config/fire'
 
 class ConfigurationStore {
+    userId = null;
+
     @observable initialized = false;
     @observable configuration = null;
+    @observable userSettings = null;
 
-    @action init() {
+    @action init(userId) {
+        this.userId = userId;
+
         firestore.collection('static').doc('configuration').onSnapshot((doc) => {
-            // console.debug('ConfigurationStore.init() : loaded', doc.data());
+            // console.debug('ConfigurationStore.init() : configuration loaded', doc.data());
             this.configuration = doc.data();
             this.initialized = true;
+
         })
+
+        firestore.collection('users').doc(userId).onSnapshot((doc) => {
+            // console.debug('ConfigurationStore.init() : personal settings loaded', doc.data());
+            let settings = doc.data().settings;
+            if (!settings) {
+                settings = {}
+            }
+            this.userSettings = settings;
+
+        })
+    }
+
+    @action updateUserSettings(data) {
+        /*
+        const doc = firestore.collection('users').doc(this.userId)
+        doc.set({
+            settings: data,
+            mail: this.user.email,
+        }, {
+            merge: true
+        });
+        */
     }
 }
 
