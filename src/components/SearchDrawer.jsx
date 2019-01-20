@@ -97,7 +97,7 @@ class SearchDrawer extends React.Component {
                                 className={classes.input}
                                 inputRef={(input) => { this.setInputRef(input) }}
                                 onChange={({ target: { value } }) => this.handleChange(value)}
-                                placeholder={t('common.search')}
+                                placeholder={t('common.search') + '…'}
                                 startAdornment={
                                     <ChevronLeft className={classes.backIcon} onClick={this.handleClose}/>
                                 }
