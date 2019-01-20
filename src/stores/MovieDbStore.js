@@ -30,12 +30,17 @@ class MovieDbStore {
         this.page = 0;
         this.totalPages = 0;
         this.totalReults = 0;
+        this.searchString = null;
     }
 
     @action loadItems(mediaType, searchString) {
         setTimeout(() => {
             this.loading = true;
             const apiKey = ConfigurationStore.configuration.movieDbApiKey;
+
+            if (!searchString) {
+                searchString = this.searchString;
+            }
 
             let queryType = searchString && searchString.length >= 2 ? 'search' : 'popular'
             if (!mediaType) {

@@ -16,9 +16,6 @@ import constants from '../config/constants'
 @inject('MovieDbStore')
 @observer
 class Browse extends React.Component {
-    state = {
-        search: '',
-    }
 
     componentDidMount = () => {
         if (this.props.ConfigurationStore.initialized) {
@@ -49,7 +46,7 @@ class Browse extends React.Component {
         const mediaType = this.props.match.params.mediaType;
         this.props.MovieDbStore.clearItems();
         window.scrollTo(0, 0)
-        this.props.MovieDbStore.loadItems(mediaType, this.state.search);
+        this.props.MovieDbStore.loadItems(mediaType);
     }
 
     handleScroll = debounce(() => {
@@ -61,7 +58,7 @@ class Browse extends React.Component {
             // console.debug(`${this.constructor.name}.handleScroll() : load next page!`);
             const mediaType = this.props.match.params.mediaType;
             if (!this.props.MovieDbStore.loading) {
-                this.props.MovieDbStore.loadItems(mediaType, this.state.search);
+                this.props.MovieDbStore.loadItems(mediaType);
             }
         }
     }, 100)
