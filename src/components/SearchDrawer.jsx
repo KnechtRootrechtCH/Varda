@@ -25,7 +25,6 @@ class SearchDrawer extends React.Component {
 
     state = {
         drawer: false,
-        searchString: '',
         inputRef: null,
     }
 
@@ -41,23 +40,20 @@ class SearchDrawer extends React.Component {
         this.setState({
             drawer: false,
         });
+        this.handleReset();
     }
 
     handleReset = () => {
-        if (this.state.searchString.length === 0) {
+        if (this.props.MovieDbStore.searchString.length === 0) {
             return;
         }
-        this.setState({
-            searchString: '',
-        });
+        this.props.MovieDbStore.setSearchString('');
         this.state.inputRef.focus();
         this.loadItems();
     }
 
     handleChange = (value) => {
-        this.setState({
-            searchString: value,
-        });
+        this.props.MovieDbStore.setSearchString(value);
         this.update();
     }
 
@@ -66,9 +62,8 @@ class SearchDrawer extends React.Component {
     }, 500)
 
     loadItems = () => {
-        const mediaType = this.props.MovieDbStore.mediaType;
         this.props.MovieDbStore.clearItems();
-        this.props.MovieDbStore.loadItems(mediaType, this.state.searchString);
+        this.props.MovieDbStore.loadItems();
     }
 
     setInputRef = ref => {
@@ -81,17 +76,24 @@ class SearchDrawer extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
 
+        const searchString = this.props.MovieDbStore.searchString
+        const searchActive = searchString && searchString.length > 0;
+        const show = this.state.drawer || searchActive ? true : false;
+
         return (
             <div className={classes.root}>
                 <IconButton onClick={this.handleOpen}>
                     <Search/>
                 </IconButton>
-                <Slide in={this.state.drawer} mountOnEnter={true} unmountOnExit={true}>
+                <Slide
+                    in={show}
+                    mountOnEnter={true}
+                    unmountOnExit={true}>
                     <AppBar color='default'>
                         <Toolbar>
                             <InputBase
                                 autoFocus={true}
-                                value={this.state.searchString}
+                                value={searchString}
                                 className={classes.input}
                                 inputRef={(input) => { this.setInputRef(input) }}
                                 onChange={({ target: { value } }) => this.handleChange(value)}

@@ -28,8 +28,8 @@ import {
     Settings,
     Menu as MenuIcon }  from 'mdi-material-ui';
 
+import NavigationBar from './NavigationBar';
 import NavigationDrawer from './NavigationDrawer';
-import NavigationTabBar from './NavigationTabBar';
 import SearchDrawer from './SearchDrawer';
 import SearchBox from './SearchBox';
 
@@ -103,7 +103,7 @@ class Navigation extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
 
-        const mobile = isWidthDown('xs', this.props.width);
+        const mobile = isWidthDown('sm', this.props.width);
         const desktop = isWidthUp('md', this.props.width);
         const authenticated = this.props.AuthenticationStore.authenticated;
 
@@ -154,7 +154,7 @@ class Navigation extends React.Component {
                 }
                 { mobile &&
                     <AppBar className={classes.appBarBottom} position='fixed' color='default'>
-                        <NavigationTabBar/>
+                        <NavigationBar/>
                     </AppBar>
                 }
                 <Menu

@@ -123,10 +123,8 @@ class Navigation extends React.Component {
 
 const styles = theme => ({
     root: {
-
     },
     drawerItems: {
-
     },
     drawerItemsDesktop: {
         marginTop: 64,

@@ -22,7 +22,7 @@ import {
 @inject('MovieDbStore')
 @inject('ThemeStore')
 @observer
-class Navigation extends React.Component {
+class NavigationBar extends React.Component {
 
     handleChange = () => {
 
@@ -47,12 +47,15 @@ class Navigation extends React.Component {
         return (
             <Tabs
                 value={loc}
+                className={classes.root}
                 classes={{ indicator: classes.indicator }}
                 centered
                 variant='fullWidth'
                 indicatorColor='primary'
                 textColor='inherit'>
                 <Tab
+                    className={classes.tab}
+                    classes={{ labelContainer: classes.labelContainer }}
                     key='browse'
                     value='browse'
                     component={Link}
@@ -64,6 +67,8 @@ class Navigation extends React.Component {
                         </Typography>
                     }/>
                 <Tab
+                    className={classes.tab}
+                    classes={{ labelContainer: classes.labelContainer }}
                     key='movies'
                     value='movies'
                     component={Link}
@@ -75,6 +80,8 @@ class Navigation extends React.Component {
                         </Typography>
                     }/>
                 <Tab
+                    className={classes.tab}
+                    classes={{ labelContainer: classes.labelContainer }}
                     key='tv'
                     value='tv'
                     component={Link}
@@ -86,6 +93,8 @@ class Navigation extends React.Component {
                         </Typography>
                     }/>
                 <Tab
+                    className={classes.tab}
+                    classes={{ labelContainer: classes.labelContainer }}
                     key='list'
                     value='list'
                     component={Link}
@@ -103,10 +112,17 @@ class Navigation extends React.Component {
 
 const styles = theme => ({
     root: {
-
+        height: 68,
+    },
+    tab: {
+        paddingTop: 0,
     },
     icon: {
 
+    },
+    labelContainer: {
+        paddingTop: theme.spacing.unit / 2,
+        paddingBottom: theme.spacing.unit / 2,
     },
     label: {
         textTransform: 'capitalize',
@@ -116,8 +132,8 @@ const styles = theme => ({
     },
 });
 
-Navigation.propTypes = {
+NavigationBar.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withRouter(Navigation));
+export default withStyles(styles)(withRouter(NavigationBar));
