@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { inject, observer } from 'mobx-react';
+import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
@@ -28,7 +29,6 @@ import {
     Settings,
     Menu as MenuIcon }  from 'mdi-material-ui';
 
-import NavigationBar from './NavigationBar';
 import NavigationDrawer from './NavigationDrawer';
 import SearchDrawer from './SearchDrawer';
 import SearchBox from './SearchBox';
@@ -152,17 +152,12 @@ class Navigation extends React.Component {
                 { !desktop &&
                     <NavigationDrawer/>
                 }
-                { mobile &&
-                    <AppBar className={classes.appBarBottom} position='fixed' color='default'>
-                        <NavigationBar/>
-                    </AppBar>
-                }
                 <Menu
                     id='user'
                     anchorEl={this.state.menuAnchor}
                     open={Boolean(this.state.menuAnchor)}
                     onClose={this.handleMenuClose}>
-                    <MenuItem>
+                    <MenuItem component={Link} to='/settings'>
                         <ListItemIcon>
                             <Settings/>
                         </ListItemIcon>
@@ -228,11 +223,6 @@ const styles = theme => ({
         height: theme.spacing.unit * 3,
         width: theme.spacing.unit * 3,
     },
-    appBarBottom: {
-        top: 'auto',
-        bottom: 0,
-    },
-
 });
 
 Navigation.propTypes = {

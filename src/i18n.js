@@ -72,6 +72,8 @@ i18n.init({
                     darkTheme: 'Dark theme',
                     on: 'On',
                     off: 'Off',
+                    primaryColor: 'Primary color',
+                    secondaryColor: 'Secondary color',
                 }
             }
         },
@@ -134,6 +136,8 @@ i18n.init({
                     darkTheme: 'Dunkles Design',
                     on: 'Ein',
                     off: 'Aus',
+                    primaryColor: 'Hauptfarbe',
+                    secondaryColor: 'Sekondärfarbe',
                 }
             }
         }

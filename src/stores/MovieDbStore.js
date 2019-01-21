@@ -87,7 +87,7 @@ class MovieDbStore {
                     this.items = [];
                     console.error('MovieDbStore.search() : error loading data from movieDb', response);
                 }
-            }).catch(function (error) {
+            }).catch((error) => {
                 this.loading = false;
                 this.items = [];
                 console.error('MovieDbStore.search() : error loading data from movieDb', error);

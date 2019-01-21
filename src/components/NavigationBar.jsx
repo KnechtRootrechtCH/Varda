@@ -7,9 +7,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { withNamespaces } from 'react-i18next';
 
 import {
-    Tab,
-    Tabs,
-    Typography } from '@material-ui/core';
+    BottomNavigation,
+    BottomNavigationAction } from '@material-ui/core';
 
 import {
     Explore,
@@ -36,6 +35,8 @@ class NavigationBar extends React.Component {
         let loc = 'browse';
         if (!this.props.AuthenticationStore.authenticated) {
             loc = false;
+        } else if (location.includes('settings')) {
+            loc = false;
         } else if (location.includes('browse/movie')) {
             loc = 'movies';
         } else if (location.includes('browse/tv')) {
@@ -45,90 +46,44 @@ class NavigationBar extends React.Component {
         }
 
         return (
-            <Tabs
-                value={loc}
+            <BottomNavigation
                 className={classes.root}
-                classes={{ indicator: classes.indicator }}
-                centered
-                variant='fullWidth'
-                indicatorColor='primary'
-                textColor='inherit'>
-                <Tab
-                    className={classes.tab}
-                    classes={{ labelContainer: classes.labelContainer }}
-                    key='browse'
+                showLabels={true}
+                value={loc}>
+                <BottomNavigationAction
                     value='browse'
+                    label={t('common.discover')}
+                    icon={<Explore />}
                     component={Link}
-                    to='/browse'
-                    icon={<Explore className={classes.icon}/>}
-                    label={
-                        <Typography className={classes.label} variant='body2' component='p'>
-                            {t('common.discover')}
-                        </Typography>
-                    }/>
-                <Tab
-                    className={classes.tab}
-                    classes={{ labelContainer: classes.labelContainer }}
-                    key='movies'
+                    to='/browse'/>
+                <BottomNavigationAction
                     value='movies'
+                    label={t('common.movies')}
+                    icon={<Movie />}
                     component={Link}
-                    to='/browse/movie'
-                    icon={<Movie className={classes.icon}/>}
-                    label={
-                        <Typography className={classes.label} variant='body2' component='p'>
-                            {t('common.movies')}
-                        </Typography>
-                    }/>
-                <Tab
-                    className={classes.tab}
-                    classes={{ labelContainer: classes.labelContainer }}
-                    key='tv'
+                    to='/browse/movie'/>
+                <BottomNavigationAction
                     value='tv'
+                    label={t('common.seriesPlural')}
+                    icon={<Tv />}
                     component={Link}
-                    to='/browse/tv'
-                    icon={<Tv className={classes.icon}/>}
-                    label={
-                        <Typography className={classes.label} variant='body2' component='h3'>
-                            {t('common.seriesPlural')}
-                        </Typography>
-                    }/>
-                <Tab
-                    className={classes.tab}
-                    classes={{ labelContainer: classes.labelContainer }}
-                    key='list'
+                    to='/browse/tv'/>
+                <BottomNavigationAction
                     value='list'
+                    label={t('common.listShort')}
+                    icon={<ViewList />}
                     component={Link}
-                    to='/list'
-                    icon={<ViewList className={classes.icon}/>}
-                    label={
-                        <Typography className={classes.label} variant='body2' component='p'>
-                            {t('common.listShort')}
-                        </Typography>
-                    }/>
-            </Tabs>
+                    to='/browse/list'/>
+            </BottomNavigation>
         );
      }
 }
 
 const styles = theme => ({
     root: {
-        height: 68,
-    },
-    tab: {
-        paddingTop: 0,
-    },
-    icon: {
-
-    },
-    labelContainer: {
-        paddingTop: theme.spacing.unit / 2,
-        paddingBottom: theme.spacing.unit / 2,
-    },
-    label: {
-        textTransform: 'capitalize',
-    },
-    indicator: {
-        display: 'none'
+        width: '100%',
+        position: 'fixed',
+        bottom: 0,
     },
 });
 

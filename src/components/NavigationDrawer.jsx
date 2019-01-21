@@ -54,15 +54,15 @@ class Navigation extends React.Component {
         const desktop = isWidthUp('md', this.props.width);
         const drawerVariant = desktop ? 'persistent' : null;
 
-        let loc = '';
+        let loc = 'browse';
         if (!this.props.AuthenticationStore.authenticated) {
-            loc = 'signIn';
+            loc = null;
+        } else if (location.includes('settings')) {
+            loc = null;
         } else if (location.includes('browse/movie')) {
             loc = 'movies';
         } else if (location.includes('browse/tv')) {
             loc = 'tv';
-        } else if (location.includes('browse')) {
-            loc = 'browse';
         } else if (location.includes('list')) {
             loc = 'list';
         }

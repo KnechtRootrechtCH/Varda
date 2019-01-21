@@ -5,15 +5,13 @@ import {red, pink, purple, deepPurple} from '@material-ui/core/colors';
 import {indigo, blue, lightBlue, cyan} from '@material-ui/core/colors';
 import {teal, green, lightGreen, lime} from '@material-ui/core/colors';
 import {yellow, amber, orange, deepOrange} from '@material-ui/core/colors';
-import {grey, blueGrey} from '@material-ui/core/colors';
 
 class ThemeStore {
     @observable colors = [
         red, pink, purple, deepPurple,
         indigo, blue, lightBlue, cyan,
         teal, green, lightGreen, lime,
-        yellow, amber, orange, deepOrange,
-        grey, blueGrey];
+        yellow, amber, orange, deepOrange ];
 
     @observable theme = {};
     @observable primary = {};

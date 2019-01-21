@@ -12,9 +12,10 @@ import Details from './Details';
 import DownloadList from './DownloadList';
 import Initializing from './Initializing';
 import Navigation from './Navigation';
-import SignIn from './SignIn';
-
+import NavigationBar from './NavigationBar';
 import NavigationDrawer from './NavigationDrawer';
+import Settings from './Settings';
+import SignIn from './SignIn';
 
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
@@ -47,6 +48,10 @@ class PrivateRouter extends React.Component {
                             <Switch>
                                 <Route
                                     exact
+                                    path='/settings'
+                                    component={Settings}/>
+                                <Route
+                                    exact
                                     path='/browse'
                                     component={Browse}/>
                                 <Route
@@ -74,6 +79,9 @@ class PrivateRouter extends React.Component {
                                     component={Browse}/>
                             </Switch>
                         </main>
+                    }
+                    { !desktop &&
+                        <NavigationBar/>
                     }
                 </div>
             </Router>
