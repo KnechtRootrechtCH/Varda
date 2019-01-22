@@ -9,10 +9,9 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
     Card,
     CardActionArea,
-    CardActions,
-    CardContent,
     CardMedia,
     Fade,
+    Paper,
     Typography } from '@material-ui/core';
 
 import {
@@ -85,14 +84,7 @@ class ItemCard extends React.Component {
             }
         }
 
-        const priority = this.state.priority < 100 ? this.state.priority : statusItem.priority;
-        const priorityCount = this.props.ConfigurationStore.configuration.priorityCount;
-        let priorities = [];
-        for (let i = priorityCount; i > 0; i--) {
-            priorities.push(i);
-        }
-
-        const selected = statusItem && statusItem.status && statusItem.status !== constants.STATUS.REMOVED ? true : false;
+        const status = statusItem ? statusItem.status : null;
 
         return (
             <Fade in={this.props.MovieDbStore.page > 0 || !this.props.MovieDbStore.loading}>
@@ -102,26 +94,14 @@ class ItemCard extends React.Component {
                             className={classes.media}
                             image={image}
                             title={title}>
-                            <Typography textAlign='right'>test</Typography>
+                            { status &&
+                                <Paper className={mobile ? classes.statusMobile : classes.status}>
+                                    <Typography variant='caption'>{t(`browse.card.status.${status}`)}</Typography>
+                                </Paper>
+                            }
                         </CardMedia>
                     </CardActionArea>
-                    <ItemCardContent item={item} statusItem={statusItem} selected={selected} mobile={mobile}/>
-                    <CardActions className={mobile ? classes.actionsMobile : classes.actions}>
-                        { selected &&
-                            <div className={classes.actionRight}>
-                            { priorities.map((p) => {
-                                return (
-                                    <Star
-                                        key={p}
-                                        className={priority <= p ? classes.priorityIconActive : classes.priorityIcon}
-                                        onMouseOut={() => this.handlePriorityHover(100)}
-                                        onMouseOver={() => this.handlePriorityHover(p)}
-                                        onClick={() => this.handlePriorityChange(p)}/>
-                                )
-                            })}
-                            </div>
-                        }
-                    </CardActions>
+                    <ItemCardContent item={item} statusItem={statusItem} mobile={mobile}/>
                 </Card>
             </Fade>
         );
@@ -138,56 +118,23 @@ const styles = theme => ({
     media: {
         height: 150,
     },
-    content: {
-        paddingTop: theme.spacing.unit,
-        paddingRight: theme.spacing.unit,
-        paddingBottom: theme.spacing.unit / 2,
-        paddingLeft: theme.spacing.unit,
+    statusMobile: {
+        background: theme.palette.common.black,
+        opacity: 0.8,
+        position: 'absolute',
+        right: theme.spacing.unit,
+        bottom: theme.spacing.unit / 2,
+        paddingLeft: theme.spacing.unit / 2,
+        paddingRight: theme.spacing.unit / 2,
     },
-    contentMobile: {
-        paddingTop: theme.spacing.unit,
-        paddingRight: theme.spacing.unit * 3,
-        paddingBottom: theme.spacing.unit / 2,
-        paddingLeft: theme.spacing.unit * 3,
-    },
-    title: {
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-    },
-    releaseDate: {
-    },
-    actions: {
-        display: 'flex',
-        height: 46,
-        padding: theme.spacing.unit,
-    },
-    actionsMobile: {
-        display: 'flex',
-        height: 46,
-        paddingTop: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 3,
-        paddingBottom: theme.spacing.unit,
-        paddingRight: theme.spacing.unit * 3,
-    },
-    actionRight: {
-        margin: 0,
-        marginLeft: 0,
-    },
-    priorityIcon: {
-        color: theme.palette.action.hover,
-        cursor: 'pointer',
-    },
-    priorityIconActive: {
-        color: theme.palette.action.active,
-        cursor: 'pointer',
-    },
-    mediaTypeIcon: {
-        verticalAlign: 'middle',
-        marginBottom: 3,
-        marginLeft: theme.spacing.unit / 2,
-        marginRight: theme.spacing.unit / 2,
-        fontSize: 18,
+    status: {
+        background: theme.palette.common.black,
+        opacity: 0.8,
+        position: 'absolute',
+        right: theme.spacing.unit,
+        bottom: theme.spacing.unit / 2,
+        paddingLeft: theme.spacing.unit / 2,
+        paddingRight: theme.spacing.unit / 2,
     },
 });
 

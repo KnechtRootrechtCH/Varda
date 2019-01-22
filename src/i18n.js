@@ -34,15 +34,6 @@ i18n.init({
                         2: 'Medium',
                         3: 'Low',
                     },
-                    status: {
-                        none: '',
-                        queued: 'queued',
-                        notReleased: 'unreleased',
-                        notAvailable: 'not yet available',
-                        notFound: 'not found',
-                        downloading: 'downloading',
-                        downloaded: 'done',
-                    },
                 },
 
                 authentication: {
@@ -66,6 +57,16 @@ i18n.init({
                         remove: 'Remove',
                         markDownloaded: 'Mark as downloaded',
                         markForRedownload: 'Mark for redownload',
+                        status: {
+                            removed: '',
+                            queued: '',
+                            notReleased: 'unreleased',
+                            notAvailable: 'not yet available',
+                            notFound: 'not found',
+                            redownload: 'redownload',
+                            downloading: 'downloading',
+                            downloaded: '',
+                        },
                     },
                 },
 
@@ -100,15 +101,6 @@ i18n.init({
                         2: 'Mittel',
                         3: 'Tief',
                     },
-                    status: {
-                        none: '',
-                        queued: 'hinzugefügt',
-                        notReleased: 'unveröffentlicht',
-                        notAvailable: 'noch nicht erhältlich',
-                        notFound: 'noch nicht gefunden',
-                        downloading: 'wird heruntergeladen',
-                        downloaded: 'erledigt',
-                    },
                 },
 
                 authentication: {
@@ -130,8 +122,18 @@ i18n.init({
                         add: 'Hinzufügen',
                         edit: 'Bearbeiten',
                         remove: 'Entfernen',
-                        markDownloaded: 'Als erledigt markieren',
+                        markDownloaded: 'Erledigt',
                         markForRedownload: 'Erneut herunterladen',
+                        status: {
+                            removed: '',
+                            queued: '',
+                            notReleased: 'unveröffentlicht',
+                            notAvailable: 'noch nicht erhältlich',
+                            notFound: 'noch nicht gefunden',
+                            redownload: 'nochmals herunterladen',
+                            downloading: 'wird heruntergeladen',
+                            downloaded: '',
+                        },
                     },
                 },
 
