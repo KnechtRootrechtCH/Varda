@@ -65,6 +65,7 @@ i18n.init({
                         edit: 'Edit',
                         remove: 'Remove',
                         markDownloaded: 'Mark as downloaded',
+                        markForRedownload: 'Mark for redownload',
                     },
                 },
 
@@ -130,6 +131,7 @@ i18n.init({
                         edit: 'Bearbeiten',
                         remove: 'Entfernen',
                         markDownloaded: 'Als erledigt markieren',
+                        markForRedownload: 'Erneut herunterladen',
                     },
                 },
 

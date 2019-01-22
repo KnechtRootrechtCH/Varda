@@ -4,9 +4,9 @@ import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withRouter, Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 import {
-    Button,
     Card,
     CardActionArea,
     CardActions,
@@ -20,7 +20,7 @@ import {
     Tv,
     Star } from '@material-ui/icons';
 
-import StatusIcon from './StatusIcon';
+import ItemCardContent from './card/ItemCardContent'
 
 import constants from '../config/constants';
 import ImageService from '../service/ImageService';
@@ -67,14 +67,12 @@ class ItemCard extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
 
+        const mobile = isWidthDown('xs', this.props.width);
+
         const item = this.props.item;
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
-        const release = MetadataService.getReleaseDateFormated(item, 'YYYY');
         const image = ImageService.getBackdropImage(item, constants.IMAGESIZE.BACKDROP.W500);
-
-        const isMovie = MetadataService.isMovie(item);
-        const isTv = MetadataService.isTv(item);
 
         const location = this.props.location.pathname.toLowerCase();
         const route = `${location}/${item.id}`;
@@ -98,34 +96,18 @@ class ItemCard extends React.Component {
 
         return (
             <Fade in={this.props.MovieDbStore.page > 0 || !this.props.MovieDbStore.loading}>
-                <Card className={classes.root}>
+                <Card className={mobile ? classes.rootMobile : classes.root} raised={!mobile} square={mobile}>
                     <CardActionArea component={Link} to={route}>
                         <CardMedia
                             className={classes.media}
                             image={image}
                             title={title}>
+                            <Typography textAlign='right'>test</Typography>
                         </CardMedia>
                     </CardActionArea>
-                    <CardContent className={classes.content}>
-                            <Typography className={classes.title} variant='subtitle2' component='h2'>
-                                {title}
-                            </Typography>
-                            <Typography className={classes.relaseDate} color='textSecondary'>
-                                {release}
-                                { isMovie &&
-                                    <Movie className={classes.mediaTypeIcon} color='inherit'/>
-                                }
-                                { isTv &&
-                                    <Tv className={classes.mediaTypeIcon} color='secondary'/>
-                                }
-
-                            </Typography>
-                    </CardContent>
-                    <CardActions className={classes.actions}>
+                    <ItemCardContent item={item} statusItem={statusItem} selected={selected} mobile={mobile}/>
+                    <CardActions className={mobile ? classes.actionsMobile : classes.actions}>
                         { selected &&
-                            <StatusIcon item={item} statusItem={statusItem}/>
-                        }
-                        { selected ?
                             <div className={classes.actionRight}>
                             { priorities.map((p) => {
                                 return (
@@ -138,15 +120,6 @@ class ItemCard extends React.Component {
                                 )
                             })}
                             </div>
-                        :
-                            <Button
-                                className={classes.actionRight}
-                                onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}
-                                size='small'
-                                color='primary'
-                                variant='text'>
-                                {t('browse.card.add')}
-                            </Button>
                         }
                     </CardActions>
                 </Card>
@@ -157,6 +130,10 @@ class ItemCard extends React.Component {
 
 const styles = theme => ({
     root: {
+
+    },
+    rootMobile: {
+        background: theme.palette.background.default,
     },
     media: {
         height: 150,
@@ -167,6 +144,12 @@ const styles = theme => ({
         paddingBottom: theme.spacing.unit / 2,
         paddingLeft: theme.spacing.unit,
     },
+    contentMobile: {
+        paddingTop: theme.spacing.unit,
+        paddingRight: theme.spacing.unit * 3,
+        paddingBottom: theme.spacing.unit / 2,
+        paddingLeft: theme.spacing.unit * 3,
+    },
     title: {
         overflow: 'hidden',
         whiteSpace: 'nowrap',
@@ -176,12 +159,20 @@ const styles = theme => ({
     },
     actions: {
         display: 'flex',
-        padding: theme.spacing.unit,
         height: 46,
+        padding: theme.spacing.unit,
+    },
+    actionsMobile: {
+        display: 'flex',
+        height: 46,
+        paddingTop: theme.spacing.unit,
+        paddingLeft: theme.spacing.unit * 3,
+        paddingBottom: theme.spacing.unit,
+        paddingRight: theme.spacing.unit * 3,
     },
     actionRight: {
         margin: 0,
-        marginLeft: 'auto',
+        marginLeft: 0,
     },
     priorityIcon: {
         color: theme.palette.action.hover,
@@ -204,4 +195,4 @@ ItemCard.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withRouter(ItemCard));
+export default withStyles(styles)(withRouter(withWidth()(ItemCard)));

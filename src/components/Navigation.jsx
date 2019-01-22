@@ -29,7 +29,6 @@ import {
     Settings,
     Menu as MenuIcon }  from 'mdi-material-ui';
 
-import NavigationDrawer from './NavigationDrawer';
 import SearchDrawer from './SearchDrawer';
 import SearchBox from './SearchBox';
 
@@ -153,9 +152,6 @@ class Navigation extends React.Component {
                         </Fade>
                     </Toolbar>
                 </AppBar>
-                { !desktop &&
-                    <NavigationDrawer/>
-                }
                 <Menu
                     id='user'
                     anchorEl={this.state.menuAnchor}

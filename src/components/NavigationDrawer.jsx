@@ -128,6 +128,7 @@ const styles = theme => ({
     },
     drawerItemsDesktop: {
         marginTop: 64,
+        width: 220,
     },
     drawerItemActive: {
         backgroundColor: theme.palette.action.selected,

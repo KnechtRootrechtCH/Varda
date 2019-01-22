@@ -28,6 +28,8 @@ class NavigationBar extends React.Component {
     }
 
     render () {
+        // console.debug(`${this.constructor.name}.render()`, this.props);
+
         const classes = this.props.classes;
         const t = this.props.t;
         const location = this.props.location.pathname.toLowerCase();

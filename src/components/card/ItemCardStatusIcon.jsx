@@ -7,25 +7,25 @@ import { withStyles } from '@material-ui/core/styles';
 import {
     ListItemIcon,
     Menu,
-    MenuItem,
-    Typography } from '@material-ui/core';
+    MenuItem } from '@material-ui/core';
 
 import {
-    CalendarToday,
+    AlertCircleOutline,
+    Calendar,
+    CalendarQuestion,
     Check,
-    CheckCircle,
-    CloudDownload,
+    ClockOutline,
     Delete,
-    Visibility,
-    Warning,
-    WatchLater } from '@material-ui/icons';
+    Download,
+    EyeOff,
+    Plus }  from 'mdi-material-ui';
 
-import constants from '../config/constants';
+import constants from '../../config/constants';
 
 @withNamespaces()
 @inject('DownloadStatusStore')
 @observer
-class StatusIcon extends React.Component {
+class ItemCardStatusIcon extends React.Component {
 
     state = {
         editMenuAnchor: null,
@@ -57,27 +57,27 @@ class StatusIcon extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
         const status = this.props.statusItem.status;
+        const mobile = this.props.mobile;
 
         return (
-            <Typography className={classes.root}>
+            <div className={mobile ? classes.rootMobile : classes.root}>
                 { status === constants.STATUS.QUEUED ?
-                    <WatchLater className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                    <ClockOutline className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
                 : status === constants.STATUS.NOT_RELEASED ?
-                    <CalendarToday className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                    <Calendar className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
                 : status === constants.STATUS.NOT_AVAILABLE ?
-                    <CalendarToday className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                    <CalendarQuestion className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
                 : status === constants.STATUS.NOT_FOUND ?
-                    <Visibility className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                    <EyeOff className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                : status === constants.STATUS.REDOWNLOAD ?
+                    <AlertCircleOutline className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
                 : status === constants.STATUS.DOWNLOADING ?
-                    <CloudDownload className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                    <Download className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
                 : status === constants.STATUS.DOWNLOADED ?
-                    <CheckCircle className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                    <Check className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
                 :
-                    <Warning className={classes.statusIcon}/>
+                    <Plus className={classes.statusIcon} onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}/>
                 }
-                <span className={classes.statusText}>{
-                    t(`common.status.${status}`)}
-                </span>
                 <Menu
                     id='editMenu'
                     anchorEl={this.state.editMenuAnchor}
@@ -89,37 +89,50 @@ class StatusIcon extends React.Component {
                         </ListItemIcon>
                         {t('browse.card.remove')}
                     </MenuItem>
-                    <MenuItem onClick={() => this.handleStatusChange(constants.STATUS.DOWNLOADED)}>
-                        <ListItemIcon>
-                            <Check/>
-                        </ListItemIcon>
-                        {t('browse.card.markDownloaded')}
-                    </MenuItem>
+                    { status !== constants.STATUS.DOWNLOADED &&
+                        <MenuItem onClick={() => this.handleStatusChange(constants.STATUS.DOWNLOADED)}>
+                            <ListItemIcon>
+                                <Check/>
+                            </ListItemIcon>
+                            {t('browse.card.markDownloaded')}
+                        </MenuItem>
+                    }
+                    { status === constants.STATUS.DOWNLOADED &&
+                        <MenuItem onClick={() => this.handleStatusChange(constants.STATUS.REDOWNLOAD)}>
+                            <ListItemIcon>
+                                <AlertCircleOutline/>
+                            </ListItemIcon>
+                            {t('browse.card.markForRedownload')}
+                        </MenuItem>
+                    }
                 </Menu>
-            </Typography>
+            </div>
         );
      }
 }
 
 const styles = theme => ({
     root: {
-        margin: 0,
-        color: theme.palette.action.active,
-        verticalAlign: 'middle',
+        position: 'absolute',
+        top: theme.spacing.unit,
+        right: theme.spacing.unit,
+    },
+    rootMobile: {
+        position: 'absolute',
+        top: theme.spacing.unit,
+        right: theme.spacing.unit * 3,
     },
     statusIcon: {
         cursor: 'pointer',
-        marginRight: theme.spacing.unit,
+        color: theme.palette.action.active,
     },
-    statusText: {
-    }
 });
 
-StatusIcon.propTypes = {
+ItemCardStatusIcon.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(StatusIcon);
+export default withStyles(styles)(ItemCardStatusIcon);
 /*
         REMOVED: 'removed',
         QUEUED: 'queued',

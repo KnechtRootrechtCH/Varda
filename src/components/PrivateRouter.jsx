@@ -33,8 +33,8 @@ class PrivateRouter extends React.Component {
             <Router>
                 <div className={classes.root}>
                     <Navigation/>
-                    { desktop &&
-                        <NavigationBar/>
+                    { !mobile &&
+                        <NavigationDrawer/>
                     }
                     { mobile ?
                         <div className={classes.mobileNavSpacer}/>
@@ -97,12 +97,16 @@ class PrivateRouter extends React.Component {
      }
 }
 
-const drawerWidth = 215 + 18;
+const drawerWidth = 220;
 
 const styles = theme => ({
     root: {
     },
     content: {
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
     },
     contentShift: {
         transition: theme.transitions.create('margin', {
@@ -110,7 +114,6 @@ const styles = theme => ({
             duration: theme.transitions.duration.enteringScreen,
         }),
         marginLeft: drawerWidth,
-        marginRight: 18,
     },
     desktopNavSpacer: {
         height: 64,

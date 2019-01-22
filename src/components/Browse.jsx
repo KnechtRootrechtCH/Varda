@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import {
     Typography } from '@material-ui/core';
 
-import MediaGrid from './MediaGrid';
+import ItemGrid from './ItemGrid';
 import constants from '../config/constants'
 
 @withNamespaces()
@@ -82,7 +82,7 @@ class Browse extends React.Component {
                 <Typography className={classes.title} variant='subtitle1' component='h2'>
                     <span>{t(titleKey)}</span>
                 </Typography>
-                <MediaGrid/>
+                <ItemGrid/>
             </div>
         );
      }
@@ -94,9 +94,9 @@ const styles = theme => ({
     },
     title: {
         marginTop: theme.spacing.unit * 2,
-        marginRight: theme.spacing.unit * 2,
+        marginRight: theme.spacing.unit * 3,
         marginBottom: 0,
-        marginLeft: theme.spacing.unit * 2,
+        marginLeft: theme.spacing.unit * 3,
     },
 });
 
