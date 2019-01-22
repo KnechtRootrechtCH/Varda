@@ -14,11 +14,6 @@ import {
     Paper,
     Typography } from '@material-ui/core';
 
-import {
-    Movie,
-    Tv,
-    Star } from '@material-ui/icons';
-
 import ItemCardContent from './card/ItemCardContent'
 
 import constants from '../config/constants';

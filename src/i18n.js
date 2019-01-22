@@ -129,7 +129,7 @@ i18n.init({
                             queued: '',
                             notReleased: 'unveröffentlicht',
                             notAvailable: 'noch nicht erhältlich',
-                            notFound: 'noch nicht gefunden',
+                            notFound: 'nicht gefunden',
                             redownload: 'nochmals herunterladen',
                             downloading: 'wird heruntergeladen',
                             downloaded: '',
