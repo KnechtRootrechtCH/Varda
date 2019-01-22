@@ -53,6 +53,10 @@ class Navigation extends React.Component {
         }
     };
 
+    handleHeaderClick = () => {
+        this.props.history.push('/browse')
+    }
+
     handleOpenDrawer = () => {
         if (!this.props.AuthenticationStore.authenticated) {
             return;
@@ -103,11 +107,11 @@ class Navigation extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
 
-        const mobile = isWidthDown('sm', this.props.width);
+        const mobile = isWidthDown('xs', this.props.width);
         const desktop = isWidthUp('md', this.props.width);
         const authenticated = this.props.AuthenticationStore.authenticated;
 
-        const appBarPosition = mobile ? 'absolute'  : 'fixed';
+        const appBarPosition = desktop ? 'fixed' : 'absolute';
 
         const photoUrl = this.props.AuthenticationStore.photoUrl;
         const darkThemeStateKey = this.props.ThemeStore.type === 'dark' ? 'settings.on' : 'settings.off'
@@ -119,7 +123,7 @@ class Navigation extends React.Component {
                         { !mobile &&
                             <MenuIcon className={classes.menuButton} onClick={this.handleToggleDrawer}/>
                         }
-                        <Typography className={classes.header} variant='h5' color='default'>
+                        <Typography className={classes.header} variant='h5' color='default' onClick={this.handleHeaderClick}>
                             <DeathStarVariant className={classes.logo} color='primary'/>
                             {t('title')}
                         </Typography>
@@ -197,7 +201,7 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 2,
     },
     header: {
-
+        cursor: 'pointer',
     },
     logo: {
         verticalAlign: 'middle',

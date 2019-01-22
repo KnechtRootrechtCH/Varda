@@ -16,7 +16,7 @@ import { Search } from '@material-ui/icons';
 
 import {
     Close,
-    ChevronLeft }  from 'mdi-material-ui';
+    ArrowLeft }  from 'mdi-material-ui';
 
 @withNamespaces()
 @inject('MovieDbStore')
@@ -99,10 +99,11 @@ class SearchDrawer extends React.Component {
                                 onChange={({ target: { value } }) => this.handleChange(value)}
                                 placeholder={t('common.search') + '…'}
                                 startAdornment={
-                                    <ChevronLeft className={classes.backIcon} onClick={this.handleClose}/>
+                                    <ArrowLeft className={classes.backIcon} onClick={this.handleClose}/>
                                 }
                                 endAdornment={
-                                    <Close className={classes.clearIcon} onClick={this.handleReset}/>
+                                    searchString && searchString.length > 0 &&
+                                        <Close className={classes.clearIcon} onClick={this.handleReset}/>
                                 }/>
                         </Toolbar>
                     </AppBar>

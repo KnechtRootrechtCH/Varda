@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import {inject, observer} from 'mobx-react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
+import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 
 
 import Browse from './Browse';
@@ -26,6 +26,7 @@ class PrivateRouter extends React.Component {
     render () {
         const classes = this.props.classes;
         const desktop = isWidthUp('md', this.props.width);
+        const mobile = isWidthDown('xs', this.props.width);
         const drawerOpen = desktop && this.props.ThemeStore.drawerState;
 
         return (
@@ -33,7 +34,12 @@ class PrivateRouter extends React.Component {
                 <div className={classes.root}>
                     <Navigation/>
                     { desktop &&
-                        <NavigationDrawer/>
+                        <NavigationBar/>
+                    }
+                    { mobile ?
+                        <div className={classes.mobileNavSpacer}/>
+                    :
+                        <div className={classes.desktopNavSpacer}/>
                     }
                     { !this.props.AuthenticationStore.initialized ?
                         <Initializing/>
@@ -80,8 +86,10 @@ class PrivateRouter extends React.Component {
                             </Switch>
                         </main>
                     }
-                    { !desktop &&
-                        <NavigationBar/>
+                    { mobile &&
+                        <div className={classes.navBarSpacer}>
+                            <NavigationBar/>
+                        </div>
                     }
                 </div>
             </Router>
@@ -93,10 +101,8 @@ const drawerWidth = 215 + 18;
 
 const styles = theme => ({
     root: {
-        paddingTop: 64,
     },
     content: {
-
     },
     contentShift: {
         transition: theme.transitions.create('margin', {
@@ -106,6 +112,15 @@ const styles = theme => ({
         marginLeft: drawerWidth,
         marginRight: 18,
     },
+    desktopNavSpacer: {
+        height: 64,
+    },
+    mobileNavSpacer: {
+        height: 56,
+    },
+    navBarSpacer: {
+        height: 56,
+    }
 });
 
 PrivateRouter.propTypes = {

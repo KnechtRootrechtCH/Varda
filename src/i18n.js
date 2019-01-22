@@ -69,6 +69,7 @@ i18n.init({
                 },
 
                 settings: {
+                    themeSettings: 'Theme settings',
                     darkTheme: 'Dark theme',
                     on: 'On',
                     off: 'Off',
@@ -133,6 +134,7 @@ i18n.init({
                 },
 
                 settings: {
+                    themeSettings: 'Darstellungsoptionen',
                     darkTheme: 'Dunkles Design',
                     on: 'Ein',
                     off: 'Aus',

@@ -93,10 +93,10 @@ const styles = theme => ({
         padding: 0,
     },
     title: {
-        marginTop: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
+        marginTop: theme.spacing.unit * 2,
+        marginRight: theme.spacing.unit * 2,
         marginBottom: 0,
-        marginLeft: theme.spacing.unit,
+        marginLeft: theme.spacing.unit * 2,
     },
 });
 
