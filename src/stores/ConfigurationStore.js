@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { firestore } from '../config/fire'
 
 class ConfigurationStore {
@@ -8,14 +8,15 @@ class ConfigurationStore {
     @observable configuration = null;
     @observable userSettings = null;
 
-    @action init(userId) {
+    @action async init(userId) {
         this.userId = userId;
 
         firestore.collection('static').doc('configuration').onSnapshot((doc) => {
             // console.debug('ConfigurationStore.init() : configuration loaded', doc.data());
-            this.configuration = doc.data();
-            this.initialized = true;
-
+            runInAction(() => {
+                this.configuration = doc.data();
+                this.initialized = true;
+            });
         })
 
         firestore.collection('users').doc(userId).onSnapshot((doc) => {
@@ -24,8 +25,9 @@ class ConfigurationStore {
             if (!settings) {
                 settings = {}
             }
-            this.userSettings = settings;
-
+            runInAction(() => {
+                this.userSettings = settings;
+            });
         })
     }
 

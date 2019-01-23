@@ -11,11 +11,11 @@ import Browse from './Browse';
 import Details from './Details';
 import DownloadList from './DownloadList';
 import Initializing from './Initializing';
-import Navigation from './Navigation';
 import NavigationBar from './NavigationBar';
 import NavigationDrawer from './NavigationDrawer';
 import Settings from './Settings';
 import SignIn from './SignIn';
+import AppBar from './AppBar';
 
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
@@ -32,10 +32,8 @@ class PrivateRouter extends React.Component {
         return (
             <Router>
                 <div className={classes.root}>
-                    <Navigation/>
-                    { !mobile &&
-                        <NavigationDrawer/>
-                    }
+                    <AppBar/>
+                    <NavigationDrawer/>
                     { mobile ?
                         <div className={classes.mobileNavSpacer}/>
                     :

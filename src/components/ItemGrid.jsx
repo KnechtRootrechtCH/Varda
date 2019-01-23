@@ -34,12 +34,10 @@ class ItemGrid extends React.Component {
                             </Grid>
                         )
                     })}
-                    {this.props.MovieDbStore.hasMore && this.props.MovieDbStore.page > 0 &&
+                    {this.props.MovieDbStore.hasMore > 0 &&
                         <Grid key='loading' className={classes.loadingGrid} item xs={12} sm={6} md={6} lg={4} xl={3}>
-                            { this.props.MovieDbStore.loading ?
-                                <CircularProgress className={mobile ? classes.loadingMobile : classes.loading} disableShrink color='secondary'/>
-                            :
-                                <CircularProgress className={mobile ? classes.loadingMobile : classes.loading} variant='static' value={100} color='primary'/>
+                            { this.props.MovieDbStore.loading &&
+                                <CircularProgress className={mobile ? classes.loadingMobile : classes.loading} color='primary'/>
                             }
                         </Grid>
                     }
@@ -64,13 +62,14 @@ const styles = theme => ({
     },
     loadingGrid: {
         width: '100%',
+        height: 48,
     },
     loading: {
 
     },
     loadingMobile: {
         marginTop: theme.spacing.unit,
-        marginLeft: theme.spacing.unit * 3,
+        marginLeft: theme.spacing.unit * 2,
     },
     loadMore: {
         width: '100%',

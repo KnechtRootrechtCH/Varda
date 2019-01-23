@@ -7,20 +7,12 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'mobx-react';
 
 import App from './App';
-import AuthenticationStore from './stores/AuthenticationStore';
-import ConfigurationStore from './stores/ConfigurationStore';
-import DownloadStatusStore from './stores/DownloadStatusStore';
-import MovieDbStore from './stores/MovieDbStore';
-import ThemeStore from './stores/ThemeStore';
 import i18n from './i18n.js';
 
+import stores from './config/stores'
+
 const Root = (
-    <Provider 
-        AuthenticationStore={AuthenticationStore} 
-        ConfigurationStore={ConfigurationStore}
-        DownloadStatusStore={DownloadStatusStore} 
-        MovieDbStore={MovieDbStore}
-        ThemeStore={ThemeStore}>
+    <Provider {...stores}>
         <I18nextProvider i18n={i18n}>
             <App/>
         </I18nextProvider>

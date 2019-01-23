@@ -89,7 +89,7 @@ class SearchDrawer extends React.Component {
                     in={show}
                     mountOnEnter={true}
                     unmountOnExit={true}>
-                    <AppBar color='default'>
+                    <AppBar color='inherit'>
                         <Toolbar>
                             <InputBase
                                 autoFocus={true}

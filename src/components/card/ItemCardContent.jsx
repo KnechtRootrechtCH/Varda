@@ -107,9 +107,9 @@ const styles = theme => ({
     rootMobile: {
         position: 'relative',
         paddingTop: theme.spacing.unit,
-        paddingRight: theme.spacing.unit * 3,
+        paddingRight: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 3,
+        paddingLeft: theme.spacing.unit * 2,
     },
     title: {
 

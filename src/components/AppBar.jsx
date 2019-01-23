@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
-import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { withNamespaces } from 'react-i18next';
 
 import {
@@ -14,6 +14,7 @@ import {
     Divider,
     IconButton,
     Fade,
+    LinearProgress,
     ListItemIcon,
     Menu,
     MenuItem,
@@ -23,8 +24,8 @@ import {
 import {
     Account,
     AccountCircle,
+    ArrowLeft,
     Brightness4,
-    DeathStarVariant,
     ExitToApp,
     Settings,
     Menu as MenuIcon }  from 'mdi-material-ui';
@@ -32,13 +33,14 @@ import {
 import SearchDrawer from './SearchDrawer';
 import SearchBox from './SearchBox';
 
+import MetadataService from '../service/MetadataService';
 
 @withNamespaces()
 @inject('AuthenticationStore')
 @inject('MovieDbStore')
 @inject('ThemeStore')
 @observer
-class Navigation extends React.Component {
+class TitleBar extends React.Component {
 
     state = {
         menuAnchor: null,
@@ -53,7 +55,10 @@ class Navigation extends React.Component {
     };
 
     handleHeaderClick = () => {
-        this.props.history.push('/browse')
+        const desktop = isWidthUp('md', this.props.width);
+        if (desktop) {
+            this.props.history.push('/browse')
+        }
     }
 
     handleOpenDrawer = () => {
@@ -102,30 +107,54 @@ class Navigation extends React.Component {
         this.handleMenuClose();
     }
 
+    handleNavigateBack = () => {
+        this.props.history.goBack();
+    }
+
     render () {
         const classes = this.props.classes;
         const t = this.props.t;
 
-        const mobile = isWidthDown('xs', this.props.width);
+        // const mobile = isWidthDown('xs', this.props.width);
         const desktop = isWidthUp('md', this.props.width);
         const authenticated = this.props.AuthenticationStore.authenticated;
+        const location = this.props.location.pathname.toLowerCase();
 
         const appBarPosition = desktop ? 'fixed' : 'absolute';
 
         const photoUrl = this.props.AuthenticationStore.photoUrl;
         const darkThemeStateKey = this.props.ThemeStore.type === 'dark' ? 'settings.on' : 'settings.off'
 
+        let title = t('title');
+        let showBackButton = false;
+        let headerColor = 'primary';
+        const loading = false; //this.props.MovieDbStore.loading;
+
+        const item = this.props.MovieDbStore.item;
+        if (!desktop && item) {
+            title = MetadataService.getTitle(item);
+            showBackButton = true;
+            headerColor = 'inherit';
+        }
+        if (!desktop &&  location.includes('/settings')){
+            title = t('common.settings');
+            showBackButton = true;
+            headerColor = 'inherit';
+        }
+
         return (
             <div className={classes.root}>
                 <AppBar className={classes.appBar} position={appBarPosition} color='default'>
                     <Toolbar className={classes.toolbar}>
-                        { !mobile &&
+                        { showBackButton ?
+                            <ArrowLeft className={classes.menuButton} onClick={this.handleNavigateBack}/>
+                        :
                             <MenuIcon className={classes.menuButton} onClick={this.handleToggleDrawer}/>
                         }
-                        <Typography className={classes.header} variant='h5' color='default' onClick={this.handleHeaderClick}>
-                            <DeathStarVariant className={classes.logo} color='primary'/>
-                            {t('title')}
+                        <Typography className={classes.header} variant='h5' color={headerColor} noWrap onClick={this.handleHeaderClick}>
+                            {title}
                         </Typography>
+
                         <Fade className={classes.controls} in={authenticated}>
                             <div className={classes.controlArea}>
                             { desktop ?
@@ -151,13 +180,16 @@ class Navigation extends React.Component {
                             </div>
                         </Fade>
                     </Toolbar>
+                    { loading &&
+                        <LinearProgress className={classes.progress} color='primary' variant='query'/>
+                    }
                 </AppBar>
                 <Menu
                     id='user'
                     anchorEl={this.state.menuAnchor}
                     open={Boolean(this.state.menuAnchor)}
                     onClose={this.handleMenuClose}>
-                    <MenuItem component={Link} to='/settings'>
+                    <MenuItem component={Link} to='/settings' onClick={this.handleMenuClose}>
                         <ListItemIcon>
                             <Settings/>
                         </ListItemIcon>
@@ -208,6 +240,7 @@ const styles = theme => ({
     controls: {
         marginLeft: 'auto',
         display: 'inline-flex',
+        position: 'relative',
     },
     controlArea: {
     },
@@ -223,10 +256,13 @@ const styles = theme => ({
         height: theme.spacing.unit * 3,
         width: theme.spacing.unit * 3,
     },
+    progress: {
+        height: 2,
+    },
 });
 
-Navigation.propTypes = {
+TitleBar.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withWidth()(withRouter(Navigation)));
+export default withStyles(styles)(withWidth()(withRouter(TitleBar)));

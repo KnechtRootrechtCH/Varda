@@ -1,4 +1,4 @@
-import {observable, action, computed} from 'mobx';
+import {observable, action, computed, runInAction} from 'mobx';
 import { firestore } from '../config/fire'
 import * as Moment from 'moment';
 
@@ -13,7 +13,7 @@ class DownloadStatusStore {
     @observable item = null;
     @observable items = {};
 
-    @action loadStatus(item) {
+    @action async loadStatus(item) {
         const key = MetadataService.getKey(item);
         const statusItem = this.items[key];
         if (!statusItem || statusItem.status === constants.STATUS.LOADING) {
@@ -28,16 +28,21 @@ class DownloadStatusStore {
                     if (!data.status) {
                         data.status = '';
                     }
-                    this.items[key] = data;
+                    runInAction(() => {
+                        this.items[key] = data;
+                    });
+
                 } else {
                     // console.debug('DownloadStatusStore.loadStatus() : not found', data);
-                    this.items[key] = { status: '' };
+                    runInAction(() => {
+                        this.items[key] = { status: '' };
+                    });
                 }
             });
         }
     }
 
-    @action updateStatus(item, status, previousStatus) {
+    @action async updateStatus(item, status, previousStatus) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateFormated(item, 'YYYY-MM-DD');
@@ -62,7 +67,7 @@ class DownloadStatusStore {
         this.logTransaction(key, 'updateStatus', title, status, previousStatus);
     }
 
-    @action updatePriority(item, priority, previousPrority) {
+    @action async updatePriority(item, priority, previousPrority) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
         if (!previousPrority) {
@@ -82,7 +87,7 @@ class DownloadStatusStore {
         this.logTransaction(key, 'updatePriority', title, priority, previousPrority);
     }
 
-    @action updateItemData(key, item) {
+    @action async updateItemData(key, item) {
         const itemDataCollection = firestore.collection('users')
             .doc(this.uid)
             .collection('items')
@@ -94,7 +99,7 @@ class DownloadStatusStore {
             .set(item);
     }
 
-    @action logTransaction(key, transaction, title, newValue, previousValue){
+    @action async logTransaction(key, transaction, title, newValue, previousValue){
         console.debug('DownloadStatusStore.logTransaction()', transaction, newValue);
 
         const yearMonth = Moment().format('YYYY-MM');

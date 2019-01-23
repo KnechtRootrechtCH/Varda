@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { debounce } from 'lodash';
+import { debounce, defer } from 'lodash';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 import {
     Typography } from '@material-ui/core';
@@ -19,7 +20,7 @@ class Browse extends React.Component {
 
     componentDidMount = () => {
         if (this.props.ConfigurationStore.initialized) {
-            // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
+            console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
             this.loadItems();
         }
         // console.debug(`${this.constructor.name}.componentDidMount() => adding scroll event listener`);
@@ -33,11 +34,11 @@ class Browse extends React.Component {
 
     componentDidUpdate (prevProps) {
         if (!prevProps.ConfigurationStore.initialized && this.props.ConfigurationStore.initialized) {
-            // console.debug(`${this.constructor.name}.componentDidUpdate() : Config store initialized => Load items`);
+            console.debug(`${this.constructor.name}.componentDidUpdate() : Config store initialized => Load items`);
             this.loadItems();
         }
         if (prevProps.match.params.mediaType !== this.props.match.params.mediaType) {
-            // console.debug(`${this.constructor.name}.componentDidUpdate() : Media type changed => Load items`);
+            console.debug(`${this.constructor.name}.componentDidUpdate() : Media type changed => Load items`);
             this.loadItems();
         }
     }
@@ -46,9 +47,11 @@ class Browse extends React.Component {
         // console.debug(`${this.constructor.name}.loadItems() : Media type => `, this.props.match.params.mediaType);
         window.scrollTo(0, 0)
         this.props.MovieDbStore.clearItems();
-        this.props.MovieDbStore.setLoading(true);
         this.props.MovieDbStore.setMediaType(this.props.match.params.mediaType);
-        this.props.MovieDbStore.loadItems();
+        this.props.MovieDbStore.setLoading(true);
+        setTimeout(() => {
+            this.props.MovieDbStore.loadItems();
+        }, 100);
     }
 
     handleScroll = debounce(() => {
@@ -71,6 +74,7 @@ class Browse extends React.Component {
         // console.debug(`${this.constructor.name}.render()`, this.props);
         const classes = this.props.classes;
         const t = this.props.t;
+        const mobile = isWidthDown('xs', this.props.width);
 
         const mediaType = this.props.match.params.mediaType;
         let titleKey = 'common.discover'
@@ -83,7 +87,7 @@ class Browse extends React.Component {
 
         return (
             <div className={classes.root}>
-                <Typography className={classes.title} variant='subtitle1' component='h2'>
+                <Typography className={mobile ? classes.titleMobile : classes.title} variant='subtitle1' component='h2'>
                     <span>{t(titleKey)}</span>
                 </Typography>
                 <ItemGrid/>
@@ -102,10 +106,16 @@ const styles = theme => ({
         marginBottom: 0,
         marginLeft: theme.spacing.unit * 3,
     },
+    titleMobile: {
+        marginTop: theme.spacing.unit * 2,
+        marginRight: theme.spacing.unit * 2,
+        marginBottom: 0,
+        marginLeft: theme.spacing.unit * 2,
+    }
 });
 
 Browse.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Browse);
+export default withStyles(styles)(withWidth()(Browse));

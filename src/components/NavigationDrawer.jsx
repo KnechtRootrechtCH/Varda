@@ -9,11 +9,11 @@ import { withNamespaces } from 'react-i18next';
 
 import {
     Divider,
-    Drawer,
     List,
     ListItem,
     ListItemIcon,
-    ListItemText } from '@material-ui/core';
+    ListItemText,
+    SwipeableDrawer } from '@material-ui/core';
 
 import {
     Explore,
@@ -68,7 +68,7 @@ class Navigation extends React.Component {
         }
 
         return (
-            <Drawer className={classes.root} open={drawer} onClose={this.handleCloseDrawer} variant={drawerVariant} anchor='left'>
+            <SwipeableDrawer className={classes.root} open={drawer} onOpen={this.handleOpenDrawer} onClose={this.handleCloseDrawer} variant={drawerVariant} anchor='left'>
                 <List className={desktop ? classes.drawerItemsDesktop : classes.drawerItems}>
                     <ListItem
                         button
@@ -116,7 +116,7 @@ class Navigation extends React.Component {
                         <ListItemText primary={t('common.list')}/>
                     </ListItem>
                 </List>
-            </Drawer>
+            </SwipeableDrawer>
         );
      }
 }
