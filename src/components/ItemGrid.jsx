@@ -34,7 +34,7 @@ class ItemGrid extends React.Component {
                             </Grid>
                         )
                     })}
-                    {this.props.MovieDbStore.hasMore &&
+                    {this.props.MovieDbStore.hasMore && this.props.MovieDbStore.page > 0 &&
                         <Grid key='loading' className={classes.loadingGrid} item xs={12} sm={6} md={6} lg={4} xl={3}>
                             { this.props.MovieDbStore.loading ?
                                 <CircularProgress className={mobile ? classes.loadingMobile : classes.loading} disableShrink color='secondary'/>
