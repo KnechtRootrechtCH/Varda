@@ -96,6 +96,9 @@ class Browse extends React.Component {
 const styles = theme => ({
     root: {
         padding: 0,
+        maxWidth: 1280,
+        marginLeft: 'auto',
+        marginRight: 'auto',
     },
     title: {
         marginTop: theme.spacing.unit * 2,

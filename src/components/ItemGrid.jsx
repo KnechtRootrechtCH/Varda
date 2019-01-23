@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
-import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 import { CircularProgress, Grid } from '@material-ui/core';
 
@@ -20,22 +20,21 @@ class ItemGrid extends React.Component {
         // const t = this.props.t;
 
         const mobile = isWidthDown('xs', this.props.width);
-        const large = isWidthUp('lg', this.props.width);
 
-        const spacing = mobile ? 0 : large ? 16 : 8;
+        const spacing = mobile ? 0 : 8;
 
         return (
             <div className={mobile ? classes.rootMobile : classes.root}>
                 <Grid container spacing={spacing}>
                     { this.props.MovieDbStore.items.map((item, index) => {
                         return (
-                            <Grid key={index} item xs={12} sm={6} md={6} lg={4} xl={3}>
+                            <Grid key={index} item xs={12} sm={4} md={4} lg={3} xl={3}>
                                 <ItemCard item={item}/>
                             </Grid>
                         )
                     })}
                     {this.props.MovieDbStore.hasMore &&
-                        <Grid key='loading' className={classes.loadingGrid} item xs={12} sm={6} md={6} lg={4} xl={3}>
+                        <Grid key='loading' className={classes.loadingGrid} item xs={12} sm={4} md={4} lg={3} xl={3}>
                             { this.props.MovieDbStore.loading &&
                                 <CircularProgress className={mobile ? classes.loadingMobile : classes.loading} color='primary'/>
                             }

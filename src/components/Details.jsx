@@ -97,7 +97,7 @@ const styles = theme => ({
         flexDirection: 'column',
     },
     container: {
-        maxWidth: 1000,
+        maxWidth: 1280,
         marginRight: 'auto',
         marginLeft: 'auto',
     },
