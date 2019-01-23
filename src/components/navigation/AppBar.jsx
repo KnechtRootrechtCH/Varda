@@ -126,6 +126,7 @@ class TitleBar extends React.Component {
         const darkThemeStateKey = this.props.ThemeStore.type === 'dark' ? 'settings.on' : 'settings.off'
 
         let title = t('title');
+        let subTitle = true;
         let showBackButton = false;
         let headerColor = 'primary';
         let showSearch = true;
@@ -137,6 +138,7 @@ class TitleBar extends React.Component {
                 title = MetadataService.getTitle(item);
                 showBackButton = true;
                 headerColor = 'inherit';
+                subTitle = false;
             }
             showSearch = false;
         }
@@ -145,6 +147,7 @@ class TitleBar extends React.Component {
                 title = t('common.settings');
                 showBackButton = true;
                 headerColor = 'inherit';
+                subTitle = false;
             }
             showSearch = false;
         }
@@ -161,7 +164,11 @@ class TitleBar extends React.Component {
                         <Typography className={classes.header} variant='h5' color={headerColor} noWrap onClick={this.handleHeaderClick}>
                             {title}
                         </Typography>
-
+                        { subTitle &&
+                            <Typography className={classes.header} variant='h5' color='inherit' noWrap onClick={this.handleHeaderClick}>
+                                &nbsp;{t('subTitle')}
+                            </Typography>
+                        }
                         <Fade className={classes.controls} in={authenticated}>
                             <div className={classes.controlArea}>
                                 <Fade in={showSearch} mountOnEnter={true} unmountOnExit={true}>

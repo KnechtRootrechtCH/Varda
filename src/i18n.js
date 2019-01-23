@@ -16,6 +16,7 @@ i18n.init({
         'en': {
             'translation': {
                 title: 'Varda',
+                subTitle: 'Downloads',
 
                 common: {
                     initializing: 'Initializing',
@@ -84,6 +85,7 @@ i18n.init({
         'de': {
             'translation': {
                 title: 'Varda',
+                subTitle: 'Downloads',
 
                 common: {
                     initializing: 'Initialisierung',
