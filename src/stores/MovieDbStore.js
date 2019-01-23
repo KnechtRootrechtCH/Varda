@@ -32,6 +32,10 @@ class MovieDbStore {
         this.mediaType = mediaType;
     }
 
+    @action setLoading(loading) {
+        this.loading = loading;
+    }
+
     @action clearItems() {
         console.debug('MovieDbStore.clearItems()');
         this.items = [];
@@ -44,10 +48,11 @@ class MovieDbStore {
     @action loadItems() {
         setTimeout(() => {
             if (!this.hasMore) {
+                this.loading = false;
                 return;
             }
             this.loading = true;
-            console.debug('MovieDbStore.search() :', this.mediaType, this.searchString, this.loading);
+            // console.debug('MovieDbStore.search() :', this.mediaType, this.searchString, this.loading);
             const apiKey = ConfigurationStore.configuration.movieDbApiKey;
 
             let queryType = this.searchString && this.searchString.length >= 2 ? 'search' : 'popular'
