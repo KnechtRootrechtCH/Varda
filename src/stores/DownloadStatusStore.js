@@ -15,6 +15,14 @@ class DownloadStatusStore {
 
     @action async loadStatus(item) {
         const key = MetadataService.getKey(item);
+        this.loadStatusByKey(key);
+    }
+
+    @action async loadStatusById(mediaType, id) {
+        this.loadStatusByKey(`${mediaType}:${id}`);
+    }
+
+    @action async loadStatusByKey(key) {
         const statusItem = this.items[key];
         if (!statusItem || statusItem.status === constants.STATUS.LOADING) {
             // console.debug('DownloadStatusStore.loadStatus() : loading', key);

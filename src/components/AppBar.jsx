@@ -128,18 +128,25 @@ class TitleBar extends React.Component {
         let title = t('title');
         let showBackButton = false;
         let headerColor = 'primary';
+        let showSearch = true;
         const loading = false; //this.props.MovieDbStore.loading;
 
         const item = this.props.MovieDbStore.item;
-        if (!desktop && item) {
-            title = MetadataService.getTitle(item);
-            showBackButton = true;
-            headerColor = 'inherit';
+        if (item) {
+            if (!desktop) {
+                title = MetadataService.getTitle(item);
+                showBackButton = true;
+                headerColor = 'inherit';
+            }
+            showSearch = false;
         }
-        if (!desktop &&  location.includes('/settings')){
-            title = t('common.settings');
-            showBackButton = true;
-            headerColor = 'inherit';
+        if (location.includes('/settings')){
+            if (!desktop) {
+                title = t('common.settings');
+                showBackButton = true;
+                headerColor = 'inherit';
+            }
+            showSearch = false;
         }
 
         return (
@@ -157,11 +164,13 @@ class TitleBar extends React.Component {
 
                         <Fade className={classes.controls} in={authenticated}>
                             <div className={classes.controlArea}>
-                            { desktop ?
-                                <SearchBox/>
-                            :
-                                <SearchDrawer/>
-                            }
+                                <Fade in={showSearch} mountOnEnter={true} unmountOnExit={true}>
+                                { desktop ?
+                                    <SearchBox/>
+                                :
+                                    <SearchDrawer/>
+                                }
+                                </Fade>
                             { desktop && photoUrl ?
                                 <Avatar className={classes.avatar} alt={t('common.settings')} src={photoUrl} onClick={this.handleMenuOpen}/>
                             : desktop ?

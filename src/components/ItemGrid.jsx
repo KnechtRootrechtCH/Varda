@@ -7,7 +7,7 @@ import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 
 import { CircularProgress, Grid } from '@material-ui/core';
 
-import ItemCard from './ItemCard';
+import ItemCard from './card/ItemCard';
 
 @withNamespaces()
 @inject('MovieDbStore')

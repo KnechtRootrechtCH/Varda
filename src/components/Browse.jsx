@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { debounce, defer } from 'lodash';
+import { debounce } from 'lodash';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
@@ -48,10 +48,7 @@ class Browse extends React.Component {
         window.scrollTo(0, 0)
         this.props.MovieDbStore.clearItems();
         this.props.MovieDbStore.setMediaType(this.props.match.params.mediaType);
-        this.props.MovieDbStore.setLoading(true);
-        setTimeout(() => {
-            this.props.MovieDbStore.loadItems();
-        }, 100);
+        this.props.MovieDbStore.loadItems();
     }
 
     handleScroll = debounce(() => {

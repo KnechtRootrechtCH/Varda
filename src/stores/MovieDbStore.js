@@ -48,14 +48,13 @@ class MovieDbStore {
         this.hasMore = true;
     }
 
-    @action
-    async loadItems() {
+    @action async loadItems() {
         if (!this.hasMore) {
             this.loading = false;
             return;
         }
         this.loading = true;
-        // console.debug('MovieDbStore.search() :', this.mediaType, this.searchString, this.loading);
+        // console.debug('MovieDbStore.loadItems() :', this.mediaType, this.searchString);
         const apiKey = ConfigurationStore.configuration.movieDbApiKey;
 
         let queryType = this.searchString && this.searchString.length >= 2 ? 'search' : 'popular'
@@ -78,7 +77,7 @@ class MovieDbStore {
         }
 
         try {
-            // console.debug('MovieDbStore.search() :', mediaType, queryType, this.searchString, query);
+            // console.debug('MovieDbStore.loadItems() :', query);
             const response = await axios.get(`${query}&cachebuster=${Math.random()}`);
             runInAction(() => {
                 if (response.status === 200) {
@@ -96,11 +95,11 @@ class MovieDbStore {
                     this.totalPages = response.data.total_pages;
                     this.hasMore = this.totalPages > this.page;
                     this.loading = false;
-                    console.debug(`MovieDbStore.search() : ${results.length} items loaded from movieDb (page ${this.page}/${this.totalPages})`);
+                    console.debug(`MovieDbStore.loadItems() : ${results.length} items loaded from movieDb (page ${this.page}/${this.totalPages})`, results);
                 } else {
                     this.items = [];
                     this.loading = false;
-                    console.error('MovieDbStore.search() : error loading data from movieDb', response);
+                    console.error('MovieDbStore.loadItems() : error loading data from movieDb', response);
                 }
             });
 
@@ -108,9 +107,8 @@ class MovieDbStore {
             runInAction(() => {
                 this.items = [];
                 this.loading = false;
-                console.error('MovieDbStore.search() : error loading data from movieDb', error);
+                console.error('MovieDbStore.loadItems() : error loading data from movieDb', error);
             });
-
         }
     }
 
@@ -119,9 +117,35 @@ class MovieDbStore {
         this.item = null;
     }
 
-    @action loadItem(id) {
-        console.debug('MovieDbStore.loadItem()');
-        this.item = null;
+    @action async loadItem(mediaType, id) {
+        this.loading = true;
+        // console.debug('MovieDbStore.loadItem() :', mediaType, id);
+        const apiKey = ConfigurationStore.configuration.movieDbApiKey;
+
+        const query = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${apiKey}&language=${this.locale}&&append_to_response=credits,recommendations,release_dates`;
+
+        try {
+            // console.debug('MovieDbStore.loadItem() :', query);
+            const response = await axios.get(`${query}&cachebuster=${Math.random()}`);
+            runInAction(() => {
+                if (response.status === 200) {
+                    this.item = response.data;
+                    this.loading = false;
+                    console.debug('MovieDbStore.loadItem() : item loaded', response.data);
+                } else {
+                    this.item = null;
+                    this.loading = false;
+                    console.error('MovieDbStore.loadItem() : error loading item data from movieDb', response);
+                }
+            });
+        } catch (error) {
+            runInAction(() => {
+                this.item = null;
+                this.loading = false;
+                console.error('MovieDbStore.loadItem() : error loading item data from movieDb', error);
+            });
+
+        }
     }
 }
 

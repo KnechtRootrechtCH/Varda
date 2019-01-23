@@ -14,12 +14,12 @@ import {
     Paper,
     Typography } from '@material-ui/core';
 
-import ItemCardActions from './card/ItemCardActions'
-import ItemCardContent from './card/ItemCardContent'
+import ItemCardActions from './ItemCardActions'
+import ItemCardContent from './ItemCardContent'
 
-import constants from '../config/constants';
-import ImageService from '../service/ImageService';
-import MetadataService from '../service/MetadataService';
+import constants from '../../config/constants';
+import ImageService from '../../service/ImageService';
+import MetadataService from '../../service/MetadataService';
 
 @withNamespaces()
 @inject('ConfigurationStore')
@@ -66,11 +66,11 @@ class ItemCard extends React.Component {
 
         const item = this.props.item;
         const key = MetadataService.getKey(item);
+        const mediaType = MetadataService.getMediaType(item);
         const title = MetadataService.getTitle(item);
         const image = ImageService.getBackdropImage(item, constants.IMAGESIZE.BACKDROP.W500);
 
-        const location = this.props.location.pathname.toLowerCase();
-        const route = `${location}/${item.id}`;
+        const route = `/browse/${mediaType}/${item.id}`;
 
         let statusItem = this.props.DownloadStatusStore.items[key];
         if (!statusItem) {
