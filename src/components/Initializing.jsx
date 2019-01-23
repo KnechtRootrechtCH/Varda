@@ -3,20 +3,15 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { withNamespaces } from 'react-i18next';
 
-import { Typography } from '@material-ui/core';
-
-import { Autorenew } from '@material-ui/icons'
-
 @withNamespaces()
 class Initializing extends React.Component {
     render () {
         const classes = this.props.classes;
-        const t = this.props.t;
+        // const t = this.props.t;
 
         return (
             <div className={classes.root}>
-                <Autorenew className={classes.icon} color='primary' fontSize='large'/>
-                <Typography variant='overline'>{t('common.initializing')}</Typography>
+
             </div>
         );
      }
@@ -31,10 +26,6 @@ const styles = theme => ({
         justifyContent: 'center', // vertical center
         color: theme.palette.text.primary,
     },
-    icon: {
-        margin: theme.spacing.unit,
-    }
-
 });
 
 Initializing.propTypes = {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
+import * as Moment from 'moment';
 
 import {
     ListItemIcon,
@@ -18,8 +19,11 @@ import {
     Delete,
     Download,
     EyeOff,
-    Plus }  from 'mdi-material-ui';
+    PlusCircleOutline,
+    SelectionEllipse,
+    Sync }  from 'mdi-material-ui';
 
+import MetadataService from '../../service/MetadataService';
 import constants from '../../config/constants';
 
 @withNamespaces()
@@ -56,27 +60,33 @@ class ItemCardStatusIcon extends React.Component {
     render () {
         const classes = this.props.classes;
         const t = this.props.t;
-        const status = this.props.statusItem.status;
+        const status = this.props.statusItem ? this.props.statusItem.status : null;
         const mobile = this.props.mobile;
+        const release = MetadataService.getReleaseDateMoment(this.props.item);
+        const unreleased = Moment().isBefore(release);
 
         return (
             <div className={mobile ? classes.rootMobile : classes.root}>
-                { status === constants.STATUS.QUEUED ?
-                    <ClockOutline className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
-                : status === constants.STATUS.NOT_RELEASED ?
-                    <Calendar className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
-                : status === constants.STATUS.NOT_AVAILABLE ?
-                    <CalendarQuestion className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
-                : status === constants.STATUS.NOT_FOUND ?
-                    <EyeOff className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
-                : status === constants.STATUS.REDOWNLOAD ?
-                    <AlertCircleOutline className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                { !status || status.length === 0 || status === constants.STATUS.REMOVED ?
+                    <PlusCircleOutline className={classes.statusIcon} onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}/>
+                : status === constants.STATUS.LOADING ?
+                    <SelectionEllipse className={classes.statusIconDisabled}/>
                 : status === constants.STATUS.DOWNLOADING ?
-                    <Download className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                    <Download className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                 : status === constants.STATUS.DOWNLOADED ?
-                    <Check className={classes.statusIcon} onClick={this.handleItemEditOpen}/>
+                    <Check className={classes.statusIconPrimary} onClick={this.handleItemEditOpen} />
+                : unreleased ?
+                    <Calendar className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
+                : status === constants.STATUS.QUEUED ?
+                    <ClockOutline className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
+                : status === constants.STATUS.NOT_AVAILABLE ?
+                    <CalendarQuestion className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
+                : status === constants.STATUS.NOT_FOUND ?
+                    <EyeOff className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
+                : status === constants.STATUS.REDOWNLOAD ?
+                    <Sync className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                 :
-                    <Plus className={classes.statusIcon} onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}/>
+                    <AlertCircleOutline className={classes.statusIcon} onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}/>
                 }
                 <Menu
                     id='editMenu'
@@ -100,7 +110,7 @@ class ItemCardStatusIcon extends React.Component {
                     { status === constants.STATUS.DOWNLOADED &&
                         <MenuItem onClick={() => this.handleStatusChange(constants.STATUS.REDOWNLOAD)}>
                             <ListItemIcon>
-                                <AlertCircleOutline/>
+                                <Sync/>
                             </ListItemIcon>
                             {t('browse.card.markForRedownload')}
                         </MenuItem>
@@ -113,18 +123,22 @@ class ItemCardStatusIcon extends React.Component {
 
 const styles = theme => ({
     root: {
-        position: 'absolute',
-        top: theme.spacing.unit,
-        right: theme.spacing.unit,
+        marginLeft: 'auto',
     },
     rootMobile: {
-        position: 'absolute',
-        top: theme.spacing.unit,
-        right: theme.spacing.unit * 3,
+        float: 'right',
     },
     statusIcon: {
         cursor: 'pointer',
         color: theme.palette.action.active,
+    },
+    statusIconPrimary: {
+        cursor: 'pointer',
+        color: theme.palette.primary.main,
+    },
+    statusIconDisabled: {
+        cursor: 'wait',
+        color: theme.palette.action.disabled,
     },
 });
 

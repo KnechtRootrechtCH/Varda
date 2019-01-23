@@ -18,8 +18,8 @@ class ThemeStore {
     @observable secondary = {};
     @observable type = '';
 
-    @observable defaultPrimary = indigo;
-    @observable defaultSecondary = orange;
+    @observable defaultPrimary = deepOrange;
+    @observable defaultSecondary = indigo;
     @observable defaultType = 'dark';
 
     @observable drawerState = false;

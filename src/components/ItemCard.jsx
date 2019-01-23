@@ -14,6 +14,7 @@ import {
     Paper,
     Typography } from '@material-ui/core';
 
+import ItemCardActions from './card/ItemCardActions'
 import ItemCardContent from './card/ItemCardContent'
 
 import constants from '../config/constants';
@@ -97,6 +98,10 @@ class ItemCard extends React.Component {
                         </CardMedia>
                     </CardActionArea>
                     <ItemCardContent item={item} statusItem={statusItem} mobile={mobile}/>
+                    {!mobile &&
+                        <ItemCardActions item={item} statusItem={statusItem} mobile={mobile}/>
+                    }
+
                 </Card>
             </Fade>
         );

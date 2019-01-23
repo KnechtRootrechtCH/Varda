@@ -10,7 +10,7 @@ export default Object.freeze({
         NOT_RELEASED: 'notReleased',
         NOT_AVAILABLE: 'notAvailable',
         NOT_FOUND: 'notFound',
-            REDOWNLOAD: 'redownload',
+        REDOWNLOAD: 'redownload',
         DOWNLOADING: 'downloading',
         DOWNLOADED: 'downloaded',
     },

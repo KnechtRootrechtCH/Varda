@@ -66,10 +66,10 @@ class ItemCardContent extends React.Component {
 
         return (
             <CardContent className={mobile ? classes.rootMobile : classes.root}>
-                <Typography className={classes.title} variant='subtitle2' component='h2' noWrap>
+                <Typography className={mobile ? classes.titleMobile : classes.title} variant='subtitle2' component='h2' noWrap>
                     {title}
                 </Typography>
-                <ItemCardStatusIcon className={classes.statusIcon} item={item} statusItem={statusItem} mobile={mobile}/>
+
                 <Typography className={classes.relaseDate} color='textSecondary'>
                     {release}
                     { isMovie &&
@@ -79,18 +79,21 @@ class ItemCardContent extends React.Component {
                         <Tv className={classes.mediaTypeIcon} color='secondary'/>
                     }
                 </Typography>
-                <div className={classes.priority}>
-                { priorities.map((p) => {
-                    return (
-                        <Star
-                            key={p}
-                            className={priority <= p ? classes.priorityIconActive : classes.priorityIcon}
-                            onMouseOut={() => this.handlePriorityHover(100)}
-                            onMouseOver={() => this.handlePriorityHover(p)}
-                            onClick={() => this.handlePriorityChange(p)}/>
-                    )
-                })}
-                </div>
+                { mobile &&
+                    <div className={classes.priority}>
+                    { priorities.map((p) => {
+                        return (
+                            <Star
+                                key={p}
+                                className={priority <= p ? classes.priorityIconActive : classes.priorityIcon}
+                                onMouseOut={() => this.handlePriorityHover(100)}
+                                onMouseOver={() => this.handlePriorityHover(p)}
+                                onClick={() => this.handlePriorityChange(p)}/>
+                        )
+                    })}
+                    <ItemCardStatusIcon className={classes.statusIcon} item={item} statusItem={statusItem} mobile={mobile}/>
+                    </div>
+                }
             </CardContent>
         );
      }
@@ -109,6 +112,9 @@ const styles = theme => ({
         paddingLeft: theme.spacing.unit * 3,
     },
     title: {
+
+    },
+    titleMobile: {
         paddingRight: theme.spacing.unit * 4,
     },
     statusIcon: {

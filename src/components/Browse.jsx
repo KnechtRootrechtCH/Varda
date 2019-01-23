@@ -43,6 +43,7 @@ class Browse extends React.Component {
     }
 
     loadItems = () => {
+        // console.debug(`${this.constructor.name}.loadItems() : Media type => `, this.props.match.params.mediaType);
         window.scrollTo(0, 0)
         this.props.MovieDbStore.clearItems();
         this.props.MovieDbStore.setMediaType(this.props.match.params.mediaType);
@@ -50,16 +51,18 @@ class Browse extends React.Component {
     }
 
     handleScroll = debounce(() => {
+        if (this.props.MovieDbStore.loading) {
+            return;
+        }
+
         const d = document.documentElement
         const offset = d.scrollTop + window.innerHeight
         const height = d.offsetHeight
 
         if (offset >= height - 100) {
             // console.debug(`${this.constructor.name}.handleScroll() : load next page!`);
-            if (!this.props.MovieDbStore.loading) {
-                this.props.MovieDbStore.setMediaType(this.props.match.params.mediaType);
-                this.props.MovieDbStore.loadItems();
-            }
+            this.props.MovieDbStore.setMediaType(this.props.match.params.mediaType);
+            this.props.MovieDbStore.loadItems();
         }
     }, 100)
 

@@ -34,24 +34,29 @@ class MovieDbStore {
 
     @action clearItems() {
         console.debug('MovieDbStore.clearItems()');
-        // this.items = [];
+        this.items = [];
         this.page = 0;
         this.totalPages = 0;
         this.totalReults = 0;
-        // this.searchString = null;
+        this.hasMore = true;
     }
 
     @action loadItems() {
         setTimeout(() => {
+            if (!this.hasMore) {
+                return;
+            }
             this.loading = true;
+            console.debug('MovieDbStore.search() :', this.mediaType, this.searchString, this.loading);
             const apiKey = ConfigurationStore.configuration.movieDbApiKey;
 
             let queryType = this.searchString && this.searchString.length >= 2 ? 'search' : 'popular'
-            if (!this.mediaType) {
+            let mediaType = this.mediaType;
+            if (!mediaType) {
                 if (queryType === 'search') {
-                    this.mediaType = 'multi';
+                    mediaType = 'multi';
                 } else {
-                    this.mediaType = 'movie';
+                    mediaType = 'movie';
                 }
             }
 
@@ -59,11 +64,11 @@ class MovieDbStore {
 
             let query = null;
             if (queryType === 'search') {
-                query = `https://api.themoviedb.org/3/${queryType}/${this.mediaType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}&query=${this.searchString}`;
+                query = `https://api.themoviedb.org/3/${queryType}/${mediaType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}&query=${this.searchString}`;
             } else {
-                query = `https://api.themoviedb.org/3/${this.mediaType}/${queryType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}`;
+                query = `https://api.themoviedb.org/3/${mediaType}/${queryType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}`;
             }
-            // console.debug('MovieDbStore.search() : query =>', query);
+            // console.debug('MovieDbStore.search() :', mediaType, queryType, this.searchString, query);
 
             axios(query).then((response) => {
                 if (response.status === 200) {
@@ -79,17 +84,17 @@ class MovieDbStore {
                     this.page = response.data.page;
                     this.totalItems = response.data.total_results;
                     this.totalPages = response.data.total_pages;
+                    this.hasMore = this.totalPages > this.page;
                     this.loading = false;
-
-                    console.debug('MovieDbStore.search() : items loaded from movieDb', this.items.length, this.page);
+                    console.debug(`MovieDbStore.search() : ${results.length} items loaded from movieDb (page ${this.page}/${this.totalPages})`);
                 } else {
-                    this.loading = false;
                     this.items = [];
+                    this.loading = false;
                     console.error('MovieDbStore.search() : error loading data from movieDb', response);
                 }
             }).catch((error) => {
-                this.loading = false;
                 this.items = [];
+                this.loading = false;
                 console.error('MovieDbStore.search() : error loading data from movieDb', error);
             });
         }, 0);

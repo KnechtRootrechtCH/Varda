@@ -5,7 +5,7 @@ import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 
-import { Grid } from '@material-ui/core';
+import { CircularProgress, Grid } from '@material-ui/core';
 
 import ItemCard from './ItemCard';
 
@@ -34,6 +34,11 @@ class ItemGrid extends React.Component {
                             </Grid>
                         )
                     })}
+                    { this.props.MovieDbStore.loading &&
+                        <Grid key='loading' className={classes.loadingGrid} item xs={12} sm={6} md={6} lg={4} xl={3}>
+                            <CircularProgress className={mobile ? classes.loadingMobile : classes.loading} disableShrink color='primary'/>
+                        </Grid>
+                    }
                 </Grid>
             </div>
         );
@@ -52,7 +57,16 @@ const styles = theme => ({
         marginRight: 0,
         marginBottom: theme.spacing.unit,
         marginLeft: 0,
-    }
+    },
+    loadingGrid: {
+        width: '100%',
+    },
+    loading: {
+
+    },
+    loadingMobile: {
+        margin: theme.spacing.unit * 3,
+    },
 });
 
 ItemGrid.propTypes = {

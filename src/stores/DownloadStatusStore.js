@@ -3,8 +3,9 @@ import { firestore } from '../config/fire'
 import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
-import ConfigurationStore from './ConfigurationStore';
 import MetadataService from '../service/MetadataService';
+
+import constants from '../config/constants';
 
 class DownloadStatusStore {
     @observable loading = false;
@@ -14,19 +15,24 @@ class DownloadStatusStore {
 
     @action loadStatus(item) {
         const key = MetadataService.getKey(item);
-        const existing = this.items[key];
-        if (!existing) {
+        const statusItem = this.items[key];
+        if (!statusItem || statusItem.status === constants.STATUS.LOADING) {
             // console.debug('DownloadStatusStore.loadStatus() : loading', key);
-            // this.items[key] = { status: 'loading' };
+            this.items[key] = { status: constants.STATUS.LOADING };
             const userDoc = firestore.collection('users').doc(this.uid);
             const collection = userDoc.collection('items');
             collection.doc(key).onSnapshot((doc) => {
                 const data = doc.data();
                 if (data) {
-                    console.debug('DownloadStatusStore.loadStatus() : item loaded/updated', data);
+                    // console.debug('DownloadStatusStore.loadStatus() : item loaded/updated', data);
+                    if (!data.status) {
+                        data.status = '';
+                    }
                     this.items[key] = data;
+                } else {
+                    // console.debug('DownloadStatusStore.loadStatus() : not found', data);
+                    this.items[key] = { status: '' };
                 }
-
             });
         }
     }
@@ -36,6 +42,9 @@ class DownloadStatusStore {
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateFormated(item, 'YYYY-MM-DD');
         const backdrop = item.backdrop_path;
+        if (!previousStatus) {
+            previousStatus = '';
+        }
         console.debug('DownloadStatusStore.updateStatus()', key, status);
 
         const userDoc = firestore.collection('users').doc(this.uid);
@@ -45,7 +54,6 @@ class DownloadStatusStore {
             title: title,
             release: release,
             backdrop: backdrop,
-            priority: ConfigurationStore.configuration.priorityDefault,
         },{
             merge: true
         });
@@ -57,6 +65,9 @@ class DownloadStatusStore {
     @action updatePriority(item, priority, previousPrority) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
+        if (!previousPrority) {
+            previousPrority = 0;
+        }
         console.debug('DownloadStatusStore.updatePriority()', key, priority);
 
         const userDoc = firestore.collection('users').doc(this.uid);
