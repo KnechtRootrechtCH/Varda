@@ -30,10 +30,10 @@ import {
     Settings,
     Menu as MenuIcon }  from 'mdi-material-ui';
 
-import SearchDrawer from './SearchDrawer';
-import SearchBox from './SearchBox';
+import SearchDrawer from '../search/SearchDrawer';
+import SearchBox from '../search/SearchBox';
 
-import MetadataService from '../service/MetadataService';
+import MetadataService from '../../service/MetadataService';
 
 @withNamespaces()
 @inject('AuthenticationStore')

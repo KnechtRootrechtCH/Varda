@@ -6,16 +6,15 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 
-
+import AppBar from './navigation/AppBar';
 import Browse from './Browse';
 import Details from './Details';
 import DownloadList from './DownloadList';
 import Initializing from './Initializing';
-import NavigationBar from './NavigationBar';
-import NavigationDrawer from './NavigationDrawer';
+import NavigationBar from './navigation/NavigationBar';
+import NavigationDrawer from './navigation/NavigationDrawer';
 import Settings from './Settings';
 import SignIn from './SignIn';
-import AppBar from './AppBar';
 
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
