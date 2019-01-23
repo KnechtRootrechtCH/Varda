@@ -69,6 +69,7 @@ const styles = theme => ({
 
     },
     loadingMobile: {
+        marginTop: theme.spacing.unit,
         marginLeft: theme.spacing.unit * 3,
     },
     loadMore: {
