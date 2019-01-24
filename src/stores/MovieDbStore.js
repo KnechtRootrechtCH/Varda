@@ -3,7 +3,8 @@ import axios from 'axios';
 
 import ConfigurationStore from './ConfigurationStore';
 
-// mobx.configure({ enforceActions: "observed" });
+const movieDbApiKey = '23703a8a857927f41414fb155404393d';
+
 class MovieDbStore {
     @observable locale = 'de';
     @observable items = [];
@@ -55,12 +56,12 @@ class MovieDbStore {
         }
         this.loading = true;
         // console.debug('MovieDbStore.loadItems() :', this.mediaType, this.searchString);
-        const apiKey = ConfigurationStore.configuration.movieDbApiKey;
 
+        const discovery = ConfigurationStore.configuration.showDiscovery;
         let queryType = this.searchString && this.searchString.length >= 2 ? 'search' : 'popular'
         let mediaType = this.mediaType;
         if (!mediaType) {
-            if (queryType === 'search') {
+            if (queryType === 'search' && discovery) {
                 mediaType = 'multi';
             } else {
                 mediaType = 'movie';
@@ -71,9 +72,9 @@ class MovieDbStore {
 
         let query = null;
         if (queryType === 'search') {
-            query = `https://api.themoviedb.org/3/${queryType}/${mediaType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}&query=${this.searchString}`;
+            query = `https://api.themoviedb.org/3/${queryType}/${mediaType}?api_key=${movieDbApiKey}&language=${this.locale}&page=${this.page + 1}&query=${this.searchString}`;
         } else {
-            query = `https://api.themoviedb.org/3/${mediaType}/${queryType}?api_key=${apiKey}&language=${this.locale}&page=${this.page + 1}`;
+            query = `https://api.themoviedb.org/3/${mediaType}/${queryType}?api_key=${movieDbApiKey}&language=${this.locale}&page=${this.page + 1}`;
         }
 
         try {
@@ -120,9 +121,8 @@ class MovieDbStore {
     @action async loadItem(mediaType, id) {
         this.loading = true;
         // console.debug('MovieDbStore.loadItem() :', mediaType, id);
-        const apiKey = ConfigurationStore.configuration.movieDbApiKey;
 
-        const query = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${apiKey}&language=${this.locale}&&append_to_response=credits,recommendations,release_dates`;
+        const query = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${movieDbApiKey}&language=${this.locale}&&append_to_response=credits,recommendations,release_dates`;
 
         try {
             // console.debug('MovieDbStore.loadItem() :', query);

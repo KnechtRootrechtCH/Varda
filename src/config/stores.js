@@ -7,7 +7,7 @@ import MovieDbStore from '../stores/MovieDbStore';
 import ThemeStore from '../stores/ThemeStore';
 
 // don't allow state modifications outside actions
-configure({enforceActions: "always"});
+configure({enforceActions: 'always'});
 
 export default {
     AuthenticationStore,

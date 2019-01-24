@@ -5,7 +5,7 @@ import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
-import { CircularProgress, Grid } from '@material-ui/core';
+import { Fade, CircularProgress, Grid } from '@material-ui/core';
 
 import ItemCard from './card/ItemCard';
 
@@ -33,13 +33,18 @@ class ItemGrid extends React.Component {
                             </Grid>
                         )
                     })}
-                    {this.props.MovieDbStore.hasMore &&
-                        <Grid key='loading' className={classes.loadingGrid} item xs={12} sm={4} md={4} lg={3} xl={3}>
+                    { this.props.MovieDbStore.hasMore && this.props.MovieDbStore.page > 0 &&
+                        <Grid key='loading' className={mobile ? classes.progressGridMobile : classes.progressGrid} item xs={12} sm={4} md={4} lg={3} xl={3}>
                             { this.props.MovieDbStore.loading &&
-                                <CircularProgress className={mobile ? classes.loadingMobile : classes.loading} color='primary'/>
+                                <CircularProgress color='secondary'/>
                             }
                         </Grid>
                     }
+                    <Fade in={this.props.MovieDbStore.loading} mountOnEnter={true} unmountOnExit={true}>
+                        <div className={classes.progressContainer}>
+                            <CircularProgress className={classes.progress} color='secondary'/>
+                        </div>
+                    </Fade>
                 </Grid>
             </div>
         );
@@ -59,22 +64,36 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit,
         marginLeft: 0,
     },
-    loadingGrid: {
+    progressGrid: {
         width: '100%',
         height: 48,
+    },
+    progressGridMobile: {
+        width: '100%',
+        height: 48,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: theme.spacing.unit ,
+    },
+    progressContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     loading: {
 
     },
     loadingMobile: {
-        marginTop: theme.spacing.unit,
-        marginLeft: theme.spacing.unit * 2,
+
     },
-    loadMore: {
-        width: '100%',
-        textAlign: 'center',
-        color: theme.palette.action.active,
-    }
 });
 
 ItemGrid.propTypes = {

@@ -5,12 +5,17 @@ class ConfigurationStore {
     userId = null;
 
     @observable initialized = false;
-    @observable configuration = null;
     @observable userSettings = null;
+    @observable configuration = {
+        priorityCount: 5,
+        showDiscovery: false,
+    };
 
-    @action async init(userId) {
-        this.userId = userId;
+    constructor() {
+        this.init();
+    }
 
+    @action async init() {
         firestore.collection('static').doc('configuration').onSnapshot((doc) => {
             // console.debug('ConfigurationStore.init() : configuration loaded', doc.data());
             runInAction(() => {
@@ -18,6 +23,10 @@ class ConfigurationStore {
                 this.initialized = true;
             });
         })
+    }
+
+    @action async loadUserSettings(userId) {
+        this.userId = userId;
 
         firestore.collection('users').doc(userId).onSnapshot((doc) => {
             // console.debug('ConfigurationStore.init() : personal settings loaded', doc.data());

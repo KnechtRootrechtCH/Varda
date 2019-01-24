@@ -14,8 +14,6 @@ import {
     Tv } from '@material-ui/icons';
 
 import ItemCardStatusIcon from './ItemCardStatusIcon'
-
-
 import MetadataService from '../../service/MetadataService';
 
 @withNamespaces()
@@ -59,6 +57,7 @@ class ItemCardContent extends React.Component {
 
         const priority = this.state.priority < 100 ? this.state.priority : statusItem ? statusItem.priority : 100;
         const priorityCount = this.props.ConfigurationStore.configuration.priorityCount;
+
         let priorities = [];
         for (let i = priorityCount; i > 0; i--) {
             priorities.push(i);
@@ -133,10 +132,18 @@ const styles = theme => ({
     priorityIcon: {
         color: theme.palette.action.hover,
         cursor: 'pointer',
+        transition: theme.transitions.create('color', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
     },
     priorityIconActive: {
         color: theme.palette.action.active,
         cursor: 'pointer',
+        transition: theme.transitions.create('color', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
     },
 });
 

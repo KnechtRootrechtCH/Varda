@@ -16,13 +16,16 @@ import {
     SwipeableDrawer } from '@material-ui/core';
 
 import {
+    Chat,
     Explore,
+    History,
     Movie,
     Tv,
     ViewList } from '@material-ui/icons';
 
 @withNamespaces()
 @inject('AuthenticationStore')
+@inject('ConfigurationStore')
 @inject('MovieDbStore')
 @inject('ThemeStore')
 @observer
@@ -54,7 +57,9 @@ class Navigation extends React.Component {
         const desktop = isWidthUp('md', this.props.width);
         const drawerVariant = desktop ? 'persistent' : null;
 
-        let loc = 'browse';
+        const showDiscovery = this.props.ConfigurationStore.configuration.showDiscovery;
+
+        let loc = showDiscovery ? 'browse' : 'movies';
         if (!this.props.AuthenticationStore.authenticated) {
             loc = null;
         } else if (location.includes('settings')) {
@@ -65,22 +70,28 @@ class Navigation extends React.Component {
             loc = 'tv';
         } else if (location.includes('list')) {
             loc = 'list';
+        } else if (location.includes('history/messages')) {
+            loc = 'messages';
+        } else if (location.includes('history')) {
+            loc = 'history';
         }
 
         return (
             <SwipeableDrawer className={classes.root} open={drawer} onOpen={this.handleOpenDrawer} onClose={this.handleCloseDrawer} variant={drawerVariant} anchor='left'>
                 <List className={desktop ? classes.drawerItemsDesktop : classes.drawerItems}>
-                    <ListItem
-                        button
-                        component={Link}
-                        to='/browse'
-                        onClick={this.handleCloseDrawer}
-                        className={loc === 'browse' ? classes.drawerItemActive : null}>
-                        <ListItemIcon>
-                            <Explore className={loc === 'browse' ? classes.drawerIconActive : null}/>
-                        </ListItemIcon>
-                        <ListItemText primary={t('common.discover')}/>
-                    </ListItem>
+                    { showDiscovery &&
+                        <ListItem
+                            button
+                            component={Link}
+                            to='/browse'
+                            onClick={this.handleCloseDrawer}
+                            className={loc === 'browse' ? classes.drawerItemActive : null}>
+                            <ListItemIcon>
+                                <Explore className={loc === 'browse' ? classes.drawerIconActive : null}/>
+                            </ListItemIcon>
+                            <ListItemText primary={t('common.discover')}/>
+                        </ListItem>
+                    }
                     <ListItem
                         button
                         component={Link}
@@ -114,6 +125,28 @@ class Navigation extends React.Component {
                             <ViewList className={loc === 'list' ? classes.drawerIconActive : null}/>
                         </ListItemIcon>
                         <ListItemText primary={t('common.list')}/>
+                    </ListItem>
+                    <ListItem
+                        button
+                        component={Link}
+                        to='/history'
+                        onClick={this.handleCloseDrawer}
+                        className={loc === 'history' ? classes.drawerItemActive : null}>
+                        <ListItemIcon>
+                            <History className={loc === 'history' ? classes.drawerIconActive : null}/>
+                        </ListItemIcon>
+                        <ListItemText primary={t('common.history')}/>
+                    </ListItem>
+                    <ListItem
+                        button
+                        component={Link}
+                        to='/history/messages'
+                        onClick={this.handleCloseDrawer}
+                        className={loc === 'messages' ? classes.drawerItemActive : null}>
+                        <ListItemIcon>
+                            <Chat className={loc === 'messages' ? classes.drawerIconActive : null}/>
+                        </ListItemIcon>
+                        <ListItemText primary={t('common.messages')}/>
                     </ListItem>
                 </List>
             </SwipeableDrawer>

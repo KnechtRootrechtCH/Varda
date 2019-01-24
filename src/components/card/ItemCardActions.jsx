@@ -90,10 +90,18 @@ const styles = theme => ({
     priorityIcon: {
         color: theme.palette.action.hover,
         cursor: 'pointer',
+        transition: theme.transitions.create('color', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
     },
     priorityIconActive: {
         color: theme.palette.action.active,
         cursor: 'pointer',
+        transition: theme.transitions.create('color', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
     },
 });
 

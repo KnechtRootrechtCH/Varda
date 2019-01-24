@@ -19,10 +19,8 @@ import constants from '../config/constants'
 class Browse extends React.Component {
 
     componentDidMount = () => {
-        if (this.props.ConfigurationStore.initialized) {
-            console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
-            this.loadItems();
-        }
+        console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
+        this.loadItems();
         // console.debug(`${this.constructor.name}.componentDidMount() => adding scroll event listener`);
         window.addEventListener('scroll', this.handleScroll)
     }
@@ -33,10 +31,6 @@ class Browse extends React.Component {
     }
 
     componentDidUpdate (prevProps) {
-        if (!prevProps.ConfigurationStore.initialized && this.props.ConfigurationStore.initialized) {
-            console.debug(`${this.constructor.name}.componentDidUpdate() : Config store initialized => Load items`);
-            this.loadItems();
-        }
         if (prevProps.match.params.mediaType !== this.props.match.params.mediaType) {
             console.debug(`${this.constructor.name}.componentDidUpdate() : Media type changed => Load items`);
             this.loadItems();

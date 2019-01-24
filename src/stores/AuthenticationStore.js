@@ -22,7 +22,7 @@ class AuthenticationStore {
         this.user = user;
         if(user) {
             this.dataUserId = user.uid;
-            ConfigurationStore.init(user.uid);
+            ConfigurationStore.loadUserSettings(user.uid);
             this.logAccess();
         }
         this.initialized = true;

@@ -30,6 +30,8 @@ i18n.init({
                     listShort: 'List',
                     settings: 'Settings',
                     search: 'Search',
+                    history: 'History',
+                    messages: 'Messages',
                     priority: {
                         1: 'High',
                         2: 'Medium',
@@ -99,6 +101,8 @@ i18n.init({
                     listShort: 'Liste',
                     settings: 'Einstellungen',
                     search: 'Suchen',
+                    history: 'Verlauf',
+                    messages: 'Nachrichten',
                     priority: {
                         1: 'Hoch',
                         2: 'Mittel',

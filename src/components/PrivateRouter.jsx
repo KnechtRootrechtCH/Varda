@@ -6,11 +6,13 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 
+import {
+    CircularProgress } from '@material-ui/core';
+
 import AppBar from './navigation/AppBar';
 import Browse from './Browse';
 import Details from './Details';
 import DownloadList from './DownloadList';
-import Initializing from './Initializing';
 import NavigationBar from './navigation/NavigationBar';
 import NavigationDrawer from './navigation/NavigationDrawer';
 import Settings from './Settings';
@@ -33,17 +35,17 @@ class PrivateRouter extends React.Component {
                 <div className={classes.root}>
                     <AppBar/>
                     <NavigationDrawer/>
-                    { mobile ?
+                    { mobile && this.props.AuthenticationStore.initialized ?
                         <div className={classes.mobileNavSpacer}/>
-                    :
+                    : this.props.AuthenticationStore.initialized &&
                         <div className={classes.desktopNavSpacer}/>
                     }
-                    { !this.props.AuthenticationStore.initialized ?
-                        <Initializing/>
+                    { !this.props.AuthenticationStore.initialized || !this.props.ConfigurationStore.initialized  ?
+                        <div className={classes.progressContainer}>
+                            <CircularProgress className={classes.progress} color='secondary'/>
+                        </div>
                     : !this.props.AuthenticationStore.authenticated ?
                         <SignIn/>
-                    : !this.props.ConfigurationStore.initialized ?
-                            <Initializing/>
                     :
                         <main className={classNames(classes.content, {
                             [classes.contentShift]: drawerOpen,
@@ -78,12 +80,20 @@ class PrivateRouter extends React.Component {
                                     path='/list/:mediaType/:itemId'
                                     component={DownloadList}/>
                                 <Route
+                                    exact
+                                    path='/history/messages'
+                                    component={DownloadList}/>
+                                <Route
+                                    exact
+                                    path='/history'
+                                    component={DownloadList}/>
+                                <Route
                                     path='/'
                                     component={Browse}/>
                             </Switch>
                         </main>
                     }
-                    { mobile &&
+                    { mobile && this.props.AuthenticationStore.initialized &&
                         <div className={classes.navBarSpacer}>
                             <NavigationBar/>
                         </div>
@@ -120,7 +130,20 @@ const styles = theme => ({
     },
     navBarSpacer: {
         height: 56,
-    }
+    },
+    progressContainer: {
+        width: '100%',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    progress: {
+        width: 40,
+        height: 40,
+        opacity: 0,
+    },
 });
 
 PrivateRouter.propTypes = {

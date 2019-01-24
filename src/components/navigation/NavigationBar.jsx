@@ -12,12 +12,14 @@ import {
 
 import {
     Explore,
+    History,
     Movie,
     Tv,
     ViewList } from '@material-ui/icons';
 
 @withNamespaces()
 @inject('AuthenticationStore')
+@inject('ConfigurationStore')
 @inject('MovieDbStore')
 @inject('ThemeStore')
 @observer
@@ -33,8 +35,9 @@ class NavigationBar extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
         const location = this.props.location.pathname.toLowerCase();
+        const showDiscovery = this.props.ConfigurationStore.configuration.showDiscovery;
 
-        let loc = 'browse';
+        let loc = showDiscovery ? 'browse' : 'movies';
         if (!this.props.AuthenticationStore.authenticated) {
             loc = false;
         } else if (location.includes('settings')) {
@@ -45,6 +48,8 @@ class NavigationBar extends React.Component {
             loc = 'tv';
         } else if (location.includes('list')) {
             loc = 'list';
+        } else if (location.includes('history')) {
+            loc = 'history';
         }
 
         return (
@@ -52,12 +57,14 @@ class NavigationBar extends React.Component {
                 className={classes.root}
                 showLabels={true}
                 value={loc}>
-                <BottomNavigationAction
+                { showDiscovery &&
+                    <BottomNavigationAction
                     value='browse'
                     label={t('common.discover')}
                     icon={<Explore />}
                     component={Link}
                     to='/browse'/>
+                }
                 <BottomNavigationAction
                     value='movies'
                     label={t('common.movies')}
@@ -76,6 +83,12 @@ class NavigationBar extends React.Component {
                     icon={<ViewList />}
                     component={Link}
                     to='/browse/list'/>
+                <BottomNavigationAction
+                    value='history'
+                    label={t('common.history')}
+                    icon={<History />}
+                    component={Link}
+                    to='/history'/>
             </BottomNavigation>
         );
      }

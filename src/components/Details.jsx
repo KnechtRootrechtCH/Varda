@@ -18,10 +18,8 @@ import MetadataService from '../service/MetadataService';
 class Details extends React.Component {
 
     componentDidMount = () => {
-        if (this.props.ConfigurationStore.initialized) {
-            console.debug(`${this.constructor.name}.componentDidMount() => Load item`);
-            this.loadItem();
-        }
+        console.debug(`${this.constructor.name}.componentDidMount() => Load item`);
+        this.loadItem();
     }
 
     componentWillUnmount = () => {
@@ -29,10 +27,6 @@ class Details extends React.Component {
     }
 
     componentDidUpdate (prevProps) {
-        if (!prevProps.ConfigurationStore.initialized && this.props.ConfigurationStore.initialized) {
-            console.debug(`${this.constructor.name}.componentDidUpdate() : Config store initialized => Load item`);
-            this.loadItem();
-        }
         if (prevProps.match.params.mediaType !== this.props.match.params.mediaType) {
             console.debug(`${this.constructor.name}.componentDidUpdate() : Media type changed => Load item`);
             this.loadItem();
