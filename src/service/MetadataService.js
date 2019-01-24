@@ -1,7 +1,8 @@
 import * as Moment from 'moment';
+import constants from '../config/constants';
 
 class MetadataService {
-    
+
     getKey (item) {
         const mediaType = this.getMediaType(item);
         const id = item.id;
@@ -101,8 +102,49 @@ class MetadataService {
         return query
     }
 
-    getCardMedia(item) {
+    getCrew(item) {
+        if (!item.credits) {
+            return null;
+        }
+        return item.credits.crew;
+    }
 
+    getCast(item) {
+        if (!item.credits) {
+            return null;
+        }
+        return item.credits.cast;
+    }
+
+    getDirector(item) {
+        const crew = this.getCrew(item);
+        if (!crew) {
+            return false;
+        }
+
+        let director = null;
+        crew.forEach(c => {
+            if (c.job.toLowerCase() === constants.JOB.DIRECTOR) {
+                director = c;
+            }
+        })
+
+        return director;
+    }
+
+    getReleaseDates (item, country) {
+        const releases = item.release_dates;
+        if (!releases) {
+          return null
+        }
+
+        let releaseDates = null;
+        releases.results.forEach(result => {
+            if (country.toUpperCase() === result.iso_3166_1.toUpperCase()) {
+                releaseDates = result;
+            }
+        })
+        return releaseDates;
     }
 }
 

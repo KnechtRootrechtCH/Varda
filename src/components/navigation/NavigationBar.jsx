@@ -25,10 +25,6 @@ import {
 @observer
 class NavigationBar extends React.Component {
 
-    handleChange = () => {
-
-    }
-
     render () {
         // console.debug(`${this.constructor.name}.render()`, this.props);
 

@@ -33,8 +33,6 @@ import {
 import SearchDrawer from '../search/SearchDrawer';
 import SearchBox from '../search/SearchBox';
 
-import MetadataService from '../../service/MetadataService';
-
 @withNamespaces()
 @inject('AuthenticationStore')
 @inject('MovieDbStore')
@@ -135,7 +133,7 @@ class TitleBar extends React.Component {
         const item = this.props.MovieDbStore.item;
         if (item) {
             if (!desktop) {
-                title = MetadataService.getTitle(item);
+                title = ''; // MetadataService.getTitle(item);
                 showBackButton = true;
                 headerColor = 'inherit';
                 subTitle = false;

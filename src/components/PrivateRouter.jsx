@@ -11,7 +11,7 @@ import {
 
 import AppBar from './navigation/AppBar';
 import Browse from './Browse';
-import Details from './Details';
+import ItemDetails from './ItemDetails';
 import DownloadList from './DownloadList';
 import NavigationBar from './navigation/NavigationBar';
 import NavigationDrawer from './navigation/NavigationDrawer';
@@ -66,7 +66,7 @@ class PrivateRouter extends React.Component {
                                 <Route
                                     exact
                                     path='/browse/:mediaType/:itemId'
-                                    component={Details}/>
+                                    component={ItemDetails}/>
                                 <Route
                                     exact
                                     path='/list'

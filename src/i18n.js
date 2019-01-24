@@ -74,6 +74,35 @@ i18n.init({
                     },
                 },
 
+                details: {
+                    originalTitle: 'Original title',
+                    runtime: 'Runtime',
+                    rating: 'Rating',
+                    director: 'Director',
+                    genres: 'Genres',
+                    firstAirDate: 'First air date',
+                    releaseDate: 'Release date',
+                    releaseDates: 'Release dates',
+                    release: {
+                        ch: {
+                            type1: 'CH Premiere',
+                            type2: 'CH Limited Theatrical Release',
+                            type3: 'CH Theatrical Release',
+                            type4: 'CH Digital Release',
+                            type5: 'CH Physical Release',
+                            type6: 'CH TV'
+                        },
+                        us: {
+                            type1: 'US Premiere',
+                            type2: 'US Limited Theatrical Release',
+                            type3: 'US Theatrical Release',
+                            type4: 'US Digital Release',
+                            type5: 'US Physical Release',
+                            type6: 'US TV'
+                        },
+                    },
+                },
+
                 settings: {
                     themeSettings: 'Theme settings',
                     darkTheme: 'Dark theme',
@@ -141,6 +170,35 @@ i18n.init({
                             downloading: 'wird heruntergeladen',
                             downloaded: '',
                             loading: '',
+                        },
+                    },
+                },
+
+                details: {
+                    originalTitle: 'Originaltitel',
+                    runtime: 'Laufzeit',
+                    rating: 'Bewertung',
+                    director: 'Regisseur',
+                    genres: 'Genres',
+                    firstAirDate: 'Erstausstrahlung',
+                    releaseDate: 'Veröffentlichung',
+                    releaseDates: 'Veröffentlichungs Daten',
+                    release: {
+                        ch: {
+                            type1: 'CH Premiere',
+                            type2: 'CH Limitierter Kinostart',
+                            type3: 'CH Kinostart',
+                            type4: 'CH Digitale Veröffentlichung',
+                            type5: 'CH DVD/Blu-ray',
+                            type6: 'CH TV'
+                        },
+                        us: {
+                            type1: 'US Premiere',
+                            type2: 'US Limitierter Kinostart',
+                            type3: 'US Kinostart',
+                            type4: 'US Digitale Veröffentlichung',
+                            type5: 'US DVD/Blu-ray',
+                            type6: 'US TV'
                         },
                     },
                 },

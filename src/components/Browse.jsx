@@ -78,7 +78,7 @@ class Browse extends React.Component {
 
         return (
             <div className={classes.root}>
-                <Typography className={mobile ? classes.titleMobile : classes.title} variant='subtitle1' component='h2'>
+                <Typography className={mobile ? classes.titleMobile : classes.title} variant='h6' component='h2'>
                     <span>{t(titleKey)}</span>
                 </Typography>
                 <ItemGrid/>

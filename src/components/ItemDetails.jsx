@@ -5,17 +5,17 @@ import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 
-import { Paper } from '@material-ui/core';
-
-import ItemInfo from './info/ItemInfo';
+import ItemDetailPanel from './item/ItemDetailPanel';
 import MetadataService from '../service/MetadataService';
+import ImageService from '../service/ImageService';
+import constants from '../config/constants';
 
 @withNamespaces()
 @inject('ConfigurationStore')
 @inject('DownloadStatusStore')
 @inject('MovieDbStore')
 @observer
-class Details extends React.Component {
+class ItemDetails extends React.Component {
 
     componentDidMount = () => {
         console.debug(`${this.constructor.name}.componentDidMount() => Load item`);
@@ -56,7 +56,6 @@ class Details extends React.Component {
         if (!item) {
             return (
                 <div className={classes.root}>
-                    loading...
                 </div>
             )
         }
@@ -64,21 +63,38 @@ class Details extends React.Component {
         const key = MetadataService.getKey(item);
         const statusItem = this.props.DownloadStatusStore.items[key];
 
+        const backdropImage = ImageService.getBackdropImage(item, constants.IMAGESIZE.BACKDROP.W1280);
+        const headerBackgroundHeight = mobile ? 200 : desktop ? 300 : 250;
+        const headerSpacerHeight = headerBackgroundHeight - (mobile ? 56 : 64) - 120;
+
+        const backdrop = {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6)), url('${backdropImage}')`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'top',
+            backgroundSize: 'cover',
+            margin: 0,
+            width: '100%',
+            height: headerBackgroundHeight,
+            '&:hover': {
+                opacity: 0,
+            },
+            zIndex: 0,
+        };
+
+        const spacer = {
+            height: headerSpacerHeight,
+        }
+
         return (
             <div className={classes.root}>
-                { mobile ?
-                    <ItemInfo item={item} statusItem={statusItem} mobile={mobile}/>
-                : desktop ?
-                    <div className={classes.container}>
-                        <Paper className={classes.paper}>
-                            <ItemInfo item={item} statusItem={statusItem} mobile={mobile}/>
-                        </Paper>
-                    </div>
-                :
-                    <Paper className={classes.paper}>
-                        <ItemInfo item={item} statusItem={statusItem} mobile={mobile}/>
-                    </Paper>
-                }
+                <div style={backdrop}/>
+                <div style={spacer}/>
+                <div className={mobile ? classes.contentMobile : classes.content}>
+                    <ItemDetailPanel item={item} statusItem={statusItem} mobile={mobile}/>
+                </div>
             </div>
         );
      }
@@ -90,18 +106,21 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
     },
-    container: {
+    content: {
+        zIndex: 1,
         maxWidth: 1280,
         marginRight: 'auto',
         marginLeft: 'auto',
+        width: '100%',
+        display: 'flex',
     },
-    paper: {
-        margin: theme.spacing.unit * 3,
+    contentMobile: {
+        zIndex: 1,
     },
 });
 
-Details.propTypes = {
+ItemDetails.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withWidth()(Details));
+export default withStyles(styles)(withWidth()(ItemDetails));
