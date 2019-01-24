@@ -47,7 +47,7 @@ class ItemMetadata extends React.Component {
 
         const us = MetadataService.getReleaseDates(item, 'US');
         if (us) {
-            us.release_dates.map((r) => {
+            us.release_dates.forEach((r) => {
                 const dateString = Moment(r.release_date).format('DD.MM.YYYY');
                 const value = r.note ? `${dateString} - ${r.note}` : dateString;
                 releaseDates.push({
@@ -60,7 +60,7 @@ class ItemMetadata extends React.Component {
 
         const ch = MetadataService.getReleaseDates(item, 'CH');
         if (ch) {
-            ch.release_dates.map((r) => {
+            ch.release_dates.forEach((r) => {
                 const dateString = Moment(r.release_date).format('DD.MM.YYYY');
                 const value = r.note ? `${dateString} - ${r.note}` : dateString;
                 releaseDates.push({
