@@ -52,7 +52,7 @@ class Navigation extends React.Component {
         const location = this.props.location.pathname.toLowerCase();
 
         const authenticated = this.props.AuthenticationStore.authenticated;
-        const drawer = this.props.ThemeStore.drawerState && authenticated;
+        const drawer = this.props.ThemeStore.drawerState && authenticated ? true : false;
 
         const desktop = isWidthUp('md', this.props.width);
         const drawerVariant = desktop ? 'persistent' : null;

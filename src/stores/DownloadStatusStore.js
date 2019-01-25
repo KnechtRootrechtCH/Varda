@@ -27,7 +27,7 @@ class DownloadStatusStore {
         if (!statusItem || statusItem.status === constants.STATUS.LOADING) {
             // console.debug('DownloadStatusStore.loadStatus() : loading', key);
             this.items[key] = { status: constants.STATUS.LOADING };
-            const userDoc = firestore.collection('users').doc(this.uid);
+            const userDoc = firestore.collection('users').doc(this.dataUid);
             const collection = userDoc.collection('items');
             collection.doc(key).onSnapshot((doc) => {
                 const data = doc.data();
@@ -60,7 +60,7 @@ class DownloadStatusStore {
         }
         console.debug('DownloadStatusStore.updateStatus()', key, status);
 
-        const userDoc = firestore.collection('users').doc(this.uid);
+        const userDoc = firestore.collection('users').doc(this.dataUid);
         const statusCollection = userDoc.collection('items');
         statusCollection.doc(`${key}`).set({
             status: status,
@@ -83,7 +83,7 @@ class DownloadStatusStore {
         }
         console.debug('DownloadStatusStore.updatePriority()', key, priority);
 
-        const userDoc = firestore.collection('users').doc(this.uid);
+        const userDoc = firestore.collection('users').doc(this.dataUid);
         const collection = userDoc.collection('items');
         collection.doc(`${key}`).set({
             priority: priority,
@@ -97,7 +97,7 @@ class DownloadStatusStore {
 
     @action async updateItemData(key, item) {
         const itemDataCollection = firestore.collection('users')
-            .doc(this.uid)
+            .doc(this.dataUid)
             .collection('items')
             .doc(key)
             .collection('data');
@@ -116,7 +116,7 @@ class DownloadStatusStore {
         const dateTimeString = Moment().format('YYYY-MM-DD HH-mm-ss ZZ');
 
         const itemTransactionsCollection = firestore.collection('users')
-            .doc(this.uid)
+            .doc(this.dataUid)
             .collection('items')
             .doc(key)
             .collection('transactions');
@@ -126,12 +126,14 @@ class DownloadStatusStore {
                 transaction: transaction,
                 newValue: newValue,
                 previousValue: previousValue,
+                isAdminAction: this.isAdminAction,
+                user: this.uid,
             }, {
                 merge: true
             });
 
         const userTransactionsCollection = firestore.collection('users')
-            .doc(this.uid)
+            .doc(this.dataUid)
             .collection('transactions');
         userTransactionsCollection
             .doc(yearMonth)
@@ -143,13 +145,26 @@ class DownloadStatusStore {
                 newValue: newValue,
                 previousValue: previousValue,
                 title: title,
+                isAdminAction: this.isAdminAction,
+                user: this.uid,
             }, {
                 merge: true
             });
     }
 
+    @computed get isAdminAction(){
+        return AuthenticationStore.authenticated && AuthenticationStore.isAdmin && AuthenticationStore.targetUid ? true : false;
+    }
+
     @computed get uid(){
         return AuthenticationStore.authenticated ? AuthenticationStore.user.uid : null;
+    }
+
+    @computed get dataUid(){
+        if (!AuthenticationStore.authenticated) {
+            return null;
+        }
+        return AuthenticationStore.isAdmin && AuthenticationStore.targetUid ? AuthenticationStore.targetUid : AuthenticationStore.user.uid;
     }
 }
 

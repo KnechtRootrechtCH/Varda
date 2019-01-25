@@ -1,15 +1,15 @@
-import {observable, action, computed} from 'mobx';
+import {observable, action, computed, runInAction} from 'mobx';
 import {fire, firestore, googleAuthProvider} from '../config/fire'
 import * as Moment from 'moment';
 
-import ConfigurationStore from './ConfigurationStore';
-
 class AuthenticationStore {
     @observable user = null;
-    @observable dataUserId = null;
     @observable initialized = false;
     @observable message = null;
     @observable details = null;
+    @observable isAdmin = false;
+    @observable targetUid = null;
+    dispalyNameInternal = null;
 
     constructor() {
         fire.auth().onAuthStateChanged((user) => {
@@ -21,9 +21,9 @@ class AuthenticationStore {
         // console.debug('AuthenticationStore.onAuthStateChanged()', user);
         this.user = user;
         if(user) {
-            this.dataUserId = user.uid;
-            ConfigurationStore.loadUserSettings(user.uid);
             this.logAccess();
+            this.loadAdminSettings();
+            this.loadUserData();
         }
         this.initialized = true;
     }
@@ -93,7 +93,38 @@ class AuthenticationStore {
             }, {
                 merge: true
             });
-        }
+    }
+
+    @action async loadAdminSettings() {
+        firestore.collection('static')
+            .doc('configuration')
+            .collection('administrators')
+            .doc(this.user.uid)
+            .onSnapshot((doc) => {
+                let data = doc.data();
+                if (data) {
+                    runInAction(() => {
+                        this.isAdmin = data.isAdmin;
+                        this.targetUid = data.targetUid;
+                    });
+                }
+        })
+    }
+
+    @action async loadUserData() {
+        firestore.collection('users')
+            .doc(this.user.uid)
+            .onSnapshot((doc) => {
+                let settings = doc.data().settings;
+                if (!settings) {
+                    settings = {}
+                }
+                runInAction(() => {
+                    this.userSettings = settings;
+                    this.dispalyNameInternal = doc.data().displayName;
+                });
+        })
+    }
 
     @action clearMessage = () => {
         this.message = null;
@@ -114,6 +145,10 @@ class AuthenticationStore {
             return this.user.photoURL;
         }
         return null;
+    }
+
+    @computed get displayName () {
+        return this.dispalyNameInternal ? this.dispalyNameInternal : this.user.email;
     }
 }
 

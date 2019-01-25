@@ -123,12 +123,16 @@ class TitleBar extends React.Component {
         const photoUrl = this.props.AuthenticationStore.photoUrl;
         const darkThemeStateKey = this.props.ThemeStore.type === 'dark' ? 'settings.on' : 'settings.off'
 
+        const isAdmin = this.props.AuthenticationStore.isAdmin;
+        const barColor = isAdmin ? 'primary' : 'default';
         let title = t('title');
         let subTitle = true;
         let showBackButton = false;
-        let headerColor = 'primary';
+        let headerColor = isAdmin ? 'default' : 'primary';
+        let subheaderColor = isAdmin ? 'inherit' : 'inherit';
         let showSearch = true;
         const loading = false; //this.props.MovieDbStore.loading;
+
 
         const item = this.props.MovieDbStore.item;
         if (item) {
@@ -152,7 +156,7 @@ class TitleBar extends React.Component {
 
         return (
             <div className={classes.root}>
-                <AppBar className={classes.appBar} position={appBarPosition} color='default'>
+                <AppBar className={classes.appBar} position={appBarPosition} color={barColor}>
                     <Toolbar className={classes.toolbar}>
                         { showBackButton ?
                             <ArrowLeft className={classes.menuButton} onClick={this.handleNavigateBack}/>
@@ -163,7 +167,7 @@ class TitleBar extends React.Component {
                             {title}
                         </Typography>
                         { subTitle &&
-                            <Typography className={classes.header} variant='h5' color='inherit' noWrap onClick={this.handleHeaderClick}>
+                            <Typography className={classes.header} variant='h5' color={subheaderColor} noWrap onClick={this.handleHeaderClick}>
                                 &nbsp;{t('subTitle')}
                             </Typography>
                         }

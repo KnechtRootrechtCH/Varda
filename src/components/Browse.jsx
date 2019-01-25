@@ -6,8 +6,7 @@ import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
-import {
-    Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 import ItemGrid from './ItemGrid';
 import constants from '../config/constants'
