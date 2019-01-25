@@ -32,9 +32,6 @@ import {
 class Navigation extends React.Component {
 
     handleOpenDrawer = () => {
-        if (!this.props.AuthenticationStore.authenticated) {
-            return;
-        }
         this.props.ThemeStore.setDrawerState(true);
     }
 
@@ -77,7 +74,7 @@ class Navigation extends React.Component {
         }
 
         return (
-            <SwipeableDrawer className={classes.root} open={drawer} onOpen={this.handleOpenDrawer} onClose={this.handleCloseDrawer} variant={drawerVariant} anchor='left'>
+            <SwipeableDrawer className={classes.root} open={drawer} onOpen={this.handleOpenDrawer} onClose={this.handleCloseDrawer} variant={drawerVariant}>
                 <List className={desktop ? classes.drawerItemsDesktop : classes.drawerItems}>
                     { showDiscovery &&
                         <ListItem

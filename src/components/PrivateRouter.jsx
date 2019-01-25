@@ -6,11 +6,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 
-import {
-    CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 
-import AppBar from './navigation/AppBar';
+import TitleBar from './navigation/TitleBar';
 import Browse from './Browse';
+import History from './History';
 import ItemDetails from './ItemDetails';
 import DownloadList from './DownloadList';
 import NavigationBar from './navigation/NavigationBar';
@@ -33,7 +33,7 @@ class PrivateRouter extends React.Component {
         return (
             <Router>
                 <div className={classes.root}>
-                    <AppBar/>
+                    <TitleBar/>
                     <NavigationDrawer/>
                     { mobile && this.props.AuthenticationStore.initialized ?
                         <div className={classes.mobileNavSpacer}/>
@@ -86,7 +86,7 @@ class PrivateRouter extends React.Component {
                                 <Route
                                     exact
                                     path='/history'
-                                    component={DownloadList}/>
+                                    component={History}/>
                                 <Route
                                     path='/'
                                     component={Browse}/>

@@ -2,6 +2,9 @@ import {observable, action, computed, runInAction} from 'mobx';
 import {fire, firestore, googleAuthProvider} from '../config/fire'
 import * as Moment from 'moment';
 
+import DownloadHistoryStore from './DownloadHistoryStore';
+import DownloadStatusStore from './DownloadStatusStore';
+
 class AuthenticationStore {
     @observable user = null;
     @observable initialized = false;
@@ -21,11 +24,21 @@ class AuthenticationStore {
         // console.debug('AuthenticationStore.onAuthStateChanged()', user);
         this.user = user;
         if(user) {
+            DownloadStatusStore.setUid(user.uid) ;
+            DownloadStatusStore.setDataUid(user.uid);
+            DownloadStatusStore.setDisplayName(this.displayName);
+            DownloadHistoryStore.setDataUid(user.uid);
             this.logAccess();
             this.loadAdminSettings();
             this.loadUserData();
+        } else {
+            DownloadStatusStore.setUid(null) ;
+            DownloadStatusStore.setDataUid(null);
+            DownloadStatusStore.setDisplayName('');
+            DownloadHistoryStore.setDataUid(null);
         }
         this.initialized = true;
+
     }
 
     @action authWithGoogle() {
@@ -106,6 +119,9 @@ class AuthenticationStore {
                     runInAction(() => {
                         this.isAdmin = data.isAdmin;
                         this.targetUid = data.targetUid;
+                        DownloadStatusStore.setIsAdmin(data.isAdmin);
+                        DownloadStatusStore.setDataUid(data.targetUid);
+                        DownloadHistoryStore.setDataUid(data.targetUid);
                     });
                 }
         })
@@ -122,6 +138,7 @@ class AuthenticationStore {
                 runInAction(() => {
                     this.userSettings = settings;
                     this.dispalyNameInternal = doc.data().displayName;
+                    DownloadStatusStore.setDisplayName(this.displayName);
                 });
         })
     }

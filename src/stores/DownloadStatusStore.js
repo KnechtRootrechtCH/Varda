@@ -2,16 +2,18 @@ import {observable, action, computed, runInAction} from 'mobx';
 import { firestore } from '../config/fire'
 import * as Moment from 'moment';
 
-import AuthenticationStore from './AuthenticationStore';
 import MetadataService from '../service/MetadataService';
 
 import constants from '../config/constants';
 
 class DownloadStatusStore {
-    @observable loading = false;
-
     @observable item = null;
     @observable items = {};
+
+    isAdmin = false;
+    uid = null;
+    dataUid = null;
+    userName = '';
 
     @action async loadStatus(item) {
         const key = MetadataService.getKey(item);
@@ -50,7 +52,7 @@ class DownloadStatusStore {
         }
     }
 
-    @action async updateStatus(item, status, previousStatus) {
+    @action async updateStatus(item, status, previousStatus, comment) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateFormated(item, 'YYYY-MM-DD');
@@ -72,10 +74,10 @@ class DownloadStatusStore {
         });
 
         this.updateItemData(key, item);
-        this.logTransaction(key, 'updateStatus', title, status, previousStatus);
+        this.logTransaction(key, 'updateStatus', title, status, previousStatus, comment);
     }
 
-    @action async updatePriority(item, priority, previousPrority) {
+    @action async updatePriority(item, priority, previousPrority, comment) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
         if (!previousPrority) {
@@ -92,7 +94,7 @@ class DownloadStatusStore {
         });
 
         this.updateItemData(key, item);
-        this.logTransaction(key, 'updatePriority', title, priority, previousPrority);
+        this.logTransaction(key, 'updatePriority', title, priority, previousPrority, comment);
     }
 
     @action async updateItemData(key, item) {
@@ -107,64 +109,63 @@ class DownloadStatusStore {
             .set(item);
     }
 
-    @action async logTransaction(key, transaction, title, newValue, previousValue){
-        console.debug('DownloadStatusStore.logTransaction()', transaction, newValue);
+    @action async logTransaction(key, transaction, title, newValue, previousValue, comment){
+        const timestamp = Moment().format('YYYY-MM-DD HH-mm-ss-S ZZ');
+        comment = comment ? comment : '';
+        previousValue = previousValue ? previousValue : '';
+        // console.debug('DownloadStatusStore.logTransaction()', timestamp, transaction, newValue, comment);
 
-        const yearMonth = Moment().format('YYYY-MM');
-        const day = Moment().format('DD - dddd');
-        const time = Moment().format('HH-mm-ss ZZ');
-        const dateTimeString = Moment().format('YYYY-MM-DD HH-mm-ss ZZ');
-
-        const itemTransactionsCollection = firestore.collection('users')
+        firestore.collection('users')
             .doc(this.dataUid)
             .collection('items')
             .doc(key)
-            .collection('transactions');
-        itemTransactionsCollection
-            .doc(dateTimeString)
+            .collection('transactions')
+            .doc(`${timestamp} - ${transaction}`)
             .set({
+                timestamp: timestamp,
                 transaction: transaction,
                 newValue: newValue,
                 previousValue: previousValue,
                 isAdminAction: this.isAdminAction,
                 user: this.uid,
-            }, {
-                merge: true
+                userName: this.userName,
             });
 
-        const userTransactionsCollection = firestore.collection('users')
+        firestore.collection('users')
             .doc(this.dataUid)
-            .collection('transactions');
-        userTransactionsCollection
-            .doc(yearMonth)
-            .collection(day)
-            .doc(time)
+            .collection('transactions')
+            .doc(`${timestamp} - ${transaction}`)
             .set({
-                key: key,
+                timestamp: timestamp,
                 transaction: transaction,
                 newValue: newValue,
                 previousValue: previousValue,
-                title: title,
                 isAdminAction: this.isAdminAction,
                 user: this.uid,
-            }, {
-                merge: true
+                userName: this.userName,
+                key: key,
+                title: title,
             });
+    }
+
+    @action setUid(uid) {
+        this.uid = uid;
+    }
+
+    @action setDataUid(uid) {
+        this.dataUid = uid;
+    }
+
+    @action setIsAdmin(isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    @action setDisplayName(name) {
+        this.userName = name;
     }
 
     @computed get isAdminAction(){
-        return AuthenticationStore.authenticated && AuthenticationStore.isAdmin && AuthenticationStore.targetUid ? true : false;
-    }
-
-    @computed get uid(){
-        return AuthenticationStore.authenticated ? AuthenticationStore.user.uid : null;
-    }
-
-    @computed get dataUid(){
-        if (!AuthenticationStore.authenticated) {
-            return null;
-        }
-        return AuthenticationStore.isAdmin && AuthenticationStore.targetUid ? AuthenticationStore.targetUid : AuthenticationStore.user.uid;
+        return this.isAdmin && this.dataUid !== this.uid;
     }
 }
 
