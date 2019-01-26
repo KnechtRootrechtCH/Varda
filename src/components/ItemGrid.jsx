@@ -26,7 +26,7 @@ class ItemGrid extends React.Component {
         const spacing = mobile ? 0 : 8;
 
         return (
-            <div className={mobile ? classes.rootMobile : classes.root}>
+            <div className={classes.root}>
                 <Grid container spacing={spacing}>
                     { this.props.MovieDbStore.items.map((item, index) => {
                         return (
@@ -59,16 +59,7 @@ const drawerWidth = 220;
 
 const styles = theme => ({
     root: {
-        marginTop: theme.spacing.unit,
-        marginRight: theme.spacing.unit * 3,
-        marginBottom: theme.spacing.unit,
-        marginLeft: theme.spacing.unit * 3,
-    },
-    rootMobile: {
-        marginTop: theme.spacing.unit,
-        marginRight: 0,
-        marginBottom: theme.spacing.unit,
-        marginLeft: 0,
+
     },
     progressGrid: {
         width: '100%',

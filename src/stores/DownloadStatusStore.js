@@ -2,18 +2,13 @@ import {observable, action, computed, runInAction} from 'mobx';
 import { firestore } from '../config/fire'
 import * as Moment from 'moment';
 
+import AuthenticationStore from './AuthenticationStore';
 import MetadataService from '../service/MetadataService';
-
 import constants from '../config/constants';
 
 class DownloadStatusStore {
     @observable item = null;
     @observable items = {};
-
-    isAdmin = false;
-    uid = null;
-    dataUid = null;
-    userName = '';
 
     @action async loadStatus(item) {
         const key = MetadataService.getKey(item);
@@ -27,7 +22,7 @@ class DownloadStatusStore {
     @action async loadStatusByKey(key) {
         const statusItem = this.items[key];
         if (!statusItem || statusItem.status === constants.STATUS.LOADING) {
-            // console.debug('DownloadStatusStore.loadStatus() : loading', key);
+            // console.debug('DownloadStatusStore.loadStatus() : loading', key, this.dataUid);
             this.items[key] = { status: constants.STATUS.LOADING };
             const userDoc = firestore.collection('users').doc(this.dataUid);
             const collection = userDoc.collection('items');
@@ -128,7 +123,7 @@ class DownloadStatusStore {
                 previousValue: previousValue,
                 isAdminAction: this.isAdminAction,
                 user: this.uid,
-                userName: this.userName,
+                userName: this.displayName,
             });
 
         firestore.collection('users')
@@ -142,26 +137,26 @@ class DownloadStatusStore {
                 previousValue: previousValue,
                 isAdminAction: this.isAdminAction,
                 user: this.uid,
-                userName: this.userName,
+                userName: this.displayName,
                 key: key,
                 title: title,
             });
     }
 
-    @action setUid(uid) {
-        this.uid = uid;
+    @computed get uid () {
+        return AuthenticationStore.uid;
     }
 
-    @action setDataUid(uid) {
-        this.dataUid = uid;
+    @computed get dataUid () {
+        return AuthenticationStore.dataUid;
     }
 
-    @action setIsAdmin(isAdmin) {
-        this.isAdmin = isAdmin;
+    @computed get isAdmin () {
+        return AuthenticationStore.isAdmin;
     }
 
-    @action setDisplayName(name) {
-        this.userName = name;
+    @computed get displayName () {
+        return AuthenticationStore.displayName;
     }
 
     @computed get isAdminAction(){

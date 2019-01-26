@@ -2,16 +2,14 @@ import {observable, action, computed, runInAction} from 'mobx';
 import {fire, firestore, googleAuthProvider} from '../config/fire'
 import * as Moment from 'moment';
 
-import DownloadHistoryStore from './DownloadHistoryStore';
-import DownloadStatusStore from './DownloadStatusStore';
-
 class AuthenticationStore {
     @observable user = null;
     @observable initialized = false;
     @observable message = null;
     @observable details = null;
     @observable isAdmin = false;
-    @observable targetUid = null;
+    @observable dataUid = null;
+    @observable displayName = null;
     dispalyNameInternal = null;
 
     constructor() {
@@ -21,22 +19,23 @@ class AuthenticationStore {
     }
 
     @action onAuthStateChanged(user) {
-        // console.debug('AuthenticationStore.onAuthStateChanged()', user);
-        this.user = user;
-        if(user) {
-            DownloadStatusStore.setUid(user.uid) ;
-            DownloadStatusStore.setDataUid(user.uid);
-            DownloadStatusStore.setDisplayName(this.displayName);
-            DownloadHistoryStore.setDataUid(user.uid);
-            this.logAccess();
-            this.loadAdminSettings();
-            this.loadUserData();
-        } else {
-            DownloadStatusStore.setUid(null) ;
-            DownloadStatusStore.setDataUid(null);
-            DownloadStatusStore.setDisplayName('');
-            DownloadHistoryStore.setDataUid(null);
-        }
+        console.debug('AuthenticationStore.onAuthStateChanged()', user);
+        runInAction(() => {
+            this.user = user;
+            this.isAdmin = false;
+            if(user) {
+                this.uid = user.uid;
+                this.dataUid = user.uid;
+                this.displayName = user.email;
+                this.logAccess();
+                this.loadAdminSettings();
+                this.loadUserData();
+            } else {
+                this.uid = null;
+                this.dataUid = null;
+                this.displayName = null;
+            }
+        });
         this.initialized = true;
 
     }
@@ -118,10 +117,9 @@ class AuthenticationStore {
                 if (data) {
                     runInAction(() => {
                         this.isAdmin = data.isAdmin;
-                        this.targetUid = data.targetUid;
-                        DownloadStatusStore.setIsAdmin(data.isAdmin);
-                        DownloadStatusStore.setDataUid(data.targetUid);
-                        DownloadHistoryStore.setDataUid(data.targetUid);
+                        if(data.isAdmin) {
+                            this.dataUid = data.targetUid;
+                        }
                     });
                 }
         })
@@ -131,14 +129,19 @@ class AuthenticationStore {
         firestore.collection('users')
             .doc(this.user.uid)
             .onSnapshot((doc) => {
-                let settings = doc.data().settings;
-                if (!settings) {
-                    settings = {}
-                }
                 runInAction(() => {
+                    let settings = doc.data().settings;
+                    if (!settings) {
+                        settings = {}
+                    }
                     this.userSettings = settings;
-                    this.dispalyNameInternal = doc.data().displayName;
-                    DownloadStatusStore.setDisplayName(this.displayName);
+
+                    const displayName = doc.data().displayName;
+                    if (displayName) {
+                        this.displayName = displayName;
+                    } else {
+                        this.displayName = this.user.email;
+                    }
                 });
         })
     }
@@ -162,10 +165,6 @@ class AuthenticationStore {
             return this.user.photoURL;
         }
         return null;
-    }
-
-    @computed get displayName () {
-        return this.dispalyNameInternal ? this.dispalyNameInternal : this.user.email;
     }
 }
 

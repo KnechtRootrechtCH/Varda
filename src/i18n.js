@@ -103,6 +103,41 @@ i18n.init({
                     },
                 },
 
+                history: {
+                    filter: {
+                        none: 'Everything',
+                        updateStatus: 'Status updates',
+                        priorityChange: 'Priority update',
+                        comments: 'Comments',
+                        queued: 'Status updates: Queued',
+                        notAvailable: 'Status updates: Not available',
+                        notFound: 'Status updates: Mot found',
+                        redownload: 'Status updates: Redownload',
+                        downloading: 'Status updates: Downloading',
+                        downloaded: 'Status updates: Done',
+                    },
+                    transaction: {
+                        updatePriority: 'Priority',
+                        updateStatus: 'Status update',
+                        comment: 'Comment',
+                        queued: 'Queued',
+                        removed: 'Removed',
+                        notAvailable: 'Not available',
+                        notFound: 'Mot found',
+                        redownload: 'Redownload',
+                        downloading: 'Downloading',
+                        downloaded: 'Done',
+                    },
+                    label: {
+                        title: 'Title',
+                        user: 'User',
+                        transaction: 'Transaction',
+                        previousValue: 'Old value',
+                        newValue: 'New value',
+                        comment: 'Comment',
+                    },
+                },
+
                 settings: {
                     themeSettings: 'Theme settings',
                     darkTheme: 'Dark theme',
@@ -200,6 +235,41 @@ i18n.init({
                             type5: 'US DVD/Blu-ray',
                             type6: 'US TV'
                         },
+                    },
+                },
+
+                history: {
+                    filter: {
+                        none: 'Alle',
+                        updateStatus: 'Statusänderungen',
+                        priorityChange: 'Prioritätswechel',
+                        comments: 'Kommentare',
+                        queued: 'Statusänderungen: Hinzugefügt',
+                        notAvailable: 'Statusänderungen: Noch nicht verfügbar',
+                        notFound: 'Statusänderungen: Nicht gefunden',
+                        redownload: 'Statusänderungen: Nochmals herunterladen',
+                        downloading: 'Statusänderungen: Wird heruntergeladen',
+                        downloaded: 'Statusänderungen: Erledigt',
+                    },
+                    transaction: {
+                        updatePriority: 'Priorität',
+                        updateStatus: 'Statuswechsel',
+                        comment: 'Kommentar',
+                        queued: 'Hinzugefügt',
+                        removed: 'Entfernt',
+                        notAvailable: 'Noch nicht verfügbar',
+                        notFound: 'Nicht gefunden',
+                        redownload: 'Nochmals herunterladen',
+                        downloading: 'Wird heruntergeladen',
+                        downloaded: 'Erledigt',
+                    },
+                    label: {
+                        title: 'Titel',
+                        user: 'Benutzer',
+                        transaction: 'Transaktion',
+                        previousValue: 'Vorheriger Wert',
+                        newValue: 'Neuer Wert',
+                        comment: 'Kommentar',
                     },
                 },
 

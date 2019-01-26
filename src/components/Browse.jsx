@@ -80,7 +80,9 @@ class Browse extends React.Component {
                 <Typography className={mobile ? classes.titleMobile : classes.title} variant='h6' component='h2'>
                     <span>{t(titleKey)}</span>
                 </Typography>
-                <ItemGrid/>
+                <div className={mobile ? classes.itemGridMobile : classes.itemGrid}>
+                    <ItemGrid/>
+                </div>
             </div>
         );
      }
@@ -104,7 +106,19 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 2,
         marginBottom: 0,
         marginLeft: theme.spacing.unit * 2,
-    }
+    },
+    itemGrid: {
+        marginTop: theme.spacing.unit,
+        marginRight: theme.spacing.unit * 3,
+        marginBottom: theme.spacing.unit,
+        marginLeft: theme.spacing.unit * 3,
+    },
+    itemGridMobile: {
+        marginTop: theme.spacing.unit,
+        marginRight: 0,
+        marginBottom: theme.spacing.unit,
+        marginLeft: 0,
+    },
 });
 
 Browse.propTypes = {
