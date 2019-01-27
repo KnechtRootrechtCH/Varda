@@ -5,6 +5,8 @@ import * as Moment from 'moment';
 class AuthenticationStore {
     @observable user = null;
     @observable initialized = false;
+    @observable adminSettingsLoaded = false;
+    @observable userDataLoaded = false;
     @observable message = null;
     @observable details = null;
     @observable isAdmin = false;
@@ -113,15 +115,16 @@ class AuthenticationStore {
             .collection('administrators')
             .doc(this.user.uid)
             .onSnapshot((doc) => {
-                let data = doc.data();
-                if (data) {
-                    runInAction(() => {
-                        this.isAdmin = data.isAdmin;
+                runInAction(() => {
+                    let data = doc.data();
+                    if (data) {
                         if(data.isAdmin) {
                             this.dataUid = data.targetUid;
                         }
-                    });
-                }
+                        this.isAdmin = data.isAdmin;
+                    }
+                    this.adminSettingsLoaded = true;
+                });
         })
     }
 
@@ -142,6 +145,7 @@ class AuthenticationStore {
                     } else {
                         this.displayName = this.user.email;
                     }
+                    this.userDataLoaded = true;
                 });
         })
     }

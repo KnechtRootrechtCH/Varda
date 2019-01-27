@@ -23,12 +23,14 @@ import TransactionList from './history/TransactionList'
 import constants from '../config/constants';
 
 @withNamespaces()
+@inject('AuthenticationStore')
 @inject('DownloadHistoryStore')
 @observer
 class History extends React.Component {
 
     state = {
         filterMenuAnchor: null,
+        isAdmin: false,
     }
 
     filters = [{
@@ -80,6 +82,19 @@ class History extends React.Component {
     componentDidMount = () => {
         // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
         this.props.DownloadHistoryStore.loadHistory();
+        this.setState({
+            isAdmin: this.props.AuthenticationStore.isAdmin,
+        });
+    }
+
+    componentDidUpdate = () => {
+        if (!this.state.isAdmin && this.props.AuthenticationStore.isAdmin) {
+            this.setState({
+                isAdmin: true,
+            });
+            console.debug(`${this.constructor.name}.componentDidUpdate() : admin mode activated => reload`);
+            this.props.DownloadHistoryStore.loadHistory();
+        }
     }
 
     toggleSortDirection = () => {
@@ -112,6 +127,7 @@ class History extends React.Component {
 
         const activefilterKey = this.props.DownloadHistoryStore.filterKey;
         const sortAscending = this.props.DownloadHistoryStore.sortAscending;
+        const isAdmin = this.props.AuthenticationStore.dataUid;
 
         return (
             <div className={classes.root}>

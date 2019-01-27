@@ -4,9 +4,11 @@ import {inject, observer} from 'mobx-react';
 import { Link } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
+import * as Moment from 'moment';
 
 import {
     ExpansionPanelDetails,
+    Tooltip,
     Typography } from '@material-ui/core';
 
 @withNamespaces()
@@ -19,13 +21,20 @@ class TransactionDetails extends React.Component {
         const t = this.props.t;
 
         const data = this.props.data;
+        const timestamp = Moment(data.timestamp, 'YYYY-MM-DD HH-mm-ss-S ZZ');
+        const timestampString = timestamp.format('DD.MM.YYYY HH:mm');
+        const timestampLong = timestamp.format('DD.MM.YYYY HH:mm ZZ');
+
+        let transaction = t(`history.transaction.${data.transaction}`);
+        transaction = data.transaction === 'updateStatus' ? `${transaction}: ${t(`history.transaction.${data.newValue}`)}` : transaction;
 
         return (
             <ExpansionPanelDetails className={classes.root}>
                 <table className={classes.releaseDateTable}>
                     <tbody>
                         { this.renderRow(t('history.label.user'), data.userName)}
-                        { this.renderRow(t('history.label.transaction'), t(`history.transaction.${data.transaction}`))}
+                        { this.renderRow(t('history.label.timestamp'), timestampString, timestampLong)}
+                        { this.renderRow(t('history.label.transaction'), transaction)}
                         { this.renderRow(t('history.label.previousValue'), data.previousValue ? data.previousValue : '-')}
                         { this.renderRow(t('history.label.newValue'), data.newValue ? data.newValue : '-')}
                         { this.renderRow(t('history.label.comment'), data.comment ? data.comment : '-')}
@@ -35,8 +44,10 @@ class TransactionDetails extends React.Component {
         )
     }
 
-    renderRow (label, value, url) {
+    renderRow (label, value, tooltipText, url) {
         const classes = this.props.classes;
+
+        tooltipText = tooltipText ? tooltipText : value;
         return (
             <tr>
                 <td>
@@ -47,15 +58,17 @@ class TransactionDetails extends React.Component {
                     </Typography>
                 </td>
                 <td>
-                    { url ?
-                        <Typography className={classes.link} variant='caption' component={Link} to={url} color='primary'>
-                            {value}
-                        </Typography>
-                    :
-                        <Typography variant='caption'>
-                            {value}
-                        </Typography>
-                    }
+                    <Tooltip title={tooltipText} aria-label={tooltipText}>
+                        { url ?
+                            <Typography className={classes.link} variant='caption' component={Link} to={url} color='primary'>
+                                {value}
+                            </Typography>
+                        :
+                            <Typography variant='caption'>
+                                {value}
+                            </Typography>
+                        }
+                    </Tooltip>
                 </td>
             </tr>
         )

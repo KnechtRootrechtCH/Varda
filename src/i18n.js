@@ -133,6 +133,7 @@ i18n.init({
                     label: {
                         title: 'Title',
                         user: 'User',
+                        timestamp: 'Date/Time',
                         transaction: 'Transaction',
                         previousValue: 'Old value',
                         newValue: 'New value',
@@ -270,6 +271,7 @@ i18n.init({
                     label: {
                         title: 'Titel',
                         user: 'Benutzer',
+                        timestamp: 'Datum/Zeit',
                         transaction: 'Transaktion',
                         previousValue: 'Vorheriger Wert',
                         newValue: 'Neuer Wert',

@@ -25,9 +25,9 @@ class TransactionList extends React.Component {
 
         return (
             <div className={classes.root}>
-                { !this.props.DownloadHistoryStore.loading && history.map(row => {
+                { !this.props.DownloadHistoryStore.loading && history.map((row, index) => {
                     return (
-                        <TransactionPanel transaction={row} key={`${row.timestamp} - ${row.transaction}`}/>
+                        <TransactionPanel transaction={row} key={`${row.timestamp} - ${row.transaction}`} index={index}/>
                     )
                 })}
 

@@ -13,6 +13,8 @@ import {
     Tooltip,
     Typography } from '@material-ui/core';
 
+import { ExpandMore } from '@material-ui/icons';
+
 import TransactionDetails from './TransactionDetails';
 
 @withNamespaces()
@@ -27,9 +29,6 @@ class TransactionPanel extends React.Component {
         const desktop = isWidthUp('md', this.props.width);
 
         const data = this.props.transaction;
-        const timestamp = Moment(data.timestamp, 'YYYY-MM-DD HH-mm-ss-S ZZ');
-        const timestampShort = timestamp.format('DD.MM.YYYY HH:mm');
-        const timestampLong = timestamp.format('DD.MM.YYYY HH:mm ZZ');
         const title = data.title ? data.title : '-';
 
         const transactionKey = data.transaction === 'updateStatus' ? `history.transaction.${data.newValue}` : `history.transaction.${data.transaction}`;
@@ -37,26 +36,25 @@ class TransactionPanel extends React.Component {
         const transactionLong = data.transaction === 'comment' ? t( `history.transaction.${data.transaction}`) : `${t( `history.transaction.${data.transaction}`)}: ${newValue}`;
         const transactionColor = data.isAdminAction ? 'secondary' : 'primary';
 
-        const now = Moment();
-        const diff = now.diff(timestamp, 'minutes');
-        const timeColor = diff < 60 ? 'primary' : 'textPrimary';
+        let expand = false;
+        if (this.props.index === 0) {
+            const timestamp = Moment(data.timestamp, 'YYYY-MM-DD HH-mm-ss-S ZZ');
+            const now = Moment();
+            const diff = now.diff(timestamp, 'hours');
+            expand = diff <= 24;
+        }
 
         const address = data.key ? `/browse/${data.key.replace(':', '/')}` : null;
 
         return (
-            <ExpansionPanel className={classes.root}>
-                <ExpansionPanelSummary className={classes.summary}>
+            <ExpansionPanel className={classes.root} defaultExpanded={expand}>
+                <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
                     <Typography className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title} component={Link} to={address} noWrap>
                         {title}
                     </Typography>
                     <Tooltip title={transactionLong} aria-label={transactionLong}>
                         <Typography className={classes.transaction} align='right' color={transactionColor}>
                             {t(transactionKey)}
-                        </Typography>
-                    </Tooltip>
-                    <Tooltip title={timestampLong} aria-label={timestampLong}>
-                        <Typography className={classes.timestamp} align='right' color={timeColor}>
-                            {timestampShort}
                         </Typography>
                     </Tooltip>
                 </ExpansionPanelSummary>
@@ -76,7 +74,7 @@ const styles = theme => ({
     },
     titleMobile: {
         display: 'inline-block',
-        maxWidth: 220,
+        maxWidth: 250,
         textDecoration: 'none',
         '&:hover': {
             textDecoration: 'underline',
@@ -84,7 +82,7 @@ const styles = theme => ({
     },
     titleDesktop: {
         display: 'inline-block',
-        maxWidth: 580,
+        maxWidth: 600,
         textDecoration: 'none',
         '&:hover': {
             textDecoration: 'underline',
@@ -92,7 +90,7 @@ const styles = theme => ({
     },
     title: {
         display: 'inline-block',
-        maxWidth: 320,
+        maxWidth: 350,
         textDecoration: 'none',
         '&:hover': {
             textDecoration: 'underline',
@@ -100,11 +98,7 @@ const styles = theme => ({
     },
     transaction: {
         marginLeft: 'auto',
-        marginRight: theme.spacing.unit * 2,
-    },
-    timestamp: {
         display: 'inline-block',
-        paddingRight: '0 !important',
     },
 });
 
