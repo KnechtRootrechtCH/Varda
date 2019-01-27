@@ -128,7 +128,7 @@ class TitleBar extends React.Component {
         let title = t('title');
         let subTitle = true;
         let showBackButton = false;
-        let headerColor = isAdmin ? 'default' : 'primary';
+        let headerColor = isAdmin ? 'secondary' : 'primary';
         let subheaderColor = isAdmin ? 'inherit' : 'inherit';
         let showSearch = true;
         const loading = false; //this.props.MovieDbStore.loading;

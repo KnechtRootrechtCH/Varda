@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {inject, observer} from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
@@ -28,9 +28,7 @@ import constants from '../config/constants';
 class History extends React.Component {
 
     state = {
-        sortAscending: true,
         filterMenuAnchor: null,
-        filterKey: 'updateStatus',
     }
 
     filters = [{
@@ -73,23 +71,21 @@ class History extends React.Component {
             key: 'downloaded',
             field: 'newValue',
             value: constants.STATUS.DOWNLOADED,
+        },{
+            key: 'removed',
+            field: 'newValue',
+            value: constants.STATUS.REMOVED,
         }
     ]
     componentDidMount = () => {
         // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
-        this.loadItems();
-    }
-
-    loadItems () {
-        // console.debug(`${this.constructor.name}.loadItems()`);
         this.props.DownloadHistoryStore.loadHistory();
     }
 
     toggleSortDirection = () => {
-        const sortAscending = !this.state.sortAscending;
-        this.setState({
-            sortAscending: sortAscending
-        })
+        const sortAscending = !this.props.DownloadHistoryStore.sortAscending;
+        this.props.DownloadHistoryStore.setSorting('timestamp', sortAscending);
+        this.props.DownloadHistoryStore.loadHistory();
     }
 
     handleFilterMenuOpen = event => {
@@ -102,12 +98,9 @@ class History extends React.Component {
 
     handFilterChange = (filter) => {
         // console.debug(`${this.constructor.name}.handFilterChange()`, filter.field, filter.value);
-        this.props.DownloadHistoryStore.setFilter(filter.field, filter.value);
-        this.loadItems();
+        this.props.DownloadHistoryStore.setFilter(filter.key, filter.field, filter.value);
+        this.props.DownloadHistoryStore.loadHistory();
         this.handleFilterMenuClose();
-        this.setState({
-            filterKey: filter.key,
-        })
     }
 
     render () {
@@ -115,18 +108,21 @@ class History extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
         const mobile = isWidthDown('xs', this.props.width);
-        const desktopLarge = isWidthUp('lg', this.props.width);
+        const desktop = isWidthUp('mod', this.props.width);
+
+        const activefilterKey = this.props.DownloadHistoryStore.filterKey;
+        const sortAscending = this.props.DownloadHistoryStore.sortAscending;
 
         return (
             <div className={classes.root}>
-                <div className={classes.container}>
-                    <div className={mobile ? classes.headerMobile : desktopLarge ? classes.headerDesktop : classes.header}>
+                <div className={mobile ? classes.containerMobile : classes.container}>
+                    <div className={mobile ? classes.headerMobile : classes.header}>
                         <Typography className={classes.title} variant='h6' component='h2'>
                             <span>{t('common.history')}</span>
                         </Typography>
                         <div className={classes.controls}>
                             <Filter className={classes.control} onClick={this.handleFilterMenuOpen}/>
-                            { this.state.sortAscending ?
+                            { sortAscending ?
                                 <SortAscending className={classes.control} onClick={this.toggleSortDirection}/>
                             :
                                 <SortDescending className={classes.control} onClick={this.toggleSortDirection}/>
@@ -135,7 +131,7 @@ class History extends React.Component {
                         </div>
                     </div>
                     <div className={mobile ? classes.listMobile : classes.list}>
-                        <TransactionList sortAscending={this.state.sortAscending}/>
+                        <TransactionList sortAscending={this.state.sortAscending} desktop={desktop} mobile={mobile}/>
                     </div>
                 </div>
                 <Menu
@@ -147,7 +143,7 @@ class History extends React.Component {
                             return (
                                 <MenuItem key={filter.key} onClick={() => this.handFilterChange(filter)}>
                                     <ListItemIcon>
-                                        { this.state.filterKey === filter.key ?
+                                        { activefilterKey === filter.key ?
                                             <CheckboxMarkedCircle/>
                                         :
                                             <CheckboxBlankCircleOutline/>
@@ -172,25 +168,17 @@ const styles = theme => ({
         marginLeft: 'auto',
         marginRight: 'auto',
     },
-    itemGrid: {
-        marginTop: theme.spacing.unit,
+    container: {
         marginRight: theme.spacing.unit * 3,
         marginBottom: theme.spacing.unit,
         marginLeft: theme.spacing.unit * 3,
     },
-    itemGridMobile: {
-        marginTop: theme.spacing.unit,
+    containerMobile: {
         marginRight: 0,
         marginBottom: theme.spacing.unit,
         marginLeft: 0,
     },
     header: {
-        paddingTop: theme.spacing.unit * 2,
-        paddingRight: theme.spacing.unit * 2,
-        marginBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 2,
-    },
-    headerDesktop: {
         paddingTop: theme.spacing.unit * 2,
         marginRight: 0,
         marginBottom: theme.spacing.unit,

@@ -4,57 +4,56 @@ import { firestore } from '../config/fire'
 import AuthenticationStore from './AuthenticationStore';
 
 class DownloadHistoryStore {
+    @observable loading = false;
     @observable history = [];
-    filterField = 'transaction';
-    filterValue = 'updateStatus';
-    filter = null;
+    @observable filterField = 'transaction';
+    @observable filterValue = 'updateStatus';
+    @observable filterKey = 'updateStatus';
+    @observable sortField = 'timestamp';
+    @observable sortAscending = false;
+    limit = 500;
 
     @action async loadHistory () {
         // console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid, this.filterField, this.filterValue);
         runInAction(() => {
             this.loading = true;
         })
-        if (this.filterField && this.filterValue) {
-            firestore
-                .collection('users')
-                .doc(this.dataUid)
-                .collection('transactions')
-                .where(this.filterField, '==', this.filterValue)
-                .get()
-                .then((snapshot) => {
-                    runInAction(() => {
-                        this.loading = false;
-                        this.history = [];
-                    });
-                    snapshot.forEach(doc => {
-                        runInAction(() => {
-                            this.history.push(doc.data());
-                        });
-                    });
+        firestore
+            .collection('users')
+            .doc(this.dataUid)
+            .collection('transactions')
+            .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
+            .limit(this.limit)
+            .onSnapshot((snapshot) => {
+                runInAction(() => {
+                    this.history = [];
                 });
-        } else {
-            firestore
-                .collection('users')
-                .doc(this.dataUid)
-                .collection('transactions')
-                .get()
-                .then((snapshot) => {
-                    runInAction(() => {
-                        this.loading = false;
-                        this.history = [];
-                    });
-                    snapshot.forEach(doc => {
-                        runInAction(() => {
-                            this.history.push(doc.data());
-                        });
-                    });
+                snapshot.forEach(doc => {
+                    this.addItem(doc.data())
                 });
+                runInAction(() => {
+                    this.loading = false;
+                });
+        });
+    }
+
+    @action addItem(item) {
+        if (!this.filterField || !this.filterValue) {
+            this.history.push(item);
+        } else if (item[this.filterField] === this.filterValue) {
+            this.history.push(item);
         }
     }
 
-    @action setFilter(filterField, filterValue) {
+    @action setFilter(filterKey, filterField, filterValue) {
+        this.filterKey = filterKey;
         this.filterField = filterField;
         this.filterValue = filterValue;
+    }
+
+    @action setSorting(sortField, sortAscending) {
+        this.sortField = sortField;
+        this.sortAscending = sortAscending;
     }
 
     @computed get dataUid () {

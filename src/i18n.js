@@ -115,6 +115,7 @@ i18n.init({
                         redownload: 'Status updates: Redownload',
                         downloading: 'Status updates: Downloading',
                         downloaded: 'Status updates: Done',
+                        removed: 'Status updates: Removed',
                     },
                     transaction: {
                         updatePriority: 'Priority',
@@ -250,6 +251,7 @@ i18n.init({
                         redownload: 'Statusänderungen: Nochmals herunterladen',
                         downloading: 'Statusänderungen: Wird heruntergeladen',
                         downloaded: 'Statusänderungen: Erledigt',
+                        removed: 'Statusänderungen: Entfernt',
                     },
                     transaction: {
                         updatePriority: 'Priorität',

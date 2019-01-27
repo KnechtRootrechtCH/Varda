@@ -30,19 +30,24 @@ class TransactionPanel extends React.Component {
         const timestamp = Moment(data.timestamp, 'YYYY-MM-DD HH-mm-ss-S ZZ');
         const timestampShort = timestamp.format('DD.MM.YYYY HH:mm');
         const timestampLong = timestamp.format('DD.MM.YYYY HH:mm ZZ');
+        const title = data.title ? data.title : '-';
 
         const transactionKey = data.transaction === 'updateStatus' ? `history.transaction.${data.newValue}` : `history.transaction.${data.transaction}`;
         const newValue = data.transaction === 'updateStatus' ? t(`history.transaction.${data.newValue}`) : data.newValue;
         const transactionLong = data.transaction === 'comment' ? t( `history.transaction.${data.transaction}`) : `${t( `history.transaction.${data.transaction}`)}: ${newValue}`;
         const transactionColor = data.isAdminAction ? 'secondary' : 'primary';
 
-        const address = `/browse/${data.key.replace(':', '/')}`;
+        const now = Moment();
+        const diff = now.diff(timestamp, 'minutes');
+        const timeColor = diff < 60 ? 'primary' : 'textPrimary';
+
+        const address = data.key ? `/browse/${data.key.replace(':', '/')}` : null;
 
         return (
-            <ExpansionPanel className={classes.panel}>
+            <ExpansionPanel className={classes.root}>
                 <ExpansionPanelSummary className={classes.summary}>
                     <Typography className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title} component={Link} to={address} noWrap>
-                        {data.title}
+                        {title}
                     </Typography>
                     <Tooltip title={transactionLong} aria-label={transactionLong}>
                         <Typography className={classes.transaction} align='right' color={transactionColor}>
@@ -50,7 +55,7 @@ class TransactionPanel extends React.Component {
                         </Typography>
                     </Tooltip>
                     <Tooltip title={timestampLong} aria-label={timestampLong}>
-                        <Typography className={classes.timestamp} align='right'>
+                        <Typography className={classes.timestamp} align='right' color={timeColor}>
                             {timestampShort}
                         </Typography>
                     </Tooltip>
@@ -66,7 +71,8 @@ const styles = theme => ({
 
     },
     summary: {
-        paddingRight: 0,
+        paddingRight: theme.spacing.unit * 2,
+        paddingLeft: theme.spacing.unit * 2,
     },
     titleMobile: {
         display: 'inline-block',
@@ -78,7 +84,7 @@ const styles = theme => ({
     },
     titleDesktop: {
         display: 'inline-block',
-        maxWidth: 600,
+        maxWidth: 580,
         textDecoration: 'none',
         '&:hover': {
             textDecoration: 'underline',
@@ -86,7 +92,7 @@ const styles = theme => ({
     },
     title: {
         display: 'inline-block',
-        maxWidth: 300,
+        maxWidth: 320,
         textDecoration: 'none',
         '&:hover': {
             textDecoration: 'underline',
@@ -98,6 +104,7 @@ const styles = theme => ({
     },
     timestamp: {
         display: 'inline-block',
+        paddingRight: '0 !important',
     },
 });
 
