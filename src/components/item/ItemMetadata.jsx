@@ -12,7 +12,9 @@ import {
     DialogTitle,
     Typography } from '@material-ui/core';
 
-import { InformationOutline }  from 'mdi-material-ui';
+import {
+    InformationOutline,
+    Netflix }  from 'mdi-material-ui';
 
 import MetadataService from '../../service/MetadataService';
 
@@ -38,7 +40,6 @@ class ItemMetadata extends React.Component {
     handleOpenUrl(url) {
         console.debug(`${this.constructor.name}.handleOpenUrl()`, url);
         const win = window.open(url, '_blank');
-        win.focus();
     }
 
     loadExpandedReleaseDates() {
@@ -143,14 +144,31 @@ class ItemMetadata extends React.Component {
         const rating = item.vote_average;
         rows.push({
             key: 'rating',
-            value: rating,
+            value: `${rating}/10`,
+            display: rating,
+        });
+
+        // links
+        const searchString = MetadataService.getTitleSearchString(item);
+        const homepage = item.homepage;
+        const isNetflix = MetadataService.isNetflixUrl(homepage);
+        const movieDb = `https://www.themoviedb.org/${MetadataService.getMediaType(item)}/${item.id}`;
+        const traktTv = `https://trakt.tv/search?query=${searchString}`;
+        rows.push({
+            key: 'links',
+            value: {
+                homepage: homepage,
+                isNetflix: isNetflix,
+                movieDb: movieDb,
+                traktTv: traktTv,
+            },
             display: rating,
         });
 
         // overview
         const overview = item.overview;
 
-        // console.debug(`${this.constructor.name}.render()`, rows);
+        console.debug(`${this.constructor.name}.render()`, item);
         return (
             <div className={classes.root}>
                 <table className={classes.table}>
@@ -175,23 +193,58 @@ class ItemMetadata extends React.Component {
         return (
             <tr key={key}>
                 <td className={classes.cell}>
-                    <Typography variant='caption' noWrap>
+                    <Typography variant='caption'>
                         <span className={classes.label}>
                             {t(`details.${key}`)}&nbsp;
                         </span>
                     </Typography>
                 </td>
+                { key === 'links' ?
                 <td>
-                    <Typography variant='caption' noWrap>
+                    {this.renderLinks(value)}
+                </td>
+                :
+                <td>
+                    <Typography
+                        variant='caption'
+                        className={url || key === 'releaseDate'? classes.infoActive : classes.info}
+                        onClick={url ? () => this.handleOpenUrl(url) : key  === 'releaseDate' ? this.handleReleaseDateExpand : null}>
                         {value}
                         { url ?
-                            <InformationOutline className={classes.link} color='secondary' onClick={() => this.handleOpenUrl(url)}/>
+                            <InformationOutline className={classes.linkIcon} color='secondary' onClick={() => this.handleOpenUrl(url)}/>
                         : key === 'releaseDate' &&
-                            <InformationOutline className={classes.link} color='secondary' onClick={this.handleReleaseDateExpand}/>
+                            <InformationOutline className={classes.linkIcon} color='secondary' onClick={this.handleReleaseDateExpand}/>
                         }
                     </Typography>
                 </td>
+                }
+
             </tr>
+        )
+    }
+
+    renderLinks (links) {
+        const classes = this.props.classes;
+
+        return (
+            <Typography variant='caption' className={classes.info}>
+            <span>
+                <span className={classes.infoActive} onClick={() => this.handleOpenUrl(links.movieDb)}>
+                    MovieDb
+                </span>
+                ,&nbsp;
+                <span className={classes.infoActive} onClick={() => this.handleOpenUrl(links.traktTv)}>
+                    TraktTv
+                </span>
+                ,&nbsp;
+                <span className={classes.infoActive} onClick={() => this.handleOpenUrl(links.homepage)}>
+                    Homepage
+                { links.isNetflix &&
+                    <Netflix className={classes.netflixIcon}/>
+                }
+                </span>
+            </span>
+            </Typography>
         )
     }
 
@@ -247,23 +300,41 @@ const styles = theme => ({
         borderSpacing: 0,
     },
     cell: {
-        minWidth: 90,
+        minWidth: 140,
         paddingRight: theme.spacing.unit,
         paddingLeft: 0,
+        verticalAlign: 'text-top',
     },
     label: {
         textTransform: 'uppercase',
     },
+    info: {
+        overflow: 'auto',
+    },
+    infoActive: {
+        overflow: 'auto',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
     overview: {
         marginTop: theme.spacing.unit,
     },
-    link: {
+    linkIcon: {
         cursor: 'pointer',
         verticalAlign: 'middle',
         width: 16,
         height: 16,
         marginBottom: 3,
         marginLeft: theme.spacing.unit / 2,
+    },
+    netflixIcon: {
+        color: '#B9090B',
+        verticalAlign: 'middle',
+        width: 16,
+        height: 16,
+        marginBottom: 3,
     },
     releaseDateTable : {
         margin: theme.spacing.unit,

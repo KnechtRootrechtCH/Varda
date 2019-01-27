@@ -83,6 +83,7 @@ i18n.init({
                     firstAirDate: 'First air date',
                     releaseDate: 'Release date',
                     releaseDates: 'Release dates',
+                    links: 'Links',
                     release: {
                         ch: {
                             type1: 'CH Premiere',
@@ -219,6 +220,7 @@ i18n.init({
                     firstAirDate: 'Erstausstrahlung',
                     releaseDate: 'Veröffentlichung',
                     releaseDates: 'Veröffentlichungs Daten',
+                    links: 'Links',
                     release: {
                         ch: {
                             type1: 'CH Premiere',

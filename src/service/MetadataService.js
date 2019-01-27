@@ -72,11 +72,8 @@ class MetadataService {
         return url
     }
 
-    isAvailableOnNetflix (item) {
-        if (item.homepage) {
-            return item.homepage.indexOf('www.netflix.com/') > -1;
-        }
-        return false
+    isNetflixUrl (url) {
+        return url.indexOf('www.netflix.com/') > -1;
     }
 
     getNetflixUrl (item) {
@@ -145,6 +142,22 @@ class MetadataService {
             }
         })
         return releaseDates;
+    }
+
+    getTitleSearchString (item) {
+        let query = this.getTitle(item)
+        query = query.replace(/[-+():;]/gi, '')
+        query = query.replace(/ +(?= )/g, '')
+        query = query.replace(/\s/g, '+')
+        return query
+    }
+
+    getOriginalTitleSearchString (item) {
+        let query = this.getOriginalTitle(item)
+        query = query.replace(/[-+():;]/gi, '')
+        query = query.replace(/ +(?= )/g, '')
+        query = query.replace(/\s/g, '+')
+        return query
     }
 }
 
