@@ -10,6 +10,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    Link,
     Typography } from '@material-ui/core';
 
 import {
@@ -179,7 +180,7 @@ class ItemMetadata extends React.Component {
                     </tbody>
                 </table>
                 { overview &&
-                    <Typography className={classes.overview} variant='caption'>{overview}</Typography>
+                    <Typography className={classes.overview} variant='body2'>{overview}</Typography>
                 }
                 { this.renderDialog()}
             </div>
@@ -193,7 +194,7 @@ class ItemMetadata extends React.Component {
         return (
             <tr key={key}>
                 <td className={classes.cell}>
-                    <Typography variant='caption'>
+                    <Typography variant='body2'>
                         <span className={classes.label}>
                             {t(`details.${key}`)}&nbsp;
                         </span>
@@ -203,18 +204,26 @@ class ItemMetadata extends React.Component {
                 <td>
                     {this.renderLinks(value)}
                 </td>
+                :  url ?
+                <td>
+                    <Link href={url} target='_blank' color='textPrimary'>
+                        <Typography className={classes.infoActive} variant='body2'>
+                            {value}
+                            <InformationOutline className={classes.linkIcon} color='secondary' onClick={() => this.handleOpenUrl(url)}/>
+                        </Typography>
+                    </Link>
+                </td>
+                : key === 'releaseDate' ?
+                <td>
+                    <Typography className={classes.infoActive} color='textPrimary' onClick={this.handleReleaseDateExpand} variant='body2'>
+                        {value}
+                        <InformationOutline className={classes.linkIcon} color='secondary'/>
+                    </Typography>
+                </td>
                 :
                 <td>
-                    <Typography
-                        variant='caption'
-                        className={url || key === 'releaseDate'? classes.infoActive : classes.info}
-                        onClick={url ? () => this.handleOpenUrl(url) : key  === 'releaseDate' ? this.handleReleaseDateExpand : null}>
+                    <Typography className={classes.info} variant='body2'>
                         {value}
-                        { url ?
-                            <InformationOutline className={classes.linkIcon} color='secondary' onClick={() => this.handleOpenUrl(url)}/>
-                        : key === 'releaseDate' &&
-                            <InformationOutline className={classes.linkIcon} color='secondary' onClick={this.handleReleaseDateExpand}/>
-                        }
                     </Typography>
                 </td>
                 }
@@ -227,23 +236,22 @@ class ItemMetadata extends React.Component {
         const classes = this.props.classes;
 
         return (
-            <Typography variant='caption' className={classes.info}>
-            <span>
-                <span className={classes.infoActive} onClick={() => this.handleOpenUrl(links.movieDb)}>
+            <Typography variant='body2' className={classes.info}>
+                <Link className={classes.infoActive} href={links.movieDb} target='_blank' color='textPrimary'>
+
                     MovieDb
-                </span>
+                </Link>
                 ,&nbsp;
-                <span className={classes.infoActive} onClick={() => this.handleOpenUrl(links.traktTv)}>
+                <Link className={classes.infoActive} href={links.traktTv} target='_blank' color='textPrimary'>
                     TraktTv
-                </span>
+                </Link>
                 ,&nbsp;
-                <span className={classes.infoActive} onClick={() => this.handleOpenUrl(links.homepage)}>
+                <Link className={classes.infoActive} href={links.homepage} target='_blank' color='textPrimary'>
                     Homepage
                 { links.isNetflix &&
                     <Netflix className={classes.netflixIcon}/>
                 }
-                </span>
-            </span>
+                </Link>
             </Typography>
         )
     }
@@ -268,12 +276,12 @@ class ItemMetadata extends React.Component {
                             return (
                                 <tr key={row.key + Math.random()}>
                                     <td>
-                                        <Typography variant='caption'>
+                                        <Typography variant='body2'>
                                             {t(`details.${row.key}`)}
                                         </Typography>
                                     </td>
                                     <td>
-                                        <Typography variant='caption' noWrap>
+                                        <Typography variant='body2' noWrap>
                                             {row.value}
                                         </Typography>
                                     </td>
@@ -314,6 +322,7 @@ const styles = theme => ({
     infoActive: {
         overflow: 'auto',
         cursor: 'pointer',
+        textDecoration: 'none',
         '&:hover': {
             textDecoration: 'underline',
         },
