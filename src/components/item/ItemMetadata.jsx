@@ -14,6 +14,7 @@ import {
     Typography } from '@material-ui/core';
 
 import {
+    Amazon,
     InformationOutline,
     Netflix }  from 'mdi-material-ui';
 
@@ -153,6 +154,7 @@ class ItemMetadata extends React.Component {
         const searchString = MetadataService.getTitleSearchString(item);
         const homepage = item.homepage;
         const isNetflix = MetadataService.isNetflixUrl(homepage);
+        const isAmazon = MetadataService.isAmazonUrl(homepage);
         const movieDb = `https://www.themoviedb.org/${MetadataService.getMediaType(item)}/${item.id}`;
         const traktTv = `https://trakt.tv/search?query=${searchString}`;
         rows.push({
@@ -160,6 +162,7 @@ class ItemMetadata extends React.Component {
             value: {
                 homepage: homepage,
                 isNetflix: isNetflix,
+                isAmazon: isAmazon,
                 movieDb: movieDb,
                 traktTv: traktTv,
             },
@@ -169,7 +172,7 @@ class ItemMetadata extends React.Component {
         // overview
         const overview = item.overview;
 
-        console.debug(`${this.constructor.name}.render()`, item);
+        // console.debug(`${this.constructor.name}.render()`, item);
         return (
             <div className={classes.root}>
                 <table className={classes.table}>
@@ -246,12 +249,22 @@ class ItemMetadata extends React.Component {
                     TraktTv
                 </Link>
                 ,&nbsp;
-                <Link className={classes.infoActive} href={links.homepage} target='_blank' color='textPrimary'>
-                    Homepage
-                { links.isNetflix &&
-                    <Netflix className={classes.netflixIcon}/>
+                { links.isNetflix ?
+                    <Link className={classes.infoActive} href={links.homepage} target='_blank' color='textPrimary'>
+                        Netflix
+                        <Netflix className={classes.netflixIcon}/>
+                    </Link>
+                : links.isAmazon ?
+                    <Link className={classes.infoActive} href={links.homepage} target='_blank' color='textPrimary'>
+                        Amazon
+                        <Amazon className={classes.amazonIcon}/>
+                    </Link>
+                :
+                    <Link className={classes.infoActive} href={links.homepage} target='_blank' color='textPrimary'>
+                        Homepage
+                    </Link>
                 }
-                </Link>
+
             </Typography>
         )
     }
@@ -340,6 +353,13 @@ const styles = theme => ({
     },
     netflixIcon: {
         color: '#B9090B',
+        verticalAlign: 'middle',
+        width: 16,
+        height: 16,
+        marginBottom: 3,
+    },
+    amazonIcon: {
+        color: '#ffa724',
         verticalAlign: 'middle',
         width: 16,
         height: 16,

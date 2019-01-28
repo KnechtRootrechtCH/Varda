@@ -15,7 +15,7 @@ import TransactionPanel from './TransactionPanel';
 class TransactionList extends React.Component {
 
     render () {
-        // console.debug(`${this.constructor.name}.render()`);
+        // console.debug(`${this.constructor.name}.render()`, this.props.DownloadHistoryStore.history);
         const classes = this.props.classes;
         // const t = this.props.t;
         // const mobile = this.props.mobile;
@@ -27,7 +27,7 @@ class TransactionList extends React.Component {
             <div className={classes.root}>
                 { !this.props.DownloadHistoryStore.loading && history.map((row, index) => {
                     return (
-                        <TransactionPanel transaction={row} key={`${row.timestamp} - ${row.transaction}`} index={index}/>
+                        <TransactionPanel transaction={row} key={`${row.timestamp} - ${row.transaction}`} index={index} itemHistory={this.props.itemHistory}/>
                     )
                 })}
 

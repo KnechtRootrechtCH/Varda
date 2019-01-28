@@ -14,8 +14,9 @@ import {
     Explore,
     History,
     Movie,
-    Tv,
-    ViewList } from '@material-ui/icons';
+    Tv } from '@material-ui/icons';
+
+import { BriefcaseDownload }  from 'mdi-material-ui';
 
 @withNamespaces()
 @inject('AuthenticationStore')
@@ -76,7 +77,7 @@ class NavigationBar extends React.Component {
                 <BottomNavigationAction
                     value='list'
                     label={t('common.listShort')}
-                    icon={<ViewList />}
+                    icon={<BriefcaseDownload />}
                     component={Link}
                     to='/browse/list'/>
                 <BottomNavigationAction

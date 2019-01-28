@@ -29,6 +29,9 @@ class TransactionPanel extends React.Component {
         const desktop = isWidthUp('md', this.props.width);
 
         const data = this.props.transaction;
+        const timestamp = Moment(data.timestamp, 'YYYY-MM-DD HH-mm-ss-SSSS ZZ');
+        const timestampString = timestamp.format('DD.MM.YYYY HH:mm');
+        const itemHistory = this.props.itemHistory;
         const title = data.title ? data.title : '-';
 
         const transactionKey = data.transaction === 'updateStatus' ? `history.transaction.${data.newValue}` : `history.transaction.${data.transaction}`;
@@ -38,7 +41,6 @@ class TransactionPanel extends React.Component {
 
         let expand = false;
         if (this.props.index === 0) {
-            const timestamp = Moment(data.timestamp, 'YYYY-MM-DD HH-mm-ss-S ZZ');
             const now = Moment();
             const diff = now.diff(timestamp, 'hours');
             expand = diff <= 24;
@@ -49,9 +51,15 @@ class TransactionPanel extends React.Component {
         return (
             <ExpansionPanel className={classes.root} defaultExpanded={expand}>
                 <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
-                    <Typography className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title} component={Link} to={address} noWrap>
-                        {title}
-                    </Typography>
+                    { itemHistory ?
+                        <Typography className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title} noWrap>
+                            {timestampString}
+                        </Typography>
+                    :
+                        <Typography className={classes.titleActive + ' ' + (mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title)} component={Link} to={address} noWrap>
+                            {title}
+                        </Typography>
+                    }
                     <Tooltip title={transactionLong} aria-label={transactionLong}>
                         <Typography className={classes.transaction} align='right' color={transactionColor}>
                             {t(transactionKey)}
@@ -72,29 +80,23 @@ const styles = theme => ({
         paddingRight: theme.spacing.unit * 2,
         paddingLeft: theme.spacing.unit * 2,
     },
-    titleMobile: {
-        display: 'inline-block',
-        maxWidth: 250,
+    titleActive: {
         textDecoration: 'none',
         '&:hover': {
             textDecoration: 'underline',
         }
+    },
+    titleMobile: {
+        display: 'inline-block',
+        maxWidth: 250,
     },
     titleDesktop: {
         display: 'inline-block',
         maxWidth: 600,
-        textDecoration: 'none',
-        '&:hover': {
-            textDecoration: 'underline',
-        }
     },
     title: {
         display: 'inline-block',
         maxWidth: 350,
-        textDecoration: 'none',
-        '&:hover': {
-            textDecoration: 'underline',
-        }
     },
     transaction: {
         marginLeft: 'auto',

@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
+import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 
 import { Divider } from '@material-ui/core';
 
 import ItemCast from './ItemCast';
-import ItemComments from './ItemComments';
+import ItemHistory from './ItemHistory';
 import ItemDownloadActions from './ItemDownloadActions';
 import ItemHeader from './ItemHeader'
-import ItemLinks from './ItemLinks';
 import ItemMetadata from './ItemMetadata'
 import ItemRecommendations from './ItemRecommendations';
+
+import MetadataService from '../../service/MetadataService';
 
 @withNamespaces()
 @inject('AuthenticationStore')
@@ -23,32 +25,33 @@ class ItemDetailPanel extends React.Component {
         // console.debug(`${this.constructor.name}.render()`, this.props.item);
         const classes = this.props.classes;
         // const t = this.props.t;
+        const mobile = isWidthDown('xs', this.props.width);
+        const desktop = isWidthUp('md', this.props.width);
 
         const item = this.props.item;
         const statusItem = this.props.statusItem
+        const key = MetadataService.getKey(item);
 
         return (
             <div className={classes.root}>
-                <ItemHeader item={item} statusItem={statusItem}/>
-                <ItemMetadata item={item} statusItem={statusItem}/>
+                <ItemHeader itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                 { this.props.AuthenticationStore.isAdmin &&
                     <div>
                         <Divider className={classes.divider}/>
-                        <ItemDownloadActions item={item} statusItem={statusItem}/>
+                        <ItemDownloadActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                     </div>
                 }
                 <Divider className={classes.divider}/>
-                <ItemLinks item={item} statusItem={statusItem}/>
+                <ItemCast itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                 <Divider className={classes.divider}/>
-                <ItemCast item={item} statusItem={statusItem}/>
+                <ItemRecommendations itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                 <Divider className={classes.divider}/>
-                <ItemRecommendations item={item} statusItem={statusItem}/>
-                <Divider className={classes.divider}/>
-                <ItemComments item={item} statusItem={statusItem}/>
+                <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                 { !this.props.AuthenticationStore.isAdmin &&
                     <div>
                         <Divider className={classes.divider}/>
-                        <ItemDownloadActions item={item} statusItem={statusItem}/>
+                        <ItemDownloadActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                     </div>
                 }
             </div>
@@ -74,4 +77,4 @@ ItemDetailPanel.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ItemDetailPanel);
+export default withStyles(styles)(withWidth()(ItemDetailPanel));

@@ -16,12 +16,13 @@ import {
     SwipeableDrawer } from '@material-ui/core';
 
 import {
-    Chat,
     Explore,
     History,
+    Mail,
     Movie,
-    Tv,
-    ViewList } from '@material-ui/icons';
+    Tv } from '@material-ui/icons';
+
+import { BriefcaseDownload }  from 'mdi-material-ui';
 
 @withNamespaces()
 @inject('AuthenticationStore')
@@ -119,7 +120,7 @@ class Navigation extends React.Component {
                         onClick={this.handleCloseDrawer}
                         className={loc === 'list' ? classes.drawerItemActive : null}>
                         <ListItemIcon>
-                            <ViewList className={loc === 'list' ? classes.drawerIconActive : null}/>
+                            <BriefcaseDownload className={loc === 'list' ? classes.drawerIconActive : null}/>
                         </ListItemIcon>
                         <ListItemText primary={t('common.list')}/>
                     </ListItem>
@@ -141,7 +142,7 @@ class Navigation extends React.Component {
                         onClick={this.handleCloseDrawer}
                         className={loc === 'messages' ? classes.drawerItemActive : null}>
                         <ListItemIcon>
-                            <Chat className={loc === 'messages' ? classes.drawerIconActive : null}/>
+                            <Mail className={loc === 'messages' ? classes.drawerIconActive : null}/>
                         </ListItemIcon>
                         <ListItemText primary={t('common.messages')}/>
                     </ListItem>

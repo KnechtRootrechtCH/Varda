@@ -15,9 +15,7 @@ import {
 import {
     CheckboxBlankCircleOutline,
     CheckboxMarkedCircle,
-    Filter,
-    SortAscending,
-    SortDescending } from 'mdi-material-ui';
+    Filter } from 'mdi-material-ui';
 
 import TransactionList from './history/TransactionList'
 import constants from '../config/constants';
@@ -81,6 +79,8 @@ class History extends React.Component {
     ]
     componentDidMount = () => {
         // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
+        this.props.DownloadHistoryStore.setSorting('timestamp', false);
+        this.props.DownloadHistoryStore.setFilter('updateStatus', 'transaction', 'updateStatus');
         this.props.DownloadHistoryStore.loadHistory();
         this.setState({
             isAdmin: this.props.AuthenticationStore.isAdmin,
@@ -126,7 +126,6 @@ class History extends React.Component {
         const desktop = isWidthUp('mod', this.props.width);
 
         const activefilterKey = this.props.DownloadHistoryStore.filterKey;
-        const sortAscending = this.props.DownloadHistoryStore.sortAscending;
         const isAdmin = this.props.AuthenticationStore.dataUid;
 
         return (
@@ -138,16 +137,10 @@ class History extends React.Component {
                         </Typography>
                         <div className={classes.controls}>
                             <Filter className={classes.control} onClick={this.handleFilterMenuOpen}/>
-                            { sortAscending ?
-                                <SortAscending className={classes.control} onClick={this.toggleSortDirection}/>
-                            :
-                                <SortDescending className={classes.control} onClick={this.toggleSortDirection}/>
-                            }
-
                         </div>
                     </div>
                     <div className={mobile ? classes.listMobile : classes.list}>
-                        <TransactionList sortAscending={this.state.sortAscending} desktop={desktop} mobile={mobile}/>
+                        <TransactionList desktop={desktop} mobile={mobile} isAdmin={isAdmin}/>
                     </div>
                 </div>
                 <Menu
