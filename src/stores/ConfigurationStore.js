@@ -8,6 +8,7 @@ class ConfigurationStore {
     @observable configuration = {
         priorityCount: 5,
         showDiscovery: false,
+        importPriorityShift: 1,
     };
 
     constructor() {

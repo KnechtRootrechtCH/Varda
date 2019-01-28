@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { Divider } from '@material-ui/core';
 
+import ImportSettings from './settings/ImportSettings';
 import ThemeSettings from './settings/ThemeSettings';
 
 class Settings extends React.Component {
@@ -15,6 +16,8 @@ class Settings extends React.Component {
         return (
             <div className={classes.root}>
                 <ThemeSettings/>
+                <Divider className={classes.divider}/>
+                <ImportSettings/>
                 <Divider className={classes.divider}/>
             </div>
         );

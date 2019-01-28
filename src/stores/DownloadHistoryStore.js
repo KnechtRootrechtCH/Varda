@@ -6,21 +6,47 @@ import AuthenticationStore from './AuthenticationStore';
 class DownloadHistoryStore {
     @observable loading = false;
     @observable history = [];
-    @observable filterField = 'transaction';
-    @observable filterValue = 'updateStatus';
-    @observable filterKey = 'updateStatus';
+    @observable filterField = '';
+    @observable filterValue = '';
+    @observable filterKey = '';
     @observable sortField = 'timestamp';
     @observable sortAscending = false;
-    limit = 500;
+    limit = 100;
 
     @action async loadHistory () {
-        // console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid, this.filterField, this.filterValue);
+        // console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid);
         runInAction(() => {
             this.loading = true;
         })
         firestore
             .collection('users')
             .doc(this.dataUid)
+            .collection('transactions')
+            .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
+            .limit(this.limit)
+            .onSnapshot((snapshot) => {
+                runInAction(() => {
+                    this.history = [];
+                });
+                snapshot.forEach(doc => {
+                    this.addItem(doc.data())
+                });
+                runInAction(() => {
+                    this.loading = false;
+                });
+        });
+    }
+
+    @action async loadItemHistory (key) {
+        // console.debug('DownloadHistoryStore.loadItemHistory() : loading', this.dataUid, loadItemHistory);
+        runInAction(() => {
+            this.loading = true;
+        })
+        firestore
+            .collection('users')
+            .doc(this.dataUid)
+            .collection('items')
+            .doc(key)
             .collection('transactions')
             .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
             .limit(this.limit)

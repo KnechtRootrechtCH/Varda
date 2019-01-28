@@ -27,7 +27,7 @@ i18n.init({
                     seriesPlural: 'Series',
                     series: 'Series',
                     list: 'Download List',
-                    listShort: 'List',
+                    listShort: 'Downloads',
                     settings: 'Settings',
                     search: 'Search',
                     history: 'History',
@@ -148,6 +148,10 @@ i18n.init({
                     off: 'Off',
                     primaryColor: 'Primary color',
                     secondaryColor: 'Secondary color',
+                    importSettings: 'Data Import',
+                    startImport: 'Import data',
+                    cullImport: 'Cull data',
+                    validateImport: 'Validate data',
                 }
             }
         },
@@ -165,7 +169,7 @@ i18n.init({
                     seriesPlural: 'Serien',
                     series: 'Serie',
                     list: 'Download Liste',
-                    listShort: 'Liste',
+                    listShort: 'Downloads',
                     settings: 'Einstellungen',
                     search: 'Suchen',
                     history: 'Verlauf',
@@ -286,6 +290,10 @@ i18n.init({
                     off: 'Aus',
                     primaryColor: 'Hauptfarbe',
                     secondaryColor: 'Sekondärfarbe',
+                    importSettings: 'Daten Import',
+                    startImport: 'Import data',
+                    cullImport: 'Cull data',
+                    validateImport: 'Validate data',
                 }
             }
         }

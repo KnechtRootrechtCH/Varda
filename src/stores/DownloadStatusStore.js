@@ -47,38 +47,47 @@ class DownloadStatusStore {
         }
     }
 
-    @action async updateStatus(item, status, previousStatus, comment) {
+    @action async updateStatus(item, status, previousStatus, comment, skipLog) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateFormated(item, 'YYYY-MM-DD');
         const backdrop = item.backdrop_path;
+
         if (!previousStatus) {
             previousStatus = '';
         }
-        console.debug('DownloadStatusStore.updateStatus()', key, status);
 
+        if (!status) {
+            return;
+        }
+
+        const data = {
+            status: status,
+            title: title ? title : '',
+            release: release ? release : '',
+            backdrop: backdrop ? backdrop: '',
+        };
+
+        // console.debug('DownloadStatusStore.updateStatus()', key, data);
         const userDoc = firestore.collection('users').doc(this.dataUid);
         const statusCollection = userDoc.collection('items');
-        statusCollection.doc(`${key}`).set({
-            status: status,
-            title: title,
-            release: release,
-            backdrop: backdrop,
-        },{
+        statusCollection.doc(`${key}`).set(data,{
             merge: true
         });
 
-        this.updateItemData(key, item);
-        this.logTransaction(key, 'updateStatus', title, status, previousStatus, comment);
+        if (!skipLog) {
+            // this.updateItemData(key, item);
+            this.logTransaction(key, 'updateStatus', title, status, previousStatus, comment);
+        }
     }
 
-    @action async updatePriority(item, priority, previousPrority, comment) {
+    @action async updatePriority(item, priority, previousPrority, comment, isImport) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
         if (!previousPrority) {
             previousPrority = 0;
         }
-        console.debug('DownloadStatusStore.updatePriority()', key, priority);
+        // console.debug('DownloadStatusStore.updatePriority()', key, priority);
 
         const userDoc = firestore.collection('users').doc(this.dataUid);
         const collection = userDoc.collection('items');
@@ -88,8 +97,10 @@ class DownloadStatusStore {
             merge: true
         });
 
-        this.updateItemData(key, item);
-        this.logTransaction(key, 'updatePriority', title, priority, previousPrority, comment);
+        if (!isImport) {
+            // this.updateItemData(key, item);
+            this.logTransaction(key, 'updatePriority', title, priority, previousPrority, comment);
+        }
     }
 
     @action async updateItemData(key, item) {
@@ -105,7 +116,7 @@ class DownloadStatusStore {
     }
 
     @action async logTransaction(key, transaction, title, newValue, previousValue, comment){
-        const timestamp = Moment().format('YYYY-MM-DD HH-mm-ss-S ZZ');
+        const timestamp = Moment().format('YYYY-MM-DD HH-mm-ss-SSSS ZZ');
         comment = comment ? comment : '';
         previousValue = previousValue ? previousValue : '';
         // console.debug('DownloadStatusStore.logTransaction()', timestamp, transaction, newValue, comment);
@@ -124,6 +135,7 @@ class DownloadStatusStore {
                 isAdminAction: this.isAdminAction,
                 user: this.uid,
                 userName: this.displayName,
+                comment: comment,
             });
 
         firestore.collection('users')
@@ -140,6 +152,7 @@ class DownloadStatusStore {
                 userName: this.displayName,
                 key: key,
                 title: title,
+                comment: comment,
             });
     }
 

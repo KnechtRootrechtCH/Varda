@@ -39,7 +39,7 @@ class MetadataService {
         } else if (item.name) {
             return item.name;
         }
-        return null;
+        return '';
     }
 
     getOriginalTitle (item) {
@@ -48,7 +48,7 @@ class MetadataService {
         } else if (item.original_name) {
             return item.original_name;
         }
-        return null;
+        return '';
     }
 
     getReleaseDateMoment (item) {
@@ -76,16 +76,14 @@ class MetadataService {
         return url.indexOf('www.netflix.com/') > -1;
     }
 
-    getNetflixUrl (item) {
-        if (item.homepage && item.homepage.indexOf('www.netflix.com/') > -1) {
-            return item.homepage;
-        }
+    isAmazonUrl (url) {
+        return url.indexOf('www.amazon.com/') > -1;
     }
 
     getReleaseDateFormated (item, format) {
         let moment = this.getReleaseDateMoment(item);
         if (!moment) {
-            return null;
+            return '';
         }
         let formated = moment.format(format);
         return formated;
