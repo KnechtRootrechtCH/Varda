@@ -79,7 +79,7 @@ class ItemRecommendations extends React.Component {
         const address = `/browse/${mediaType}/${id}`;
 
         return (
-            <Fade in={this.state.showMore || index < count} key={recommendation.id} mountOnEnter={true} unmountOnExit={true}>
+            <Fade in={this.state.showMore || index < count} key={index} mountOnEnter={true} unmountOnExit={true}>
                 <GridListTile cols={1}>
                     <img src={image} alt={title} />
                     <GridListTileBar

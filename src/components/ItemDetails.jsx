@@ -10,6 +10,8 @@ import MetadataService from '../service/MetadataService';
 import ImageService from '../service/ImageService';
 import constants from '../config/constants';
 
+import { Fade } from '@material-ui/core';
+
 @withNamespaces()
 @inject('ConfigurationStore')
 @inject('DownloadStatusStore')
@@ -91,11 +93,16 @@ class ItemDetails extends React.Component {
 
         return (
             <div className={classes.root}>
-                <div style={backdrop}/>
-                <div style={spacer}/>
-                <div className={mobile ? classes.contentMobile : classes.content}>
-                    <ItemDetailPanel item={item} statusItem={statusItem} mobile={mobile}/>
-                </div>
+                <Fade in={!this.props.MovieDbStore.loading}>
+                    <div>
+                        <div style={backdrop}/>
+                        <div style={spacer}/>
+
+                        <div className={mobile ? classes.contentMobile : classes.content}>
+                            <ItemDetailPanel item={item} statusItem={statusItem} mobile={mobile}/>
+                        </div>
+                    </div>
+                </Fade>
             </div>
         );
      }

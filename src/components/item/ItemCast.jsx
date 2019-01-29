@@ -77,7 +77,7 @@ class ItemCast extends React.Component {
         const url = `https://www.themoviedb.org/person/${profile.id}`;
 
         return (
-            <Fade in={this.state.showMore || index < count} key={profile.cast_id} mountOnEnter={true} unmountOnExit={true}>
+            <Fade in={this.state.showMore || index < count} key={index} mountOnEnter={true} unmountOnExit={true}>
                 <GridListTile cols={1}>
                     <img src={profileImage} alt={profile.name} />
                     <GridListTileBar
