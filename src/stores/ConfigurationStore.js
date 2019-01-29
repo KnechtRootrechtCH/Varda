@@ -9,6 +9,8 @@ class ConfigurationStore {
         priorityCount: 5,
         showDiscovery: false,
         importPriorityShift: 1,
+        castDisplayRows: 2,
+        recommendationDisplayRows: 2,
     };
 
     constructor() {

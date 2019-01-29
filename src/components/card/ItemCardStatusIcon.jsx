@@ -43,7 +43,7 @@ class ItemCardStatusIcon extends React.Component {
     }
 
     handleItemEditOpen = event => {
-        console.debug(`${this.constructor.name}.handleItemEditOpen()`, event);
+        // console.debug(`${this.constructor.name}.handleItemEditOpen()`, event);
         event.preventDefault();
         this.setState({
             editMenuAnchor: event.currentTarget
@@ -51,7 +51,7 @@ class ItemCardStatusIcon extends React.Component {
     }
 
     handleItemEditClose = () => {
-        console.debug(`${this.constructor.name}.handleItemEditClose()`);
+        // console.debug(`${this.constructor.name}.handleItemEditClose()`);
         this.setState({
             editMenuAnchor: null
         });

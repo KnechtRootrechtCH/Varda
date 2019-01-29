@@ -41,7 +41,7 @@ class ItemMetadata extends React.Component {
 
     handleOpenUrl(url) {
         console.debug(`${this.constructor.name}.handleOpenUrl()`, url);
-        const win = window.open(url, '_blank');
+        window.open(url, '_blank');
     }
 
     loadExpandedReleaseDates() {

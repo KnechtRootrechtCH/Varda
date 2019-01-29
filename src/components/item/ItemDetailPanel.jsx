@@ -8,6 +8,7 @@ import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 import { Divider } from '@material-ui/core';
 
 import ItemCast from './ItemCast';
+import ItemComments from './ItemComments';
 import ItemHistory from './ItemHistory';
 import ItemDownloadActions from './ItemDownloadActions';
 import ItemHeader from './ItemHeader'
@@ -35,6 +36,7 @@ class ItemDetailPanel extends React.Component {
         return (
             <div className={classes.root}>
                 <ItemHeader itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
                 <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                 { this.props.AuthenticationStore.isAdmin &&
                     <div>
@@ -42,12 +44,19 @@ class ItemDetailPanel extends React.Component {
                         <ItemDownloadActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                     </div>
                 }
-                <Divider className={classes.divider}/>
-                <ItemCast itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
                 <Divider className={classes.divider}/>
                 <ItemRecommendations itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
+                <Divider className={classes.divider}/>
+                <ItemCast itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
+                <Divider className={classes.divider}/>
+                <ItemComments itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
                 <Divider className={classes.divider}/>
                 <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
                 { !this.props.AuthenticationStore.isAdmin &&
                     <div>
                         <Divider className={classes.divider}/>

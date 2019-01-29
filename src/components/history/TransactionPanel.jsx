@@ -39,12 +39,7 @@ class TransactionPanel extends React.Component {
         const transactionLong = data.transaction === 'comment' ? t( `history.transaction.${data.transaction}`) : `${t( `history.transaction.${data.transaction}`)}: ${newValue}`;
         const transactionColor = data.isAdminAction ? 'secondary' : 'primary';
 
-        let expand = false;
-        if (this.props.index === 0) {
-            const now = Moment();
-            const diff = now.diff(timestamp, 'hours');
-            expand = diff <= 24;
-        }
+        const expand = this.props.index === 0;
 
         const address = data.key ? `/browse/${data.key.replace(':', '/')}` : null;
 

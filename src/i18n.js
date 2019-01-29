@@ -32,6 +32,8 @@ i18n.init({
                     search: 'Search',
                     history: 'History',
                     messages: 'Messages',
+                    more: 'more',
+                    less: 'less',
                     priority: {
                         1: 'High',
                         2: 'Medium',
@@ -84,6 +86,10 @@ i18n.init({
                     releaseDate: 'Release date',
                     releaseDates: 'Release dates',
                     links: 'Links',
+                    downloadActions: 'Actions',
+                    comments: 'Comments',
+                    cast: 'Cast',
+                    recommendations: 'Recommendation',
                     release: {
                         ch: {
                             type1: 'CH Premiere',
@@ -174,6 +180,8 @@ i18n.init({
                     search: 'Suchen',
                     history: 'Verlauf',
                     messages: 'Nachrichten',
+                    more: 'mehr',
+                    less: 'weniger',
                     priority: {
                         1: 'Hoch',
                         2: 'Mittel',
@@ -226,6 +234,10 @@ i18n.init({
                     releaseDate: 'Veröffentlichung',
                     releaseDates: 'Veröffentlichungs Daten',
                     links: 'Links',
+                    downloadActions: 'Aktionen',
+                    comments: 'Kommentare',
+                    cast: 'Besetzung',
+                    recommendations: 'Empfehlungen',
                     release: {
                         ch: {
                             type1: 'CH Premiere',

@@ -1,4 +1,6 @@
 
+// import ThemeStore from '../stores/ThemeStore';
+
 class ImageService {
     getBackdropImage (item, size) {
         if (item && item.backdrop_path) {
@@ -41,7 +43,7 @@ class ImageService {
     }
 
     getProfilePlaceholder (size) {
-        return this.getPlaceholderImage(size, '??', '444499', 'ededed');
+        return this.getPlaceholderImage(size, '*', '444499', 'ededed');
     }
 
     getStillPlaceholder (size) {
