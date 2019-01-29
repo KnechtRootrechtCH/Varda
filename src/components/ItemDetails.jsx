@@ -39,6 +39,7 @@ class ItemDetails extends React.Component {
 
     loadItem = () => {
         // console.debug(`${this.constructor.name}.loadItems() : Media type => `, this.props.match.params.mediaType);
+        window.scrollTo(0, 0);
         const mediaType = this.props.match.params.mediaType
         const itemId = this.props.match.params.itemId
         this.props.MovieDbStore.loadItem(mediaType, itemId);

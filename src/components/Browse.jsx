@@ -38,7 +38,7 @@ class Browse extends React.Component {
 
     loadItems = () => {
         // console.debug(`${this.constructor.name}.loadItems() : Media type => `, this.props.match.params.mediaType);
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
         this.props.MovieDbStore.clearItems();
         this.props.MovieDbStore.setMediaType(this.props.match.params.mediaType);
         this.props.MovieDbStore.loadItems();

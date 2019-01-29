@@ -89,7 +89,7 @@ i18n.init({
                     downloadActions: 'Actions',
                     comments: 'Comments',
                     cast: 'Cast',
-                    recommendations: 'Recommendation',
+                    recommendations: 'Recommendations',
                     release: {
                         ch: {
                             type1: 'CH Premiere',
