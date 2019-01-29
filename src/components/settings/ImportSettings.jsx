@@ -86,7 +86,8 @@ class ImportSettings extends React.Component {
     importItem = (key, item, comment, priorityShift, index) => {
         console.debug(`${this.constructor.name}.importItem()`, key, item, index);
         const priority = Number(item.priority) + priorityShift;
-        const status = item.downloadStatus === 'hardToFind' ? constants.STATUS.NOT_FOUND : item.downloadStatus;
+        let status = item.downloadStatus === 'hardToFind' ? constants.STATUS.NOT_FOUND : item.downloadStatus;
+        status = item.downloadStatus === 'notYetAvailable' ? constants.STATUS.NOT_AVAILABLE : item.downloadStatus;
         this.props.DownloadStatusStore.updateStatus(item, status, '', comment, true);
         this.props.DownloadStatusStore.updatePriority(item, priority, 0, comment, true);
     }

@@ -52,6 +52,7 @@ class DownloadStatusStore {
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateFormated(item, 'YYYY-MM-DD');
         const backdrop = item.backdrop_path;
+        const timestamp = Moment().format('YYYY-MM-DD HH-mm-ss');
 
         if (!previousStatus) {
             previousStatus = '';
@@ -66,6 +67,7 @@ class DownloadStatusStore {
             title: title ? title : '',
             release: release ? release : '',
             backdrop: backdrop ? backdrop: '',
+            timestamp: timestamp,
         };
 
         // console.debug('DownloadStatusStore.updateStatus()', key, data);
@@ -84,6 +86,7 @@ class DownloadStatusStore {
     @action async updatePriority(item, priority, previousPrority, comment, isImport) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
+        const timestamp = Moment().format('YYYY-MM-DD HH-mm-ss');
         if (!previousPrority) {
             previousPrority = 0;
         }
@@ -93,6 +96,7 @@ class DownloadStatusStore {
         const collection = userDoc.collection('items');
         collection.doc(`${key}`).set({
             priority: priority,
+            timestamp: timestamp,
         },{
             merge: true
         });
