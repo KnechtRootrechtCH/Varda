@@ -81,8 +81,9 @@ class AuthenticationStore {
     @action logAccess() {
         // console.debug('AuthenticationStore.logAccess()', this.user);
         const userAgent = window.navigator.userAgent;
+        const now = new Date();
         const access = {
-            time: Moment().format('dddd DD.MM.YYYY HH:mm:ss ZZ'),
+            timestamp: now,
             userAgent: userAgent,
         }
 
@@ -94,16 +95,13 @@ class AuthenticationStore {
             merge: true
         });
 
-        const accessYearMonth = Moment().format('YYYY-MM');
-        const accessDay = Moment().format('DD - dddd');
-        const accessTime = Moment().format('HH-mm-ss ZZ');
+        const timestamp = Moment(now).format('YYYY-MM-DD HH-mm-ss Z')
 
         doc.collection('access')
-            .doc(accessYearMonth)
-            .collection(accessDay)
-            .doc(accessTime)
+            .doc(timestamp)
             .set({
                 userAgent: userAgent,
+                timestamp: now,
             }, {
                 merge: true
             });

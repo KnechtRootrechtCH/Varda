@@ -21,9 +21,9 @@ class TransactionDetails extends React.Component {
         const t = this.props.t;
 
         const data = this.props.data;
-        const timestamp = Moment(data.timestamp, 'YYYY-MM-DD HH-mm-ss-SSSS ZZ');
+        const timestamp = Moment(data.timestamp.toDate());
         const timestampString = timestamp.format('DD.MM.YYYY HH:mm');
-        const timestampLong = timestamp.format('DD.MM.YYYY HH:mm ZZ');
+        const timestampLong = timestamp.format('DD.MM.YYYY HH:mm Z');
 
         let transaction = t(`history.transaction.${data.transaction}`);
         transaction = data.transaction === 'updateStatus' ? `${transaction}: ${t(`history.transaction.${data.newValue}`)}` : transaction;

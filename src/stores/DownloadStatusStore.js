@@ -50,9 +50,8 @@ class DownloadStatusStore {
     @action async updateStatus(item, status, previousStatus, comment, skipLog) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
-        const release = MetadataService.getReleaseDateFormated(item, 'YYYY-MM-DD');
+        const release = MetadataService.getReleaseDateMoment(item);
         const backdrop = item.backdrop_path;
-        const timestamp = Moment().format('YYYY-MM-DD HH-mm-ss');
 
         if (!previousStatus) {
             previousStatus = '';
@@ -65,9 +64,9 @@ class DownloadStatusStore {
         const data = {
             status: status,
             title: title ? title : '',
-            release: release ? release : '',
+            release: release ? release.toDate() : new Date(0, 0, 0, 0, 0, 0, 0),
             backdrop: backdrop ? backdrop: '',
-            timestamp: timestamp,
+            timestamp: new Date(),
         };
 
         // console.debug('DownloadStatusStore.updateStatus()', key, data);
@@ -86,7 +85,6 @@ class DownloadStatusStore {
     @action async updatePriority(item, priority, previousPrority, comment, isImport) {
         const key = MetadataService.getKey(item);
         const title = MetadataService.getTitle(item);
-        const timestamp = Moment().format('YYYY-MM-DD HH-mm-ss');
         if (!previousPrority) {
             previousPrority = 0;
         }
@@ -96,7 +94,7 @@ class DownloadStatusStore {
         const collection = userDoc.collection('items');
         collection.doc(`${key}`).set({
             priority: priority,
-            timestamp: timestamp,
+            timestamp: new Date(),
         },{
             merge: true
         });
@@ -120,7 +118,8 @@ class DownloadStatusStore {
     }
 
     @action async logTransaction(key, transaction, title, newValue, previousValue, comment){
-        const timestamp = Moment().format('YYYY-MM-DD HH-mm-ss-SSSS ZZ');
+        const date = new Date();
+        const timestamp = Moment(date).format('YYYY-MM-DD HH-mm-ss-SSSS ZZ');
         comment = comment ? comment : '';
         previousValue = previousValue ? previousValue : '';
         // console.debug('DownloadStatusStore.logTransaction()', timestamp, transaction, newValue, comment);
@@ -132,7 +131,7 @@ class DownloadStatusStore {
             .collection('transactions')
             .doc(`${timestamp} - ${transaction}`)
             .set({
-                timestamp: timestamp,
+                timestamp: date,
                 transaction: transaction,
                 newValue: newValue,
                 previousValue: previousValue,
@@ -147,7 +146,7 @@ class DownloadStatusStore {
             .collection('transactions')
             .doc(`${timestamp} - ${transaction}`)
             .set({
-                timestamp: timestamp,
+                timestamp: date,
                 transaction: transaction,
                 newValue: newValue,
                 previousValue: previousValue,

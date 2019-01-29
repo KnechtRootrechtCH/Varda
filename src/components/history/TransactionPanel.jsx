@@ -29,7 +29,7 @@ class TransactionPanel extends React.Component {
         const desktop = isWidthUp('md', this.props.width);
 
         const data = this.props.transaction;
-        const timestamp = Moment(data.timestamp, 'YYYY-MM-DD HH-mm-ss-SSSS ZZ');
+        const timestamp = Moment(data.timestamp.toDate());
         const timestampString = timestamp.format('DD.MM.YYYY HH:mm');
         const itemHistory = this.props.itemHistory;
         const title = data.title ? data.title : '-';
