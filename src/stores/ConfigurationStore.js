@@ -21,7 +21,10 @@ class ConfigurationStore {
         firestore.collection('static').doc('configuration').onSnapshot((doc) => {
             // console.debug('ConfigurationStore.init() : configuration loaded', doc.data());
             runInAction(() => {
-                this.configuration = doc.data();
+                const configuration = doc.data();
+                if (configuration) {
+                    this.configuration = configuration;
+                }
                 this.initialized = true;
             });
         })
