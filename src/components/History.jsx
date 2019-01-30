@@ -15,7 +15,9 @@ import {
 import {
     CheckboxBlankCircleOutline,
     CheckboxMarkedCircle,
-    Filter } from 'mdi-material-ui';
+    Filter,
+    SortAscending,
+    SortDescending } from 'mdi-material-ui';
 
 import TransactionList from './history/TransactionList'
 import constants from '../config/constants';
@@ -31,56 +33,70 @@ class History extends React.Component {
         isAdmin: false,
     }
 
+    defaultFilterIndex = 3;
+
     filters = [{
-            key: 'none',
-            field: '',
-            value: ''
+            key: 'all',
+            field: 'timestamp',
+            operator: '>=',
+            value: new Date(0, 0, 0, 0, 0, 0, 0),
         },{
             key: 'comments',
             field: 'transaction',
+            operator: '==',
             value: 'comment'
         },{
             key: 'priorityChange',
             field: 'transaction',
+            operator: '==',
             value: 'updatePriority'
         },{
             key: 'updateStatus',
             field: 'transaction',
+            operator: '==',
             value: 'updateStatus'
         },{
             key: 'queued',
             field: 'newValue',
+            operator: '==',
             value: constants.STATUS.QUEUED
         },{
             key: 'notAvailable',
             field: 'newValue',
+            operator: '==',
             value: constants.STATUS.NOT_AVAILABLE
         },{
             key: 'notFound',
             field: 'newValue',
+            operator: '==',
             value: constants.STATUS.NOT_FOUND
         },{
             key: 'redownload',
             field: 'newValue',
+            operator: '==',
             value: constants.STATUS.REDOWNLOAD
         },{
             key: 'downloading',
             field: 'newValue',
+            operator: '==',
             value: constants.STATUS.DOWNLOADING
         },{
             key: 'downloaded',
             field: 'newValue',
+            operator: '==',
             value: constants.STATUS.DOWNLOADED,
         },{
             key: 'removed',
             field: 'newValue',
+            operator: '==',
             value: constants.STATUS.REMOVED,
         }
     ]
     componentDidMount = () => {
         // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
         this.props.DownloadHistoryStore.setSorting('timestamp', false);
-        this.props.DownloadHistoryStore.setFilter('updateStatus', 'transaction', 'updateStatus');
+        const i = this.defaultFilterIndex;
+        this.props.DownloadHistoryStore.setFilter(this.filters[i]);
         this.props.DownloadHistoryStore.loadHistory();
         this.setState({
             isAdmin: this.props.AuthenticationStore.isAdmin,
@@ -113,7 +129,7 @@ class History extends React.Component {
 
     handFilterChange = (filter) => {
         // console.debug(`${this.constructor.name}.handFilterChange()`, filter.field, filter.value);
-        this.props.DownloadHistoryStore.setFilter(filter.key, filter.field, filter.value);
+        this.props.DownloadHistoryStore.setFilter(filter);
         this.props.DownloadHistoryStore.loadHistory();
         this.handleFilterMenuClose();
     }
@@ -125,7 +141,8 @@ class History extends React.Component {
         const mobile = isWidthDown('xs', this.props.width);
         const desktop = isWidthUp('md', this.props.width);
 
-        const activefilterKey = this.props.DownloadHistoryStore.filterKey;
+        const activeFilter = this.props.DownloadHistoryStore.filter
+        const activeFilterKey = activeFilter.key;
         const isAdmin = this.props.AuthenticationStore.dataUid;
 
         return (
@@ -137,6 +154,11 @@ class History extends React.Component {
                         </Typography>
                         <div className={classes.controls}>
                             <Filter className={classes.control} onClick={this.handleFilterMenuOpen}/>
+                            { this.props.DownloadHistoryStore.sortAscending ?
+                                <SortAscending className={classes.control} onClick={this.toggleSortDirection}/>
+                            :
+                                <SortDescending className={classes.control} onClick={this.toggleSortDirection}/>
+                            }
                         </div>
                     </div>
                     <div className={mobile ? classes.listMobile : classes.list}>
@@ -152,7 +174,7 @@ class History extends React.Component {
                             return (
                                 <MenuItem key={filter.key} onClick={() => this.handFilterChange(filter)}>
                                     <ListItemIcon>
-                                        { activefilterKey === filter.key ?
+                                        { activeFilterKey === filter.key ?
                                             <CheckboxMarkedCircle/>
                                         :
                                             <CheckboxBlankCircleOutline/>

@@ -112,13 +112,13 @@ i18n.init({
 
                 history: {
                     filter: {
-                        none: 'Everything',
+                        all: 'Everything',
                         updateStatus: 'Status updates',
                         priorityChange: 'Priority update',
                         comments: 'Comments',
                         queued: 'Status updates: Queued',
                         notAvailable: 'Status updates: Not available',
-                        notFound: 'Status updates: Mot found',
+                        notFound: 'Status updates: Not found',
                         redownload: 'Status updates: Redownload',
                         downloading: 'Status updates: Downloading',
                         downloaded: 'Status updates: Done',
@@ -131,7 +131,7 @@ i18n.init({
                         queued: 'Queued',
                         removed: 'Removed',
                         notAvailable: 'Not available',
-                        notFound: 'Mot found',
+                        notFound: 'Not found',
                         redownload: 'Redownload',
                         downloading: 'Downloading',
                         downloaded: 'Done',
@@ -260,7 +260,7 @@ i18n.init({
 
                 history: {
                     filter: {
-                        none: 'Alle',
+                        all: 'Alle',
                         updateStatus: 'Statusänderungen',
                         priorityChange: 'Prioritätswechel',
                         comments: 'Kommentare',

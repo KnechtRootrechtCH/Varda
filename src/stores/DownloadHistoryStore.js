@@ -6,15 +6,18 @@ import AuthenticationStore from './AuthenticationStore';
 class DownloadHistoryStore {
     @observable loading = false;
     @observable history = [];
-    @observable filterField = '';
-    @observable filterValue = '';
-    @observable filterKey = '';
+    @observable filter = {
+        key: 'all',
+        field: 'timestamp',
+        operator: '>=',
+        value: new Date(0, 0, 0, 0, 0, 0, 0),
+    }
     @observable sortField = 'timestamp';
     @observable sortAscending = false;
     limit = 100;
 
     @action async loadHistory () {
-        // console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid);
+        // console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid, this.filter);
         runInAction(() => {
             this.loading = true;
         })
@@ -23,15 +26,14 @@ class DownloadHistoryStore {
             .doc(this.dataUid)
             .collection('transactions')
             .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
+            .where(this.filter.field, this.filter.operator, this.filter.value)
             .limit(this.limit)
             .onSnapshot((snapshot) => {
                 runInAction(() => {
                     this.history = [];
-                });
-                snapshot.forEach(doc => {
-                    this.addItem(doc.data())
-                });
-                runInAction(() => {
+                    snapshot.forEach(doc => {
+                        this.history.push(doc.data());
+                    });
                     this.loading = false;
                 });
         });
@@ -50,31 +52,20 @@ class DownloadHistoryStore {
             .collection('transactions')
             .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
             .limit(this.limit)
+            .where(this.filter.field, this.filter.operator, this.filter.value)
             .onSnapshot((snapshot) => {
                 runInAction(() => {
                     this.history = [];
-                });
-                snapshot.forEach(doc => {
-                    this.addItem(doc.data())
-                });
-                runInAction(() => {
+                    snapshot.forEach(doc => {
+                        this.history.push(doc.data());
+                    });
                     this.loading = false;
                 });
         });
     }
 
-    @action addItem(item) {
-        if (!this.filterField || !this.filterValue) {
-            this.history.push(item);
-        } else if (item[this.filterField] === this.filterValue) {
-            this.history.push(item);
-        }
-    }
-
-    @action setFilter(filterKey, filterField, filterValue) {
-        this.filterKey = filterKey;
-        this.filterField = filterField;
-        this.filterValue = filterValue;
+    @action setFilter(filter) {
+        this.filter = filter;
     }
 
     @action setSorting(sortField, sortAscending) {
@@ -84,6 +75,10 @@ class DownloadHistoryStore {
 
     @computed get dataUid () {
         return AuthenticationStore.dataUid;
+    }
+
+    @computed get filterKey () {
+        return this.filter.key;
     }
 }
 

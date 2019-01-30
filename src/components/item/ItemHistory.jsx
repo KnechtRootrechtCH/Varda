@@ -21,7 +21,12 @@ class ItemHistory extends React.Component {
     componentDidMount = () => {
         // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
         this.props.DownloadHistoryStore.setSorting('timestamp', false);
-        this.props.DownloadHistoryStore.setFilter(null, null, null);
+        this.props.DownloadHistoryStore.setFilter({
+            key: 'all',
+            field: 'timestamp',
+            value: new Date(0, 0, 0, 0, 0, 0, 0),
+            operator: '>=',
+        });
         this.props.DownloadHistoryStore.loadItemHistory(this.props.itemKey);
         this.setState({
             isAdmin: this.props.AuthenticationStore.isAdmin,

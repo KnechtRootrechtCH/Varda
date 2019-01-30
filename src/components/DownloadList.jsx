@@ -17,7 +17,7 @@ import {
     CheckboxMarkedCircle,
     Filter,
     SortAscending,
-    SortDescending, } from 'mdi-material-ui';
+    SortDescending } from 'mdi-material-ui';
 
 @withNamespaces()
 @inject('DownloadStatusStore')
