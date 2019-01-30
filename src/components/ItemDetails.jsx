@@ -93,7 +93,8 @@ class ItemDetails extends React.Component {
 
         return (
             <div className={classes.root}>
-                <Fade in={!this.props.MovieDbStore.loading}>
+            { !this.props.MovieDbStore.loading &&
+                <Fade in={true}>
                     <div>
                         <div style={backdrop}/>
                         <div style={spacer}/>
@@ -103,6 +104,7 @@ class ItemDetails extends React.Component {
                         </div>
                     </div>
                 </Fade>
+            }
             </div>
         );
      }

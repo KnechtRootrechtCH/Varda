@@ -81,7 +81,7 @@ class PrivateRouter extends React.Component {
                                     component={DownloadList}/>
                                 <Route
                                     exact
-                                    path='/history/messages'
+                                    path='/messages'
                                     component={DownloadList}/>
                                 <Route
                                     exact

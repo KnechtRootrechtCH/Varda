@@ -123,7 +123,7 @@ class History extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
         const mobile = isWidthDown('xs', this.props.width);
-        const desktop = isWidthUp('mod', this.props.width);
+        const desktop = isWidthUp('md', this.props.width);
 
         const activefilterKey = this.props.DownloadHistoryStore.filterKey;
         const isAdmin = this.props.AuthenticationStore.dataUid;
