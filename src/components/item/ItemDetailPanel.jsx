@@ -7,12 +7,13 @@ import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 
 import { Divider } from '@material-ui/core';
 
+import ItemActions from './ItemActions';
 import ItemCast from './ItemCast';
 import ItemComments from './ItemComments';
 import ItemHistory from './ItemHistory';
-import ItemDownloadActions from './ItemDownloadActions';
 import ItemHeader from './ItemHeader'
 import ItemMetadata from './ItemMetadata'
+import ItemPriority from './ItemPriority'
 import ItemRecommendations from './ItemRecommendations';
 
 import MetadataService from '../../service/MetadataService';
@@ -36,14 +37,12 @@ class ItemDetailPanel extends React.Component {
         return (
             <div className={classes.root}>
                 <ItemHeader itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
-
-                <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
-                { this.props.AuthenticationStore.isAdmin &&
-                    <div>
-                        <Divider className={classes.divider}/>
-                        <ItemDownloadActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
-                    </div>
+                { mobile &&
+                        <ItemPriority item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                 }
+                <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
+                <ItemActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
                 <Divider className={classes.divider}/>
                 <ItemRecommendations itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
@@ -56,13 +55,6 @@ class ItemDetailPanel extends React.Component {
 
                 <Divider className={classes.divider}/>
                 <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
-
-                { !this.props.AuthenticationStore.isAdmin &&
-                    <div>
-                        <Divider className={classes.divider}/>
-                        <ItemDownloadActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
-                    </div>
-                }
             </div>
         );
      }

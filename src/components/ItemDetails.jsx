@@ -41,7 +41,6 @@ class ItemDetails extends React.Component {
 
     loadItem = () => {
         // console.debug(`${this.constructor.name}.loadItems() : Media type => `, this.props.match.params.mediaType);
-        window.scrollTo(0, 0);
         const mediaType = this.props.match.params.mediaType
         const itemId = this.props.match.params.itemId
         this.props.MovieDbStore.loadItem(mediaType, itemId);
@@ -64,7 +63,7 @@ class ItemDetails extends React.Component {
         }
 
         const key = MetadataService.getKey(item);
-        const statusItem = this.props.DownloadStatusStore.items[key];
+        const statusItem = this.props.DownloadStatusStore.items.get(key);
 
         const backdropImage = ImageService.getBackdropImage(item, constants.IMAGESIZE.BACKDROP.W1280);
         const headerBackgroundHeight = mobile ? 200 : desktop ? 300 : 250;
@@ -84,7 +83,7 @@ class ItemDetails extends React.Component {
             '&:hover': {
                 opacity: 0,
             },
-            zIndex: 0,
+            zIndex: -100,
         };
 
         const spacer = {

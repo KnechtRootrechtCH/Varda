@@ -8,7 +8,7 @@ import constants from '../config/constants';
 
 class DownloadStatusStore {
     @observable item = null;
-    @observable items = {};
+    @observable items = new Map();
 
     @action async loadStatus(item) {
         const key = MetadataService.getKey(item);
@@ -20,10 +20,10 @@ class DownloadStatusStore {
     }
 
     @action async loadStatusByKey(key) {
-        const statusItem = this.items[key];
+        const statusItem = this.items.get(key);
         if (!statusItem || statusItem.status === constants.STATUS.LOADING) {
             // console.debug('DownloadStatusStore.loadStatus() : loading', key, this.dataUid);
-            this.items[key] = { status: constants.STATUS.LOADING };
+            this.items.set(key, { status: constants.STATUS.LOADING });
             const userDoc = firestore.collection('users').doc(this.dataUid);
             const collection = userDoc.collection('items');
             collection.doc(key).onSnapshot((doc) => {
@@ -34,13 +34,13 @@ class DownloadStatusStore {
                         data.status = '';
                     }
                     runInAction(() => {
-                        this.items[key] = data;
+                        this.items.set(key, data);
                     });
 
                 } else {
                     // console.debug('DownloadStatusStore.loadStatus() : not found', data);
                     runInAction(() => {
-                        this.items[key] = { status: '' };
+                        this.items.set(key, { status: null });
                     });
                 }
             });

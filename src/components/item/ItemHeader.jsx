@@ -7,18 +7,23 @@ import { Typography } from '@material-ui/core';
 
 import MetadataService from '../../service/MetadataService';
 import ImageService from '../../service/ImageService';
+import ItemCardStatusIcon from '../card/ItemCardStatusIcon';
 import constants from '../../config/constants';
+
+import ItemPriority from './ItemPriority'
 
 @withNamespaces()
 class ItemHeader extends React.Component {
 
     render () {
-        // console.debug(`${this.constructor.name}.render()`, this.props.item);
+        //  console.debug(`${this.constructor.name}.render()`, this.props.item);
         const classes = this.props.classes;
         // const t = this.props.t;
 
         const item = this.props.item;
-        // const statusItem = this.props.statusItem
+        const statusItem = this.props.statusItem
+        const mobile = this.props.mobile;
+        const desktop = this.props.desktop;
         // const status = statusItem ? statusItem.status : null;
 
         const title = MetadataService.getTitle(item);
@@ -26,18 +31,25 @@ class ItemHeader extends React.Component {
         const poster = ImageService.getPosterImage(item, constants.IMAGESIZE.POSTER.W92);
 
         return (
-            <div className={classes.root}>
+            <div className={mobile ? classes.rootMobile : classes.root}>
                 <img className={classes.poster} src={poster} alt={title} />
                 <div className={classes.header}>
+                    { !mobile &&
+                        <ItemCardStatusIcon item={item} statusItem={statusItem}/>
+                    }
                     <Typography className={classes.title} variant='h6' component='h2' noWrap>
                         {title}
                     </Typography>
-                    {
-                        tagline &&
+                    { !mobile &&
+                        <ItemPriority item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                    }
+
+                    { tagline &&
                         <Typography className={classes.tagline} variant='caption' component='h2' noWrap>
                             {tagline}
                         </Typography>
                     }
+
                 </div>
             </div>
         );
@@ -47,6 +59,11 @@ class ItemHeader extends React.Component {
 const styles = theme => ({
     root: {
         marginBottom: theme.spacing.unit * 4,
+        zIndex: 100,
+    },
+    rootMobile: {
+        marginBottom: theme.spacing.unit,
+        zIndex: 100,
     },
     header: {
         paddingTop: 90,

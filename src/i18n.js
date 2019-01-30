@@ -108,6 +108,12 @@ i18n.init({
                             type6: 'US TV'
                         },
                     },
+                    actions: {
+                        add: 'Add',
+                        remove: 'Remove',
+                        redownload: 'Redownload',
+                        comment: 'Comment',
+                    }
                 },
 
                 history: {
@@ -256,6 +262,12 @@ i18n.init({
                             type6: 'US TV'
                         },
                     },
+                    actions: {
+                        add: 'Hinzufügen',
+                        remove: 'Entfernen',
+                        redownload: 'Nochmals herunterladen',
+                        comment: 'Kommentieren',
+                    }
                 },
 
                 history: {

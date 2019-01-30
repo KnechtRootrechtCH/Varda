@@ -59,7 +59,7 @@ class ItemRecommendations extends React.Component {
                 </div>
                 { hasMore &&
                     <div className={classes.actionContainer}>
-                        <Button className={classes.more} onClick={this.handleMoreToggle}>
+                        <Button className={classes.more} onClick={this.handleMoreToggle} color='primary'>
                             { this.state.showMore ? t('common.less') : t('common.more') }
                         </Button>
                     </div>

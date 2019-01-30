@@ -72,7 +72,7 @@ class ItemCard extends React.Component {
 
         const route = `/browse/${mediaType}/${item.id}`;
 
-        let statusItem = this.props.DownloadStatusStore.items[key];
+        let statusItem = this.props.DownloadStatusStore.items.get(key);
         if (!statusItem) {
             statusItem = {
                 status: constants.STATUS.REMOVED,
