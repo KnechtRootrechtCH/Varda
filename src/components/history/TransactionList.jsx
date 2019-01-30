@@ -21,17 +21,20 @@ class TransactionList extends React.Component {
         // const mobile = this.props.mobile;
         const desktop = this.props.desktop;
 
-        const history = this.props.DownloadHistoryStore.history ? this.props.DownloadHistoryStore.history : [];
+        let transactions = [...this.props.DownloadHistoryStore.history].sort();
+        if (!this.props.DownloadHistoryStore.sortAscending) {
+            transactions = transactions.reverse();
+        }
 
         return (
             <div className={classes.root}>
-                { history.map((row, index) => {
+                { transactions.map(([key, value], index) => {
                     return (
-                        <TransactionPanel transaction={row} key={`${row.timestamp} - ${row.transaction}`} index={index} itemHistory={this.props.itemHistory}/>
+                        <TransactionPanel transaction={value} key={`${value.timestamp} - ${value.transaction}`} index={index} itemHistory={this.props.itemHistory}/>
                     )
                 })}
 
-                <Fade in={this.props.DownloadHistoryStore.loading && history.length == 0} mountOnEnter={true} unmountOnExit={true}>
+                <Fade in={this.props.DownloadHistoryStore.loading && transactions.length == 0} mountOnEnter={true} unmountOnExit={true}>
                     <div className={classes.progressContainer}>
                         <div className={desktop && this.props.ThemeStore.drawerState ? classes.progressShift : classes.progress}>
                             <CircularProgress color='secondary'/>

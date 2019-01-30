@@ -6,7 +6,7 @@ import AuthenticationStore from './AuthenticationStore';
 
 class DownloadHistoryStore {
     @observable loading = false;
-    @observable history = [];
+    @observable history = new Map();
     @observable filter = {
         key: 'all',
         field: 'timestamp',
@@ -19,7 +19,7 @@ class DownloadHistoryStore {
     lastItem = null;
 
     @action async resetHistory () {
-        this.history = [];
+        this.history = new Map();
         this.lastItem = null;
     }
 
@@ -46,7 +46,7 @@ class DownloadHistoryStore {
                 runInAction(() => {
                     snapshot.forEach(doc => {
                         this.lastItem = doc.data();
-                        this.history.push(this.lastItem);
+                        this.history.set(doc.id, this.lastItem);
                     });
                     this.loading = false;
                 });
@@ -69,8 +69,9 @@ class DownloadHistoryStore {
             .onSnapshot((snapshot) => {
                 runInAction(() => {
                     snapshot.forEach(doc => {
-                        this.history.push(doc.data());
-                    });
+                        this.lastItem = doc.data();
+                        this.history.set(doc.id, this.lastItem);
+                   });
                     this.loading = false;
                 });
         });
