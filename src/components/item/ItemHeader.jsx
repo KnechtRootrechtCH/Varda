@@ -5,9 +5,9 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { Typography } from '@material-ui/core';
 
+import ItemStatus from './ItemStatus';
 import MetadataService from '../../service/MetadataService';
 import ImageService from '../../service/ImageService';
-import ItemCardStatusIcon from '../card/ItemCardStatusIcon';
 import constants from '../../config/constants';
 
 import ItemPriority from './ItemPriority'
@@ -35,7 +35,7 @@ class ItemHeader extends React.Component {
                 <img className={classes.poster} src={poster} alt={title} />
                 <div className={classes.header}>
                     { !mobile &&
-                        <ItemCardStatusIcon item={item} statusItem={statusItem}/>
+                        <ItemStatus item={item} statusItem={statusItem}/>
                     }
                     <Typography className={classes.title} variant='h6' component='h2' noWrap>
                         {title}

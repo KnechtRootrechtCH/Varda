@@ -63,7 +63,11 @@ const styles = theme => ({
         float: 'right',
     },
     rootMobile: {
-        marginLeft: -4,
+        paddingTop: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        marginBottom: theme.spacing.unit,
+        marginLeft: -3,
+        display: 'inline',
     },
     priority: {
         marginLeft: -3,

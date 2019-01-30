@@ -15,6 +15,7 @@ import ItemHeader from './ItemHeader'
 import ItemMetadata from './ItemMetadata'
 import ItemPriority from './ItemPriority'
 import ItemRecommendations from './ItemRecommendations';
+import ItemStatus from './ItemStatus'
 
 import MetadataService from '../../service/MetadataService';
 
@@ -38,7 +39,10 @@ class ItemDetailPanel extends React.Component {
             <div className={classes.root}>
                 <ItemHeader itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                 { mobile &&
-                        <ItemPriority item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                    <ItemPriority item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                }
+                { mobile &&
+                    <ItemStatus item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                 }
                 <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 

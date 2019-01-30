@@ -72,45 +72,6 @@ class ItemActions extends React.Component {
         */
         return (
             <div className={mobile ? classes.rootMobile : classes.root}>
-                { status === constants.STATUS.REMOVED &&
-                <Fade in={true}>
-                    <Button
-                        className={mobile ? classes.buttonMobile : classes.button}
-                        color='primary'
-                        variant={buttonVariant}
-                        onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}>
-                        <PlusCircleOutline className={classes.buttonIcon}/>
-                        {t('details.actions.add')}
-                    </Button>
-                </Fade>
-                }
-
-                { status !== constants.STATUS.REMOVED && status !== constants.STATUS.DOWNLOADED &&
-                <Fade in={true}>
-                    <Button
-                        className={mobile ? classes.buttonMobile : classes.button}
-                        color='primary'
-                        variant={buttonVariant}
-                        onClick={() => this.handleStatusChange(constants.STATUS.REMOVED)}>
-                        <Delete className={classes.buttonIcon}/>
-                        {t('details.actions.remove')}
-                    </Button>
-                </Fade>
-                }
-
-                { status === constants.STATUS.DOWNLOADED &&
-                <Fade in={true}>
-                    <Button
-                        className={mobile ? classes.buttonMobile : classes.button}
-                        color='primary'
-                        variant={buttonVariant}
-                        onClick={() => this.handleStatusChange(constants.STATUS.REDOWNLOAD)}>
-                        <Sync className={classes.buttonIcon}/>
-                        {t('details.actions.redownload')}
-                    </Button>
-                </Fade>
-                }
-
                 <Fade in={true}>
                     <Button
                         className={mobile ? classes.buttonMobile : classes.button}
