@@ -20,6 +20,7 @@ class ItemHistory extends React.Component {
 
     componentDidMount = () => {
         // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
+        this.props.DownloadHistoryStore.resetHistory();
         this.props.DownloadHistoryStore.setSorting('timestamp', false);
         this.props.DownloadHistoryStore.setFilter({
             key: 'all',
@@ -39,6 +40,8 @@ class ItemHistory extends React.Component {
                 isAdmin: true,
             });
             console.debug(`${this.constructor.name}.componentDidUpdate() : admin mode activated => reload`);
+            this.props.DownloadHistoryStore.resetHistory();
+            this.props.DownloadHistoryStore.setSorting('timestamp', false);
             this.props.DownloadHistoryStore.loadItemHistory(this.props.itemKey);
         }
     }

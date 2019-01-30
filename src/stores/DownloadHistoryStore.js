@@ -1,5 +1,6 @@
 import {observable, action, computed, runInAction} from 'mobx';
 import { firestore } from '../config/fire'
+import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
 
@@ -14,25 +15,38 @@ class DownloadHistoryStore {
     }
     @observable sortField = 'timestamp';
     @observable sortAscending = false;
-    limit = 100;
+    pageSize = 15;
+    lastItem = null;
+
+    @action async resetHistory () {
+        this.history = [];
+        this.lastItem = null;
+    }
 
     @action async loadHistory () {
         // console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid, this.filter);
         runInAction(() => {
             this.loading = true;
         })
-        firestore
+        let query = firestore
             .collection('users')
             .doc(this.dataUid)
             .collection('transactions')
             .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
-            .where(this.filter.field, this.filter.operator, this.filter.value)
-            .limit(this.limit)
+            .where(this.filter.field, this.filter.operator, this.filter.value);
+
+        if (this.lastItem) {
+            // console.debug('DownloadHistoryStore.loadHistory() : loading', this.lastItem);
+            query = query.startAfter(this.lastItem.timestamp.toDate());
+        }
+
+        query
+            .limit(this.pageSize)
             .onSnapshot((snapshot) => {
                 runInAction(() => {
-                    this.history = [];
                     snapshot.forEach(doc => {
-                        this.history.push(doc.data());
+                        this.lastItem = doc.data();
+                        this.history.push(this.lastItem);
                     });
                     this.loading = false;
                 });
@@ -51,11 +65,9 @@ class DownloadHistoryStore {
             .doc(key)
             .collection('transactions')
             .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
-            .limit(this.limit)
             .where(this.filter.field, this.filter.operator, this.filter.value)
             .onSnapshot((snapshot) => {
                 runInAction(() => {
-                    this.history = [];
                     snapshot.forEach(doc => {
                         this.history.push(doc.data());
                     });
@@ -65,10 +77,12 @@ class DownloadHistoryStore {
     }
 
     @action setFilter(filter) {
+        this.resetHistory();
         this.filter = filter;
     }
 
     @action setSorting(sortField, sortAscending) {
+        this.resetHistory();
         this.sortField = sortField;
         this.sortAscending = sortAscending;
     }

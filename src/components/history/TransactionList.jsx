@@ -25,13 +25,13 @@ class TransactionList extends React.Component {
 
         return (
             <div className={classes.root}>
-                { !this.props.DownloadHistoryStore.loading && history.map((row, index) => {
+                { history.map((row, index) => {
                     return (
                         <TransactionPanel transaction={row} key={`${row.timestamp} - ${row.transaction}`} index={index} itemHistory={this.props.itemHistory}/>
                     )
                 })}
 
-                <Fade in={this.props.DownloadHistoryStore.loading && !this.props.itemHistory} mountOnEnter={true} unmountOnExit={true}>
+                <Fade in={this.props.DownloadHistoryStore.loading && history.length == 0} mountOnEnter={true} unmountOnExit={true}>
                     <div className={classes.progressContainer}>
                         <div className={desktop && this.props.ThemeStore.drawerState ? classes.progressShift : classes.progress}>
                             <CircularProgress color='secondary'/>

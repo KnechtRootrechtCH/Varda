@@ -125,14 +125,14 @@ class TitleBar extends React.Component {
 
         const isAdmin = this.props.AuthenticationStore.isAdmin;
         const barColor = isAdmin ? 'primary' : 'default';
+        const loading = false; //this.props.MovieDbStore.loading;
+
         let title = t('title');
         let subTitle = true;
         let showBackButton = false;
         let headerColor = isAdmin ? 'secondary' : 'primary';
         let subheaderColor = isAdmin ? 'inherit' : 'inherit';
         let showSearch = true;
-        const loading = false; //this.props.MovieDbStore.loading;
-
 
         const item = this.props.MovieDbStore.item;
         if (item) {
@@ -144,13 +144,16 @@ class TitleBar extends React.Component {
             }
             showSearch = false;
         }
-        if (location.includes('/settings')){
+        if (location.includes('/settings')) {
             if (!desktop) {
                 title = t('common.settings');
                 showBackButton = true;
                 headerColor = 'inherit';
                 subTitle = false;
             }
+            showSearch = false;
+        }
+        if (location.includes('/history')) {
             showSearch = false;
         }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { debounce } from 'lodash';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
@@ -96,11 +97,13 @@ class History extends React.Component {
         // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
         this.props.DownloadHistoryStore.setSorting('timestamp', false);
         const i = this.defaultFilterIndex;
+        this.props.DownloadHistoryStore.resetHistory();
         this.props.DownloadHistoryStore.setFilter(this.filters[i]);
         this.props.DownloadHistoryStore.loadHistory();
         this.setState({
             isAdmin: this.props.AuthenticationStore.isAdmin,
         });
+        window.addEventListener('scroll', this.handleScroll)
     }
 
     componentDidUpdate = () => {
@@ -109,12 +112,19 @@ class History extends React.Component {
                 isAdmin: true,
             });
             console.debug(`${this.constructor.name}.componentDidUpdate() : admin mode activated => reload`);
+            this.props.DownloadHistoryStore.resetHistory();
             this.props.DownloadHistoryStore.loadHistory();
         }
     }
 
+    componentWillUnmount = () => {
+        // console.debug(`${this.constructor.name}.componentWillUnmount() => removing scroll event listener`);
+        window.removeEventListener('scroll', this.handleScroll)
+    }
+
     toggleSortDirection = () => {
         const sortAscending = !this.props.DownloadHistoryStore.sortAscending;
+        this.props.DownloadHistoryStore.resetHistory();
         this.props.DownloadHistoryStore.setSorting('timestamp', sortAscending);
         this.props.DownloadHistoryStore.loadHistory();
     }
@@ -129,10 +139,26 @@ class History extends React.Component {
 
     handFilterChange = (filter) => {
         // console.debug(`${this.constructor.name}.handFilterChange()`, filter.field, filter.value);
+        this.props.DownloadHistoryStore.resetHistory();
         this.props.DownloadHistoryStore.setFilter(filter);
         this.props.DownloadHistoryStore.loadHistory();
         this.handleFilterMenuClose();
     }
+
+    handleScroll = debounce(() => {
+        if (this.props.DownloadHistoryStore.loading) {
+            return;
+        }
+
+        const d = document.documentElement
+        const offset = d.scrollTop + window.innerHeight
+        const height = d.offsetHeight
+
+        if (offset >= height - 100) {
+            // console.debug(`${this.constructor.name}.handleScroll() : load next page!`);
+            this.props.DownloadHistoryStore.loadHistory();
+        }
+    }, 100)
 
     render () {
         // console.debug(`${this.constructor.name}.render()`);
