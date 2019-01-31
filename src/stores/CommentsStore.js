@@ -59,10 +59,10 @@ class CommentsStore {
             });
     }
 
-    @action addComment(item, comment) {
+    @action addComment(item, comment, itemTitle) {
         const key = MetadataService.getKey(item);
         const userName = this.displayName;
-        const isAdmin = this.isAdmin;
+        const isAdminComment = this.isAdmin;
         const date = new Date();
         const timestamp = Moment(date).format('YYYY-MM-DD HH-mm-ss-SSSS ZZ');
 
@@ -71,7 +71,8 @@ class CommentsStore {
             userName: userName,
             timestamp: date,
             text: comment,
-            isAdmin: isAdmin,
+            isAdminComment: isAdminComment,
+            itemTitle: itemTitle,
         };
 
         firestore

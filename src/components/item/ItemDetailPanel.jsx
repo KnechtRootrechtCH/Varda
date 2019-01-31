@@ -7,7 +7,6 @@ import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 
 import { Divider } from '@material-ui/core';
 
-import ItemActions from './ItemActions';
 import ItemCast from './ItemCast';
 import ItemComments from './ItemComments';
 import ItemHistory from './ItemHistory';
@@ -45,8 +44,6 @@ class ItemDetailPanel extends React.Component {
                     </div>
                 }
                 <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
-
-                <ItemActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
                 <Divider className={classes.divider}/>
                 <ItemRecommendations itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>

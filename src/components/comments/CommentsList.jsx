@@ -4,8 +4,6 @@ import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 
-import { List } from '@material-ui/core';
-
 import Comment from './Comment';
 
 @withNamespaces()
@@ -19,18 +17,19 @@ class CommentsList extends React.Component {
 
         const mobile = this.props.mobile;
         const desktop = this.props.desktop;
+        const itemComments = this.props.itemComments;
 
         const comments = [...this.props.CommentsStore.comments].sort();
 
         return (
             <div className={classes.root}>
-                <List>
+                <div>
                 { comments.map(([key, value], index) => {
                     return (
-                        <Comment key={key} comment={value} index={index} mobile={mobile} desktop={desktop}/>
+                        <Comment key={key} comment={value} index={index} itemComments={itemComments} mobile={mobile} desktop={desktop}/>
                     )
                 })}
-                </List>
+                </div>
             </div>
         );
     }

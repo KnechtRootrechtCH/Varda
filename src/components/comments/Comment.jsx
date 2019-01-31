@@ -5,8 +5,13 @@ import { withStyles } from '@material-ui/core/styles';
 import * as Moment from 'moment';
 
 import {
-    ListItem,
-    ListItemText } from '@material-ui/core';
+    ExpansionPanel,
+    ExpansionPanelDetails,
+    ExpansionPanelSummary,
+    Tooltip,
+    Typography } from '@material-ui/core';
+
+import { ExpandMore } from '@material-ui/icons';
 
 @withNamespaces()
 class Comment extends React.Component {
@@ -15,8 +20,9 @@ class Comment extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
 
-        // const mobile = this.props.mobile;
-        // const desktop = this.props.desktop;
+        const mobile = this.props.mobile;
+        const desktop = this.props.desktop;
+        const itemComments = this.props.itemComments;
 
         const key = this.props.key;
         const comment = this.props.comment;
@@ -24,7 +30,12 @@ class Comment extends React.Component {
         const timestampString = timestamp.format('DD.MM.YYYY HH:mm');
         const userName = comment.userName;
         const text = comment.text;
-        const primaryText = `${userName} - ${timestampString}`;
+        const expand = this.props.index === 0;
+        const title = comment.itemTitle;
+        const transactionColor = comment.isAdminComment ? 'secondary' : 'primary';
+
+        const address = comment.key ? `/browse/${comment.key.replace(':', '/')}` : null;
+
 
         // const item = this.props.item;
         // const statusItem = this.props.statusItem;
@@ -32,12 +43,22 @@ class Comment extends React.Component {
         // console.debug(`${this.constructor.name}.render()`, item);
 
         return (
-            <ListItem key={key}>
-                <ListItemText
-                    primary={primaryText}
-                    secondary={text}
-                />
-            </ListItem>
+            <ExpansionPanel key={key} className={classes.root} defaultExpanded={expand}>
+                <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
+                    <Typography className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title} noWrap>
+                        {timestampString}
+                    </Typography>
+                    <Typography className={classes.transaction} align='right' color={transactionColor}>
+                        {userName}
+                    </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    { !itemComments &&
+                        <Typography>add link</Typography>
+                    }
+                    <Typography>{text}</Typography>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
         );
     }
 }
@@ -45,6 +66,32 @@ class Comment extends React.Component {
 const styles = theme => ({
     root: {
 
+    },
+    summary: {
+        paddingRight: theme.spacing.unit * 2,
+        paddingLeft: theme.spacing.unit * 2,
+    },
+    titleActive: {
+        textDecoration: 'none',
+        '&:hover': {
+            textDecoration: 'underline',
+        }
+    },
+    titleMobile: {
+        display: 'inline-block',
+        maxWidth: 250,
+    },
+    titleDesktop: {
+        display: 'inline-block',
+        maxWidth: 600,
+    },
+    title: {
+        display: 'inline-block',
+        maxWidth: 350,
+    },
+    transaction: {
+        marginLeft: 'auto',
+        display: 'inline-block',
     },
 });
 
