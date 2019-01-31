@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 import { withNamespaces } from 'react-i18next';
 
 import {
@@ -113,12 +113,12 @@ class TitleBar extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
 
-        // const mobile = isWidthDown('xs', this.props.width);
+        const mobile = isWidthDown('xs', this.props.width);
         const desktop = isWidthUp('md', this.props.width);
         const authenticated = this.props.AuthenticationStore.authenticated;
         const location = this.props.location.pathname.toLowerCase();
 
-        const appBarPosition = desktop ? 'fixed' : 'absolute';
+        const appBarPosition = mobile ? 'absolute' : 'fixed';
 
         const photoUrl = this.props.AuthenticationStore.photoUrl;
         const darkThemeStateKey = this.props.ThemeStore.type === 'dark' ? 'settings.on' : 'settings.off'

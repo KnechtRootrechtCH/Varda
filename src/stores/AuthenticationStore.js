@@ -21,7 +21,7 @@ class AuthenticationStore {
     }
 
     @action onAuthStateChanged(user) {
-        console.debug('AuthenticationStore.onAuthStateChanged()', user);
+        console.log('AuthenticationStore.onAuthStateChanged()', user);
         runInAction(() => {
             this.user = user;
             this.isAdmin = false;

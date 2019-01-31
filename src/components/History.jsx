@@ -42,11 +42,6 @@ class History extends React.Component {
             operator: '>=',
             value: new Date(0, 0, 0, 0, 0, 0, 0),
         },{
-            key: 'comments',
-            field: 'transaction',
-            operator: '==',
-            value: 'comment'
-        },{
             key: 'priorityChange',
             field: 'transaction',
             operator: '==',

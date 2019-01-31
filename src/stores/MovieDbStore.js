@@ -78,7 +78,7 @@ class MovieDbStore {
         }
 
         try {
-            // console.debug('MovieDbStore.loadItems() :', query);
+            console.debug('MovieDbStore.loadItems() :', query);
             const response = await axios.get(`${query}&cachebuster=${Math.random()}`);
             runInAction(() => {
                 if (response.status === 200) {
@@ -96,7 +96,7 @@ class MovieDbStore {
                     this.totalPages = response.data.total_pages;
                     this.hasMore = this.totalPages > this.page;
                     this.loading = false;
-                    console.debug(`MovieDbStore.loadItems() : ${results.length} items loaded from movieDb (page ${this.page}/${this.totalPages})`, results);
+                    console.log(`MovieDbStore.loadItems() : ${results.length} items loaded from movieDb (page ${this.page}/${this.totalPages})`, results);
                 } else {
                     this.items = [];
                     this.loading = false;
@@ -125,13 +125,13 @@ class MovieDbStore {
         const query = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${movieDbApiKey}&language=${this.locale}&&append_to_response=credits,recommendations,release_dates`;
 
         try {
-            // console.debug('MovieDbStore.loadItem() :', query);
+            console.debug('MovieDbStore.loadItem() :', query);
             const response = await axios.get(`${query}&cachebuster=${Math.random()}`);
             runInAction(() => {
                 if (response.status === 200) {
                     this.item = response.data;
                     this.loading = false;
-                    console.debug('MovieDbStore.loadItem() : item loaded', response.data);
+                    console.log('MovieDbStore.loadItem() : item loaded', response.data);
                 } else {
                     this.item = null;
                     this.loading = false;

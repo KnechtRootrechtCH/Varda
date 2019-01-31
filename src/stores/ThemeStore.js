@@ -62,7 +62,7 @@ class ThemeStore {
                 drawer: 1100,
             }
         });
-        console.debug('ThemeStore.applyTheme() : ', theme);
+        console.log('ThemeStore.applyTheme() : ', theme);
         this.theme = theme;
     }
 

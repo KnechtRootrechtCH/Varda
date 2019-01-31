@@ -1,6 +1,7 @@
 import {configure} from 'mobx';
 
 import AuthenticationStore from '../stores/AuthenticationStore';
+import CommentsStore from '../stores/CommentsStore';
 import ConfigurationStore from '../stores/ConfigurationStore';
 import DownloadHistoryStore from '../stores/DownloadHistoryStore';
 import DownloadStatusStore from '../stores/DownloadStatusStore';
@@ -12,6 +13,7 @@ configure({enforceActions: 'always'});
 
 export default {
     AuthenticationStore,
+    CommentsStore,
     ConfigurationStore,
     DownloadHistoryStore,
     DownloadStatusStore,

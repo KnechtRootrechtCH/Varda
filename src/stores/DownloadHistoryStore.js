@@ -49,7 +49,7 @@ class DownloadHistoryStore {
                     });
                     this.loading = false;
                 });
-        });
+            });
     }
 
     @action async loadItemHistory (key) {

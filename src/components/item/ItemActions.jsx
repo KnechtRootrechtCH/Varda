@@ -6,22 +6,66 @@ import { withStyles } from '@material-ui/core/styles';
 
 import {
     Button,
-    Fade } from '@material-ui/core';
+    Grow,
+    Divider,
+    TextField,
+    Typography } from '@material-ui/core';
 
-import { CommentText }  from 'mdi-material-ui';
+import {
+    ContentSave,
+    CommentText }  from 'mdi-material-ui';
+
+import CommentsList from '../comments/CommentsList';
 
 @withNamespaces()
+@inject('CommentsStore')
 @inject('ConfigurationStore')
 @inject('DownloadStatusStore')
 @observer
 class ItemActions extends React.Component {
 
     state = {
+        showCommentInput: false,
+        inputText: '',
+        inputRef: null,
+    }
 
+    handleInputChange = (value) => {
+        this.setState({
+            inputText: value,
+        });
     }
 
     handleOpenCommentDialog = () => {
         console.debug(`${this.constructor.name}.handleOpenCommentDialog()`);
+        this.setState({
+            showCommentInput: true,
+        });
+    }
+
+    handleCloseCommentDialog = () => {
+        console.debug(`${this.constructor.name}.handleCloseCommentDialog()`);
+        this.setState({
+            showCommentInput: false,
+        });
+    }
+
+    handleCommentSubmit = () => {
+        console.debug(`${this.constructor.name}.handleCommentSubmit()`);
+        this.props.CommentsStore.addComment(this.props.item, this.state.inputText);
+        this.setState({
+            inputText: '',
+            showCommentInput: false,
+        });
+    }
+
+    setInputRef = ref => {
+        this.setState({
+            inputRef: ref,
+        });
+        if(ref) {
+            ref.focus();
+        }
     }
 
     render () {
@@ -29,34 +73,64 @@ class ItemActions extends React.Component {
         const t = this.props.t;
 
         const mobile = this.props.mobile;
+        const desktop = this.props.desktop;
         const buttonVariant = mobile ? 'text' : 'text';
+
+        const hasComments = this.props.CommentsStore.comments.size > 0;
 
         // const item = this.props.item;
         // const statusItem = this.props.statusItem;
         // const status = statusItem && statusItem.status ? statusItem.status : constants.STATUS.REMOVED;
         // console.debug(`${this.constructor.name}.render()`, item);
-        /*
-        REMOVED: 'removed',
-        QUEUED: 'queued',
-        NOT_RELEASED: 'notReleased',
-        NOT_AVAILABLE: 'notAvailable',
-        NOT_FOUND: 'notFound',
-        REDOWNLOAD: 'redownload',
-        DOWNLOADING: 'downloading',
-        DOWNLOADED: 'downloaded',
-        */
+
         return (
-            <div className={mobile ? classes.rootMobile : classes.root}>
-                <Fade in={true}>
-                    <Button
-                        className={mobile ? classes.buttonMobile : classes.button}
-                        color='primary'
-                        variant={buttonVariant}>
-                        <CommentText className={classes.buttonIcon}
-                        onClick={this.handleOpenCommentDialog}/>
-                        {t('details.actions.comment')}
-                    </Button>
-                </Fade>
+            <div className={classes.root}>
+                { !this.state.showCommentInput &&
+                    <div className={classes.buttonContainer}>
+                        <Button
+                            className={classes.button}
+                            color='primary'
+                            variant={buttonVariant}
+                            onClick={() => this.handleOpenCommentDialog()}>
+                            <CommentText className={classes.buttonIcon}/>
+                            {t('details.actions.comment')}
+                        </Button>
+                    </div>
+                }
+                <Grow in={this.state.showCommentInput} mountOnEnter={true} unmountOnExit={true}>
+                    <div className={classes.inputContainer}>
+                        <TextField
+                            className={classes.input}
+                            value={this.state.inputText}
+                            label={t('common.comment')}
+                            placeholder='…'
+                            fullWidth
+                            multiline
+                            margin='normal'
+                            variant='outlined'
+                            inputRef={(input) => { this.setInputRef(input) }}
+                            onChange={({ target: { value } }) => this.handleInputChange(value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            />
+                        <Button
+                            className={classes.submit}
+                            color='primary'
+                            variant={buttonVariant}
+                            onClick={() => this.handleCommentSubmit()}>
+                            <ContentSave className={classes.buttonIcon}/>
+                            {t('details.actions.submit')}
+                        </Button>
+                    </div>
+                </Grow>
+                <Grow in={hasComments} mountOnEnter={true} unmountOnExit={true}>
+                    <div>
+                        <Divider className={classes.divider}/>
+                        <Typography className={classes.header} variant='body2'>{t('details.comments')}</Typography>
+                        <CommentsList mobile={mobile} desktop={desktop}/>
+                    </div>
+                </Grow>
             </div>
         );
     }
@@ -64,32 +138,45 @@ class ItemActions extends React.Component {
 
 const styles = theme => ({
     root: {
-        textAlign: 'center'
+
     },
-    rootMobile: {
+    buttonContainer: {
         textAlign: 'center',
-    },
-    header: {
-        textTransform: 'uppercase',
-        marginBottom: theme.spacing.unit / 2,
     },
     button: {
         marginTop: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         marginLeft: theme.spacing.unit,
     },
-    buttonMobile: {
-        marginTop: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        marginLeft: theme.spacing.unit,
+    inputContainer: {
+        marginTop: theme.spacing.unit * 2,
+        marginRight: 0,
+        marginBottom: theme.spacing.unit * 2,
+        marginLeft: 0,
+        textAlign: 'right',
+    },
+    input: {
+        marginTop: 0,
+        marginRight: 0,
+        marginBottom: theme.spacing.unit,
+        marginLeft: 0,
+    },
+    submit: {
+        marginLeft: theme.spacing.unit * 2,
     },
     buttonIcon: {
         marginRight: theme.spacing.unit,
         marginLeft: 0,
     },
-    priorities: {
+    header: {
+        textTransform: 'uppercase',
+        marginBottom: theme.spacing.unit / 2,
+    },
+    divider: {
         marginTop: theme.spacing.unit,
+        marginRight: 0,
         marginBottom: theme.spacing.unit,
+        marginLeft: 0,
     },
 });
 

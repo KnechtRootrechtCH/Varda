@@ -32,6 +32,7 @@ i18n.init({
                     search: 'Search',
                     history: 'History',
                     messages: 'Messages',
+                    comment: 'Comment',
                     more: 'more',
                     less: 'less',
                     priority: {
@@ -112,7 +113,8 @@ i18n.init({
                         add: 'Add',
                         remove: 'Remove',
                         redownload: 'Redownload',
-                        comment: 'Comment',
+                        comment: 'Add comment',
+                        submit: 'Submit',
                     }
                 },
 
@@ -186,6 +188,7 @@ i18n.init({
                     search: 'Suchen',
                     history: 'Verlauf',
                     messages: 'Nachrichten',
+                    comment: 'Kommentar',
                     more: 'mehr',
                     less: 'weniger',
                     priority: {
@@ -266,7 +269,8 @@ i18n.init({
                         add: 'Hinzufügen',
                         remove: 'Entfernen',
                         redownload: 'Nochmals herunterladen',
-                        comment: 'Kommentieren',
+                        comment: 'Kommentar hinzufügen',
+                        submit: 'Speichern',
                     }
                 },
 

@@ -14,6 +14,7 @@ import { Fade } from '@material-ui/core';
 
 @withNamespaces()
 @inject('ConfigurationStore')
+@inject('CommentsStore')
 @inject('DownloadStatusStore')
 @inject('MovieDbStore')
 @observer
@@ -45,6 +46,8 @@ class ItemDetails extends React.Component {
         const itemId = this.props.match.params.itemId
         this.props.MovieDbStore.loadItem(mediaType, itemId);
         this.props.DownloadStatusStore.loadStatusById(mediaType, itemId);
+        this.props.CommentsStore.resetComment();
+        this.props.CommentsStore.loadCommentsById(mediaType, itemId);
     }
 
     render () {
