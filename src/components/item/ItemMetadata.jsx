@@ -212,7 +212,7 @@ class ItemMetadata extends React.Component {
                     <Link href={url} target='_blank' color='textPrimary'>
                         <Typography className={classes.infoActive} variant='body2'>
                             {value}
-                            <InformationOutline className={classes.linkIcon} color='secondary' onClick={() => this.handleOpenUrl(url)}/>
+                            <InformationOutline className={classes.linkIcon} color='primary' onClick={() => this.handleOpenUrl(url)}/>
                         </Typography>
                     </Link>
                 </td>
@@ -220,7 +220,7 @@ class ItemMetadata extends React.Component {
                 <td>
                     <Typography className={classes.infoActive} color='textPrimary' onClick={this.handleReleaseDateExpand} variant='body2'>
                         {value}
-                        <InformationOutline className={classes.linkIcon} color='secondary'/>
+                        <InformationOutline className={classes.linkIcon} color='primary'/>
                     </Typography>
                 </td>
                 :

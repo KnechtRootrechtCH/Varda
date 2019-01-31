@@ -34,7 +34,7 @@ class TransactionList extends React.Component {
                     )
                 })}
 
-                <Fade in={this.props.DownloadHistoryStore.loading && transactions.length == 0} mountOnEnter={true} unmountOnExit={true}>
+                <Fade in={this.props.DownloadHistoryStore.loading && transactions.length === 0} mountOnEnter={true} unmountOnExit={true}>
                     <div className={classes.progressContainer}>
                         <div className={desktop && this.props.ThemeStore.drawerState ? classes.progressShift : classes.progress}>
                             <CircularProgress color='secondary'/>

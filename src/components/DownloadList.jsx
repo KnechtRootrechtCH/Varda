@@ -3,18 +3,12 @@ import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
-import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 import {
-    ListItemIcon,
-    ListItemText,
-    Menu,
-    MenuItem,
     Typography } from '@material-ui/core';
 
 import {
-    CheckboxBlankCircleOutline,
-    CheckboxMarkedCircle,
     Filter,
     SortAscending,
     SortDescending } from 'mdi-material-ui';
@@ -33,7 +27,6 @@ class DownloadList extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
         const mobile = isWidthDown('xs', this.props.width);
-        const desktop = isWidthUp('md', this.props.width);
 
         return (
             <div className={classes.root}>

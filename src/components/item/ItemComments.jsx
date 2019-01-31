@@ -16,9 +16,8 @@ class ItemComments extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
 
-        const item = this.props.item;
-
-        // console.debug(`${this.constructor.name}.render()`, rows);
+        // const item = this.props.item;
+        // console.debug(`${this.constructor.name}.render()`, item);
         return (
             <div className={classes.root}>
                 <Typography className={classes.header} variant='body2'>{t('details.comments')}</Typography>

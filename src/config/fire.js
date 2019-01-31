@@ -1,4 +1,6 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
+import auth from 'firebase/auth'; // eslint-disable-line no-unused-vars
+import store from 'firebase/firestore'; // eslint-disable-line no-unused-vars
 
 const config = {
     apiKey: 'AIzaSyD-HqBxheYcdQUAUB1beYZCX60U51G5L5A',

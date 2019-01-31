@@ -8,21 +8,7 @@ import {
     Button,
     Fade } from '@material-ui/core';
 
-import {
-    AlertCircleOutline,
-    Calendar,
-    CalendarQuestion,
-    Check,
-    CommentText,
-    ClockOutline,
-    Delete,
-    Download,
-    EyeOff,
-    PlusCircleOutline,
-    Star,
-    Sync }  from 'mdi-material-ui';
-
-import constants from '../../config/constants';
+import { CommentText }  from 'mdi-material-ui';
 
 @withNamespaces()
 @inject('ConfigurationStore')
@@ -34,32 +20,21 @@ class ItemActions extends React.Component {
 
     }
 
-    handleStatusChange = (status) => {
-        const item = this.props.item;
-        const previous = this.props.statusItem ? this.props.statusItem.status : '';
-        this.props.DownloadStatusStore.updateStatus(item, status, previous);
+    handleOpenCommentDialog = () => {
+        console.debug(`${this.constructor.name}.handleOpenCommentDialog()`);
     }
 
     render () {
         const classes = this.props.classes;
         const t = this.props.t;
 
-        const item = this.props.item;
-        const statusItem = this.props.statusItem;
         const mobile = this.props.mobile;
         const buttonVariant = mobile ? 'text' : 'text';
 
-        const status = statusItem && statusItem.status ? statusItem.status : constants.STATUS.REMOVED;
-
-        const priority = this.state.priority < 100 ? this.state.priority : statusItem ? statusItem.priority : 100;
-        const priorityCount = this.props.ConfigurationStore.configuration.priorityCount;
-
-        let priorities = [];
-        for (let i = priorityCount; i > 0; i--) {
-            priorities.push(i);
-        }
-
-        // console.debug(`${this.constructor.name}.render()`, rows);
+        // const item = this.props.item;
+        // const statusItem = this.props.statusItem;
+        // const status = statusItem && statusItem.status ? statusItem.status : constants.STATUS.REMOVED;
+        // console.debug(`${this.constructor.name}.render()`, item);
         /*
         REMOVED: 'removed',
         QUEUED: 'queued',
@@ -77,7 +52,8 @@ class ItemActions extends React.Component {
                         className={mobile ? classes.buttonMobile : classes.button}
                         color='primary'
                         variant={buttonVariant}>
-                        <CommentText className={classes.buttonIcon}/>
+                        <CommentText className={classes.buttonIcon}
+                        onClick={this.handleOpenCommentDialog}/>
                         {t('details.actions.comment')}
                     </Button>
                 </Fade>

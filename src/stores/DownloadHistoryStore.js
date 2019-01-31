@@ -1,6 +1,5 @@
 import {observable, action, computed, runInAction} from 'mobx';
 import { firestore } from '../config/fire'
-import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
 

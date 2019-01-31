@@ -39,10 +39,10 @@ class ItemDetailPanel extends React.Component {
             <div className={classes.root}>
                 <ItemHeader itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                 { mobile &&
-                    <ItemPriority item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
-                }
-                { mobile &&
-                    <ItemStatus item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                    <div className={classes.statusMobile}>
+                        <ItemPriority item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                        <ItemStatus item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                    </div>
                 }
                 <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
@@ -75,7 +75,11 @@ const styles = theme => ({
         marginRight: 0,
         marginBottom: theme.spacing.unit,
         marginLeft: 0,
-    }
+    },
+    statusMobile: {
+        paddingTop: theme.spacing.unit / 2,
+        marginBottom: theme.spacing.unit / 2,
+    },
 });
 
 ItemDetailPanel.propTypes = {
