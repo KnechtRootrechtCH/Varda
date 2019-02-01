@@ -115,6 +115,7 @@ i18n.init({
                         redownload: 'Redownload',
                         comment: 'Add comment',
                         submit: 'Submit',
+                        cancel: 'Cancel',
                     }
                 },
 
@@ -271,6 +272,7 @@ i18n.init({
                         redownload: 'Nochmals herunterladen',
                         comment: 'Kommentar hinzufügen',
                         submit: 'Speichern',
+                        cancel: 'Abbrechen',
                     }
                 },
 

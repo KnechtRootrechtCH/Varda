@@ -11,6 +11,7 @@ import {
     BottomNavigationAction } from '@material-ui/core';
 
 import {
+    Comment,
     Explore,
     History,
     Movie,
@@ -47,6 +48,8 @@ class NavigationBar extends React.Component {
             loc = 'list';
         } else if (location.includes('history')) {
             loc = 'history';
+        } else if (location.includes('messages')) {
+            loc = 'messages';
         }
 
         return (
@@ -81,11 +84,11 @@ class NavigationBar extends React.Component {
                     component={Link}
                     to='/browse/list'/>
                 <BottomNavigationAction
-                    value='history'
-                    label={t('common.history')}
-                    icon={<History />}
+                    value='messages'
+                    label={t('common.messages')}
+                    icon={<Comment />}
                     component={Link}
-                    to='/history'/>
+                    to='/messages'/>
             </BottomNavigation>
         );
      }

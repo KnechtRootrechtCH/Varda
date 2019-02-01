@@ -16,9 +16,9 @@ import {
     SwipeableDrawer } from '@material-ui/core';
 
 import {
+    Comment,
     Explore,
     History,
-    Mail,
     Movie,
     Tv } from '@material-ui/icons';
 
@@ -68,7 +68,7 @@ class Navigation extends React.Component {
             loc = 'tv';
         } else if (location.includes('list')) {
             loc = 'list';
-        } else if (location.includes('history/messages')) {
+        } else if (location.includes('messages')) {
             loc = 'messages';
         } else if (location.includes('history')) {
             loc = 'history';
@@ -127,6 +127,17 @@ class Navigation extends React.Component {
                     <ListItem
                         button
                         component={Link}
+                        to='/messages'
+                        onClick={this.handleCloseDrawer}
+                        className={loc === 'messages' ? classes.drawerItemActive : null}>
+                        <ListItemIcon>
+                            <Comment className={loc === 'messages' ? classes.drawerIconActive : null}/>
+                        </ListItemIcon>
+                        <ListItemText primary={t('common.messages')}/>
+                    </ListItem>
+                    <ListItem
+                        button
+                        component={Link}
                         to='/history'
                         onClick={this.handleCloseDrawer}
                         className={loc === 'history' ? classes.drawerItemActive : null}>
@@ -134,17 +145,6 @@ class Navigation extends React.Component {
                             <History className={loc === 'history' ? classes.drawerIconActive : null}/>
                         </ListItemIcon>
                         <ListItemText primary={t('common.history')}/>
-                    </ListItem>
-                    <ListItem
-                        button
-                        component={Link}
-                        to='/history/messages'
-                        onClick={this.handleCloseDrawer}
-                        className={loc === 'messages' ? classes.drawerItemActive : null}>
-                        <ListItemIcon>
-                            <Mail className={loc === 'messages' ? classes.drawerIconActive : null}/>
-                        </ListItemIcon>
-                        <ListItemText primary={t('common.messages')}/>
                     </ListItem>
                 </List>
             </SwipeableDrawer>

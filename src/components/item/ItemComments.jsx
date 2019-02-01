@@ -7,13 +7,13 @@ import { withStyles } from '@material-ui/core/styles';
 import {
     Button,
     Grow,
-    Divider,
     TextField,
     Typography } from '@material-ui/core';
 
 import {
     ContentSave,
-    CommentText }  from 'mdi-material-ui';
+    CommentText,
+    CloseCircle }  from 'mdi-material-ui';
 
 import CommentsList from '../comments/CommentsList';
 import MetadataService from '../../service/MetadataService';
@@ -47,13 +47,15 @@ class ItemComments extends React.Component {
     handleCloseCommentDialog = () => {
         console.debug(`${this.constructor.name}.handleCloseCommentDialog()`);
         this.setState({
+            inputText: '',
             showCommentInput: false,
         });
     }
 
     handleCommentSubmit = () => {
         console.debug(`${this.constructor.name}.handleCommentSubmit()`);
-        this.props.CommentsStore.addComment(this.props.item, this.state.inputText, MetadataService.getTitle(this.props.item));
+        const itemTitle = MetadataService.getTitle(this.props.item);
+        this.props.CommentsStore.addComment(this.props.item, this.state.inputText, itemTitle);
         this.setState({
             inputText: '',
             showCommentInput: false,
@@ -86,6 +88,12 @@ class ItemComments extends React.Component {
 
         return (
             <div className={classes.root}>
+                <Grow in={hasComments} mountOnEnter={true} unmountOnExit={true}>
+                    <div className={classes.commentsList}>
+                        <Typography className={classes.header} variant='body2'>{t('details.comments')}</Typography>
+                        <CommentsList itemComments={true} mobile={mobile} desktop={desktop}/>
+                    </div>
+                </Grow>
                 { !this.state.showCommentInput &&
                     <div className={classes.buttonContainer}>
                         <Button
@@ -119,17 +127,19 @@ class ItemComments extends React.Component {
                             className={classes.submit}
                             color='primary'
                             variant={buttonVariant}
+                            onClick={() => this.handleCloseCommentDialog()}>
+                            <CloseCircle className={classes.buttonIcon}/>
+                            {t('details.actions.cancel')}
+                        </Button>
+                        <Button
+                            className={classes.submit}
+                            disabled={!this.state.inputText}
+                            color='primary'
+                            variant={buttonVariant}
                             onClick={() => this.handleCommentSubmit()}>
-                            <ContentSave className={classes.buttonIcon}/>
+                            <CommentText className={classes.buttonIcon}/>
                             {t('details.actions.submit')}
                         </Button>
-                    </div>
-                </Grow>
-                <Grow in={hasComments} mountOnEnter={true} unmountOnExit={true}>
-                    <div>
-                        <Divider className={classes.divider}/>
-                        <Typography className={classes.header} variant='body2'>{t('details.comments')}</Typography>
-                        <CommentsList itemComments={true} mobile={mobile} desktop={desktop}/>
                     </div>
                 </Grow>
             </div>
@@ -145,7 +155,6 @@ const styles = theme => ({
         textAlign: 'center',
     },
     button: {
-        marginTop: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         marginLeft: theme.spacing.unit,
     },
@@ -173,12 +182,9 @@ const styles = theme => ({
         textTransform: 'uppercase',
         marginBottom: theme.spacing.unit / 2,
     },
-    divider: {
-        marginTop: theme.spacing.unit,
-        marginRight: 0,
+    commentsList: {
         marginBottom: theme.spacing.unit,
-        marginLeft: 0,
-    },
+    }
 });
 
 ItemComments.propTypes = {

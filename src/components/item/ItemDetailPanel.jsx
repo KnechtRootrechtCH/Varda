@@ -46,13 +46,13 @@ class ItemDetailPanel extends React.Component {
                 <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
                 <Divider className={classes.divider}/>
+                <ItemComments itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
+                <Divider className={classes.divider}/>
                 <ItemRecommendations itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
                 <Divider className={classes.divider}/>
                 <ItemCast itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
-
-                <Divider className={classes.divider}/>
-                <ItemComments itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
                 <Divider className={classes.divider}/>
                 <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>

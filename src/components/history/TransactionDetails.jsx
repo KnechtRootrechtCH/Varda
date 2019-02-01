@@ -50,8 +50,8 @@ class TransactionDetails extends React.Component {
         tooltipText = tooltipText ? tooltipText : value;
         return (
             <tr>
-                <td>
-                    <Typography variant='caption' className={classes.labelCell}>
+                <td className={classes.labelCell}>
+                    <Typography variant='caption' className={classes.labelTypography}>
                         <span className={classes.label}>
                             {label}
                         </span>
@@ -77,14 +77,18 @@ class TransactionDetails extends React.Component {
 
 const styles = theme => ({
     root: {
-
+        paddingTop: 0,
+        paddingLeft: theme.spacing.unit * 2,
     },
     label: {
         textTransform: 'uppercase',
     },
-    labelCell: {
+    labelTypography: {
         width: 180,
     },
+    labelCell: {
+        paddingLeft: 0,
+    }
 });
 
 TransactionDetails.propTypes = {

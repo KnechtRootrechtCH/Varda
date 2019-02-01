@@ -13,6 +13,7 @@ import Browse from './Browse';
 import History from './History';
 import ItemDetails from './ItemDetails';
 import DownloadList from './DownloadList';
+import Messages from './Messages';
 import NavigationBar from './navigation/NavigationBar';
 import NavigationDrawer from './navigation/NavigationDrawer';
 import Settings from './Settings';
@@ -82,7 +83,7 @@ class PrivateRouter extends React.Component {
                                 <Route
                                     exact
                                     path='/messages'
-                                    component={DownloadList}/>
+                                    component={Messages}/>
                                 <Route
                                     exact
                                     path='/history'

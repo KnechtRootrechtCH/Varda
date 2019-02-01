@@ -53,10 +53,7 @@ class TitleBar extends React.Component {
     };
 
     handleHeaderClick = () => {
-        const desktop = isWidthUp('md', this.props.width);
-        if (desktop) {
-            this.props.history.push('/browse')
-        }
+        this.props.history.push('/')
     }
 
     handleOpenDrawer = () => {

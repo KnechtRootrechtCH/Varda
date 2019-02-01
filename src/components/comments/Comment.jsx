@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import * as Moment from 'moment';
@@ -8,7 +9,7 @@ import {
     ExpansionPanel,
     ExpansionPanelDetails,
     ExpansionPanelSummary,
-    Tooltip,
+    Grid,
     Typography } from '@material-ui/core';
 
 import { ExpandMore } from '@material-ui/icons';
@@ -24,23 +25,19 @@ class Comment extends React.Component {
         const desktop = this.props.desktop;
         const itemComments = this.props.itemComments;
 
-        const key = this.props.key;
         const comment = this.props.comment;
+        const key = comment.key;
+        const title = comment.itemTitle;
         const timestamp = Moment(comment.timestamp.toDate());
         const timestampString = timestamp.format('DD.MM.YYYY HH:mm');
         const userName = comment.userName;
         const text = comment.text;
-        const expand = this.props.index === 0;
-        const title = comment.itemTitle;
+        const expand = true; // this.props.index === 0;
+
         const transactionColor = comment.isAdminComment ? 'secondary' : 'primary';
 
         const address = comment.key ? `/browse/${comment.key.replace(':', '/')}` : null;
-
-
-        // const item = this.props.item;
-        // const statusItem = this.props.statusItem;
-        // const status = statusItem && statusItem.status ? statusItem.status : constants.STATUS.REMOVED;
-        // console.debug(`${this.constructor.name}.render()`, item);
+        // console.debug(`${this.constructor.name}.render()`, key, title, itemComments, comment);
 
         return (
             <ExpansionPanel key={key} className={classes.root} defaultExpanded={expand}>
@@ -52,12 +49,23 @@ class Comment extends React.Component {
                         {userName}
                     </Typography>
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    { !itemComments &&
-                        <Typography>add link</Typography>
-                    }
-                    <Typography>{text}</Typography>
+                <ExpansionPanelDetails className={classes.details}>
+                    <Grid container>
+                        { !itemComments && title && key &&
+                            <Grid item xs={12}>
+                                <Typography color='primary' component={Link} to={address}>
+                                    {title}
+                                </Typography>
+                            </Grid>
+                        }
+                        <Grid item xs={12}>
+                            <Typography>
+                                {text}
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 </ExpansionPanelDetails>
+
             </ExpansionPanel>
         );
     }
@@ -92,6 +100,10 @@ const styles = theme => ({
     transaction: {
         marginLeft: 'auto',
         display: 'inline-block',
+    },
+    details: {
+        paddingTop: 0,
+        paddingLeft: theme.spacing.unit * 2,
     },
 });
 
