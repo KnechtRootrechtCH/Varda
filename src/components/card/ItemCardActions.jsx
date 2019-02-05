@@ -9,6 +9,7 @@ import { CardActions } from '@material-ui/core';
 import { Star } from '@material-ui/icons';
 
 import ItemCardStatusIcon from './ItemCardStatusIcon'
+import MetadataService from '../../service/MetadataService';
 
 @withNamespaces()
 @inject('ConfigurationStore')
@@ -21,10 +22,16 @@ class ItemCardContent extends React.Component {
     }
 
     handlePriorityChange = (priority) => {
-        console.debug(`${this.constructor.name}.handlePriorityChange()`, priority);
-        const item = this.props.item;
+        // console.debug(`${this.constructor.name}.handlePriorityChange()`, priority);
         const previous = this.props.statusItem ? this.props.statusItem.priority : 0;
-        this.props.DownloadStatusStore.updatePriority(item, priority, previous);
+        if (this.props.downloadList) {
+            const key = this.props.itemKey;
+            const title = this.props.item.title;
+            this.props.DownloadStatusStore.updatePriorityByKey(key, title, priority, previous);
+        } else {
+            const item = this.props.item;
+            this.props.DownloadStatusStore.updatePriority(item, priority, previous);
+        }
     }
 
     handlePriorityHover = (priority) => {
@@ -40,7 +47,9 @@ class ItemCardContent extends React.Component {
         // const t = this.props.t;
 
         const mobile = this.props.mobile;
+        const downloadList = this.props.downloadList;
         const item = this.props.item;
+        const key = this.props.itemKey;
         const statusItem = this.props.statusItem;
 
         const priority = this.state.priority < 100 ? this.state.priority : statusItem ? statusItem.priority : 100;
@@ -64,7 +73,13 @@ class ItemCardContent extends React.Component {
                     )
                 })}
                 </div>
-                <ItemCardStatusIcon className={classes.statusIcon} item={item} statusItem={statusItem} mobile={mobile}/>
+                <ItemCardStatusIcon
+                    className={classes.statusIcon}
+                    itemKey={key}
+                    item={item}
+                    statusItem={statusItem}
+                    mobile={mobile}
+                    downloadList={downloadList}/>
             </CardActions>
         );
      }

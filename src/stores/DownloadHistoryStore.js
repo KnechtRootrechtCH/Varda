@@ -14,7 +14,7 @@ class DownloadHistoryStore {
     }
     @observable sortField = 'timestamp';
     @observable sortAscending = false;
-    pageSize = 25;
+    pageSize = 100;
     lastItem = null;
 
     @action async resetHistory () {

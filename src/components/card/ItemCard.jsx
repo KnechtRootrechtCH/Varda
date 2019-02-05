@@ -34,20 +34,15 @@ class ItemCard extends React.Component {
 
     componentDidMount = () => {
         const item = this.props.item;
-        this.props.DownloadStatusStore.loadStatus(item);
+        if (!this.props.downloadList) {
+            this.props.DownloadStatusStore.loadStatus(item);
+        }
     }
 
     handleStatusChange = (status) => {
         const item = this.props.item;
         const previous = this.props.statusItem ? this.props.statusItem.status : '';
         this.props.DownloadStatusStore.updateStatus(item, status, previous);
-    }
-
-    handlePriorityChange = (priority) => {
-        console.debug(`${this.constructor.name}.handlePriorityChange()`, priority);
-        const item = this.props.item;
-        const previous = this.props.statusItem ? this.props.statusItem.priority : 0;
-        this.props.DownloadStatusStore.updatePriority(item, priority, previous);
     }
 
     handlePriorityHover = (priority) => {
@@ -63,16 +58,21 @@ class ItemCard extends React.Component {
         const t = this.props.t;
 
         const mobile = isWidthDown('xs', this.props.width);
+        const downloadList = this.props.downloadList;
+
 
         const item = this.props.item;
-        const key = MetadataService.getKey(item);
-        const mediaType = MetadataService.getMediaType(item);
-        const title = MetadataService.getTitle(item);
-        const image = ImageService.getBackdropImage(item, constants.IMAGESIZE.BACKDROP.W500);
+        const key = downloadList ? this.props.itemKey : MetadataService.getKey(item);
+        const mediaType = downloadList ? key.split(':')[0] : MetadataService.getMediaType(item);
+        const id = downloadList ? key.split(':')[1] : item.id;
+        const title = downloadList ? item.title : MetadataService.getTitle(item);
+        const image = downloadList ?
+            ImageService.getMovieDbImage(item.backdrop, constants.IMAGESIZE.BACKDROP.W500) :
+            ImageService.getBackdropImage(item, constants.IMAGESIZE.BACKDROP.W500);
 
-        const route = `/browse/${mediaType}/${item.id}`;
+        const route = `/browse/${mediaType}/${id}`;
 
-        let statusItem = this.props.DownloadStatusStore.items.get(key);
+        let statusItem = downloadList ? item : this.props.DownloadStatusStore.items.get(key);
         if (!statusItem) {
             statusItem = {
                 status: constants.STATUS.REMOVED,
@@ -82,8 +82,10 @@ class ItemCard extends React.Component {
 
         const status = statusItem ? statusItem.status : null;
 
+        const show = downloadList ? true : this.props.MovieDbStore.page > 0 || !this.props.MovieDbStore.loading;
+
         return (
-            <Fade in={this.props.MovieDbStore.page > 0 || !this.props.MovieDbStore.loading}>
+            <Fade in={show}>
                 <Card className={mobile ? classes.rootMobile : classes.root} raised={!mobile} square={mobile}>
                     <CardActionArea component={Link} to={route}>
                         <CardMedia
@@ -97,9 +99,21 @@ class ItemCard extends React.Component {
                             }
                         </CardMedia>
                     </CardActionArea>
-                    <ItemCardContent item={item} statusItem={statusItem} mobile={mobile}/>
+                    <ItemCardContent
+                        item={item}
+                        itemKey={key}
+                        statusItem={statusItem}
+                        mobile={mobile}
+                        downloadList={downloadList}
+                        mediaType={mediaType}/>
                     {!mobile &&
-                        <ItemCardActions item={item} statusItem={statusItem} mobile={mobile}/>
+                        <ItemCardActions
+                            item={item}
+                            itemKey={key}
+                            statusItem={statusItem}
+                            mobile={mobile}
+                            downloadList={downloadList}
+                            mediaType={mediaType}/>
                     }
 
                 </Card>

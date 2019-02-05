@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
+import * as Moment from 'moment';
 
 import {
     CardContent,
@@ -27,10 +28,16 @@ class ItemCardContent extends React.Component {
     }
 
     handlePriorityChange = (priority) => {
-        console.debug(`${this.constructor.name}.handlePriorityChange()`, priority);
-        const item = this.props.item;
+        // console.debug(`${this.constructor.name}.handlePriorityChange()`, priority);
         const previous = this.props.statusItem ? this.props.statusItem.priority : 0;
-        this.props.DownloadStatusStore.updatePriority(item, priority, previous);
+        if (this.props.downloadList) {
+            const key = this.props.itemKey;
+            const title = this.props.item.title;
+            this.props.DownloadStatusStore.updatePriorityByKey(key, title, priority, previous);
+        } else {
+            const item = this.props.item;
+            this.props.DownloadStatusStore.updatePriority(item, priority, previous);
+        }
     }
 
     handlePriorityHover = (priority) => {
@@ -46,14 +53,24 @@ class ItemCardContent extends React.Component {
         // const t = this.props.t;
 
         const mobile = this.props.mobile;
+        const downloadList = this.props.downloadList;
         const item = this.props.item;
+        const key = this.props.itemKey;
         const statusItem = this.props.statusItem;
 
-        const title = MetadataService.getTitle(item);
-        const release = MetadataService.getReleaseDateFormated(item, 'YYYY');
+        const isMovie = this.props.mediaType === 'movie';
+        const isTv = this.props.mediaType === 'tv';
 
-        const isMovie = MetadataService.isMovie(item);
-        const isTv = MetadataService.isTv(item);
+        let title;
+        let release;
+        if (downloadList) {
+            const moment = Moment(item.release.toDate());
+            title = item.title;
+            release = moment.format('YYYY');
+        } else {
+            title = MetadataService.getTitle(item);
+            release = MetadataService.getReleaseDateFormated(item, 'YYYY');
+        }
 
         const priority = this.state.priority < 100 ? this.state.priority : statusItem ? statusItem.priority : 100;
         const priorityCount = this.props.ConfigurationStore.configuration.priorityCount;
@@ -90,7 +107,13 @@ class ItemCardContent extends React.Component {
                                 onClick={() => this.handlePriorityChange(p)}/>
                         )
                     })}
-                    <ItemCardStatusIcon className={classes.statusIcon} item={item} statusItem={statusItem} mobile={mobile}/>
+                    <ItemCardStatusIcon
+                        className={classes.statusIcon}
+                        itemKey={key}
+                        item={item}
+                        statusItem={statusItem}
+                        mobile={mobile}
+                        downloadList={downloadList}/>
                     </div>
                 }
             </CardContent>

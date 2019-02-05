@@ -21,6 +21,14 @@ class MetadataService {
         }
     }
 
+    getMediaTypeFromKey(key) {
+        const split = key.trim().split(':');
+        if(split.length !== 2) {
+            return 'invalid';
+        }
+        return split[0];
+    }
+
     isMovie (item) {
         return item && item.title;
     }
