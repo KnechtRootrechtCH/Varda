@@ -11,7 +11,6 @@ import {
     Typography } from '@material-ui/core';
 
 import {
-    ContentSave,
     CommentText,
     CloseCircle }  from 'mdi-material-ui';
 

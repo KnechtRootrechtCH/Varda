@@ -13,7 +13,6 @@ import {
 import {
     Comment,
     Explore,
-    History,
     Movie,
     Tv } from '@material-ui/icons';
 

@@ -34,7 +34,7 @@ class History extends React.Component {
         isAdmin: false,
     }
 
-    defaultFilterIndex = 3;
+    defaultFilterIndex = 2;
 
     filters = [{
             key: 'all',

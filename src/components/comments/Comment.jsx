@@ -19,7 +19,7 @@ class Comment extends React.Component {
 
     render () {
         const classes = this.props.classes;
-        const t = this.props.t;
+        // const t = this.props.t;
 
         const mobile = this.props.mobile;
         const desktop = this.props.desktop;
@@ -34,7 +34,7 @@ class Comment extends React.Component {
         const text = comment.text;
         const expand = true; // this.props.index === 0;
 
-        const transactionColor = comment.isAdminComment ? 'secondary' : 'primary';
+        const color = comment.isAdminComment ? 'secondary' : 'primary';
 
         const address = comment.key ? `/browse/${comment.key.replace(':', '/')}` : null;
         // console.debug(`${this.constructor.name}.render()`, key, title, itemComments, comment);
@@ -42,19 +42,35 @@ class Comment extends React.Component {
         return (
             <ExpansionPanel key={key} className={classes.root} defaultExpanded={expand}>
                 <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
-                    <Typography className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title} noWrap>
+                { itemComments ?
+                    <Typography
+                        className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title}
+                        noWrap>
                         {timestampString}
                     </Typography>
-                    <Typography className={classes.transaction} align='right' color={transactionColor}>
-                        {userName}
+                :
+                    <Typography
+                        className={classes.titleActive + ' ' + (mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title)}
+                        color='primary'
+                        component={Link}
+                        to={address}
+                        noWrap>
+                        {title}
                     </Typography>
+                }
+                <Typography
+                    className={classes.userName}
+                    align='right'
+                    color={color}>
+                    {userName}
+                </Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails className={classes.details}>
                     <Grid container>
-                        { !itemComments && title && key &&
+                        { !itemComments &&
                             <Grid item xs={12}>
-                                <Typography color='primary' component={Link} to={address}>
-                                    {title}
+                                <Typography className={classes.timeHeader}>
+                                    {timestampString}
                                 </Typography>
                             </Grid>
                         }
@@ -65,7 +81,6 @@ class Comment extends React.Component {
                         </Grid>
                     </Grid>
                 </ExpansionPanelDetails>
-
             </ExpansionPanel>
         );
     }
@@ -97,7 +112,10 @@ const styles = theme => ({
         display: 'inline-block',
         maxWidth: 350,
     },
-    transaction: {
+    timeHeader: {
+        textDecoration: 'underline',
+    },
+    userName: {
         marginLeft: 'auto',
         display: 'inline-block',
     },

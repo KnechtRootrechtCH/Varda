@@ -30,7 +30,7 @@ class TransactionList extends React.Component {
             <div className={classes.root}>
                 { transactions.map(([key, value], index) => {
                     return (
-                        <TransactionPanel key={key} transaction={value} key={`${value.timestamp} - ${value.transaction}`} index={index} itemHistory={this.props.itemHistory}/>
+                        <TransactionPanel key={key} transaction={value} index={index} itemHistory={this.props.itemHistory}/>
                     )
                 })}
 
