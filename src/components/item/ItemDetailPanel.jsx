@@ -20,11 +20,12 @@ import MetadataService from '../../service/MetadataService';
 
 @withNamespaces()
 @inject('AuthenticationStore')
+@inject('DownloadHistoryStore')
 @observer
 class ItemDetailPanel extends React.Component {
 
     render () {
-        // console.debug(`${this.constructor.name}.render()`, this.props.item);
+        // console.debug(`${this.constructor.name}.render()`);
         const classes = this.props.classes;
         // const t = this.props.t;
         const mobile = isWidthDown('xs', this.props.width);
@@ -48,14 +49,26 @@ class ItemDetailPanel extends React.Component {
                 <Divider className={classes.divider}/>
                 <ItemComments itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
-                <Divider className={classes.divider}/>
-                <ItemRecommendations itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                { item.recommendations && item.recommendations.results && item.recommendations.results.length > 0 &&
+                    <React.Fragment>
+                        <Divider className={classes.divider}/>
+                        <ItemRecommendations itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                    </React.Fragment>
+                }
 
-                <Divider className={classes.divider}/>
-                <ItemCast itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                { item.credits &&  item.credits.cast && item.credits.cast.length > 0 &&
+                    <React.Fragment>
+                        <Divider className={classes.divider}/>
+                        <ItemCast itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                    </React.Fragment>
+                }
 
-                <Divider className={classes.divider}/>
-                <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                { !this.props.DownloadHistoryStore.loading && this.props.DownloadHistoryStore.history && this.props.DownloadHistoryStore.history.size  > 0 &&
+                    <React.Fragment>
+                        <Divider className={classes.divider}/>
+                        <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                    </React.Fragment>
+                }
             </div>
         );
      }

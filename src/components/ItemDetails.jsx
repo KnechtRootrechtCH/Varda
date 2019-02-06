@@ -13,16 +13,27 @@ import constants from '../config/constants';
 import { Fade } from '@material-ui/core';
 
 @withNamespaces()
+@inject('AuthenticationStore')
 @inject('ConfigurationStore')
 @inject('CommentsStore')
+@inject('DownloadHistoryStore')
 @inject('DownloadStatusStore')
 @inject('MovieDbStore')
 @observer
 class ItemDetails extends React.Component {
 
+    state = {
+        isAdmin: false,
+    }
+
     componentDidMount = () => {
         console.debug(`${this.constructor.name}.componentDidMount() => Load item`);
         this.loadItem();
+        console.debug(`${this.constructor.name}.componentDidMount() => Load history`);
+        this.loadHistory();
+        this.setState({
+            isAdmin: this.props.AuthenticationStore.isAdmin,
+        });
     }
 
     componentWillUnmount = () => {
@@ -38,6 +49,14 @@ class ItemDetails extends React.Component {
             console.debug(`${this.constructor.name}.componentDidUpdate() : ItemId changed => Load item`);
             this.loadItem();
         }
+
+        if (!this.state.isAdmin && this.props.AuthenticationStore.isAdmin) {
+            this.setState({
+                isAdmin: true,
+            });
+            console.debug(`${this.constructor.name}.componentDidUpdate() : admin mode activated => reload history`);
+            this.loadHistory();
+        }
     }
 
     loadItem = () => {
@@ -49,6 +68,20 @@ class ItemDetails extends React.Component {
         this.props.CommentsStore.setSorting('timestamp', true);
         this.props.CommentsStore.resetComments();
         this.props.CommentsStore.loadCommentsById(mediaType, itemId);
+    }
+
+    loadHistory = () => {
+        const mediaType = this.props.match.params.mediaType
+        const itemId = this.props.match.params.itemId
+        this.props.DownloadHistoryStore.resetHistory();
+        this.props.DownloadHistoryStore.setSorting('timestamp', true);
+        this.props.DownloadHistoryStore.setFilter({
+            key: 'all',
+            field: 'timestamp',
+            value: new Date(0, 0, 0, 0, 0, 0, 0),
+            operator: '>=',
+        });
+        this.props.DownloadHistoryStore.loadItemHistory(`${mediaType}:${itemId}`);
     }
 
     render () {
