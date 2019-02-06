@@ -9,12 +9,9 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
     Typography } from '@material-ui/core';
 
-import {
-    Filter,
-    SortAscending,
-    SortDescending } from 'mdi-material-ui';
-
 import DownloadItemGrid from './DownloadItemGrid';
+import DownloadListFilterMenu from './list/DownloadListFilterMenu';
+import DownloadListSortMenu from './list/DownloadListSortMenu';
 
 @withNamespaces()
 @inject('AuthenticationStore')
@@ -23,12 +20,22 @@ import DownloadItemGrid from './DownloadItemGrid';
 class DownloadList extends React.Component {
 
     state = {
-        filterMenuAnchor: null,
         isAdmin: false,
     }
 
     componentDidMount = () => {
         console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
+        const field = JSON.parse(localStorage.getItem('varda.list.sortField'));
+        if (field) {
+            const ascending = JSON.parse(localStorage.getItem('varda.list.sortAscending'));
+            this.props.DownloadStatusStore.setSorting(field, ascending);
+        }
+
+        const filter = JSON.parse(localStorage.getItem('varda.list.filter'));
+        if (filter) {
+            this.props.DownloadStatusStore.setFilter(filter);
+        }
+
         this.loadItems();
         // console.debug(`${this.constructor.name}.componentDidMount() => adding scroll event listener`);
         window.addEventListener('scroll', this.handleScroll)
@@ -85,12 +92,8 @@ class DownloadList extends React.Component {
                             <span>{t('common.list')}</span>
                         </Typography>
                         <div className={classes.controls}>
-                            <Filter className={classes.control} onClick={this.handleFilterMenuOpen}/>
-                            { this.props.DownloadStatusStore.sortAscending ?
-                                <SortAscending className={classes.control} onClick={this.handleSortMenuOpen}/>
-                            :
-                                <SortDescending className={classes.control} onClick={this.handleSortMenuOpen}/>
-                            }
+                            <DownloadListFilterMenu onUpdateList={this.loadItems}/>
+                            <DownloadListSortMenu onUpdateList={this.loadItems}/>
                         </div>
                     </div>
                 </div>

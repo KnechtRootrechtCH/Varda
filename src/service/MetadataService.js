@@ -81,11 +81,11 @@ class MetadataService {
     }
 
     isNetflixUrl (url) {
-        return url.indexOf('www.netflix.com/') > -1;
+        return url && url.indexOf('www.netflix.com/') > -1;
     }
 
     isAmazonUrl (url) {
-        return url.indexOf('www.amazon.com/') > -1;
+        return url && url.indexOf('www.amazon.com/') > -1;
     }
 
     getReleaseDateFormated (item, format) {

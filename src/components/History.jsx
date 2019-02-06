@@ -207,7 +207,7 @@ class History extends React.Component {
                                 </MenuItem>
                             )
                         })}
-                    </Menu>
+                </Menu>
             </div>
         );
     }

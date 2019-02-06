@@ -81,7 +81,7 @@ class NavigationBar extends React.Component {
                     label={t('common.listShort')}
                     icon={<BriefcaseDownload />}
                     component={Link}
-                    to='/browse/list'/>
+                    to='/list'/>
                 <BottomNavigationAction
                     value='messages'
                     label={t('common.messages')}

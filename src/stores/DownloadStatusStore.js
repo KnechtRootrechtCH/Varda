@@ -19,6 +19,7 @@ class DownloadStatusStore {
     }
     @observable sortField = 'title';
     @observable sortAscending = true;
+    @observable listParametersChanged = false;
     pageSize = 100;
     lastItem = null;
 
@@ -71,22 +72,28 @@ class DownloadStatusStore {
         console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid, this.filter);
         runInAction(() => {
             this.loading = true;
+            this.listParametersChanged = false;
         })
+
         let query = firestore
             .collection('users')
             .doc(this.dataUid)
             .collection('items')
             .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
-        if (this.filter.status) {
+
+        if (this.filter.status && this.filter.status !== 'none' && this.filter.status !== 'notReleased') {
             query = query.where('status', '==', this.filter.status);
         }
-        if (this.filter.mediaType) {
-            //query = query.where(this.filter.field, this.filter.operator, this.filter.value)
+        if (this.filter.mediaType === 'movie') {
+            query = query.where('mediaType', '==', 'movie');
         }
-
-        if (this.filter.prioriy) {
+        if (this.filter.mediaType === 'tv') {
+            query = query.where('mediaType', '==', 'tv');
+        }
+        if (this.filter.prioriy && this.filter !== 'none' && this.filter.status > 0) {
             query = query.where('prioriy', '==', this.filter.prioriy);
         }
+
         if (this.lastItem) {
             if (this.sortField === 'timestamp') {
                 query = query.startAfter(this.lastItem.timestamp.toDate());
@@ -109,7 +116,21 @@ class DownloadStatusStore {
                 snapshot.forEach(doc => {
                     this.lastItem = doc.data();
                     if (this.lastItem.status && this.lastItem.status !== constants.STATUS.REMOVED) {
-                        this.list.set(doc.id, this.lastItem);
+                        if (this.filter.status === 'notReleased') {
+                            const now = Moment(new Date());
+                            const release = Moment(this.lastItem.release.toDate());
+                            if (now < release) {
+                                this.list.set(doc.id, this.lastItem);
+                            }
+                        } else if (this.filter.status && this.filter.status !== 'none' && this.filter.status !== 'notReleased'){
+                            const now = Moment(new Date());
+                            const release = Moment(this.lastItem.release.toDate());
+                            if (now > release) {
+                                this.list.set(doc.id, this.lastItem);
+                            }
+                        } else {
+                            this.list.set(doc.id, this.lastItem);
+                        }
                     }
 
                 });
@@ -120,6 +141,7 @@ class DownloadStatusStore {
 
     @action async updateStatus(item, status, previousStatus, comment, skipLog) {
         const key = MetadataService.getKey(item);
+        const mediaType = MetadataService.getMediaType(item);
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateMoment(item);
         const backdrop = item.backdrop_path;
@@ -134,6 +156,7 @@ class DownloadStatusStore {
 
         const data = {
             status: status,
+            mediaType: mediaType,
             title: title ? title : '',
             release: release ? release.toDate() : new Date(0, 0, 0, 0, 0, 0, 0),
             backdrop: backdrop ? backdrop: '',
@@ -183,6 +206,7 @@ class DownloadStatusStore {
 
     @action async updatePriority(item, priority, previousPrority, comment, isImport) {
         const key = MetadataService.getKey(item);
+        const mediaType = MetadataService.getMediaType(item);
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateMoment(item);
         const backdrop = item.backdrop_path;
@@ -196,6 +220,7 @@ class DownloadStatusStore {
         const collection = userDoc.collection('items');
         collection.doc(`${key}`).set({
             priority: priority,
+            mediaType: mediaType,
             title: title ? title : '',
             release: release ? release.toDate() : new Date(0, 0, 0, 0, 0, 0, 0),
             backdrop: backdrop ? backdrop: '',
@@ -285,12 +310,60 @@ class DownloadStatusStore {
             });
     }
 
+    @action setFilter(filter) {
+        runInAction(() => {
+            this.filter = filter;
+            this.listParametersChanged = true;
+        })
+    }
+
+    @action setMediaTypeFilter(value) {
+        runInAction(() => {
+            this.filter.mediaType = value;
+            this.listParametersChanged = true;
+        })
+    }
+
+    @action setStatusFilter(value) {
+        runInAction(() => {
+            this.filter.status = value;
+            this.listParametersChanged = true;
+        })
+    }
+
+    @action setPriorityFilter(value) {
+        runInAction(() => {
+            this.filter.priority = value;
+            this.listParametersChanged = true;
+        })
+    }
+
+    @action setSorting(sortField, sortAscending) {
+        runInAction(() => {
+            this.sortField = sortField;
+            this.sortAscending = sortAscending;
+            this.listParametersChanged = true;
+        })
+    }
+
+    @action setSortField(sortField) {
+        runInAction(() => {
+            this.sortField = sortField;
+            this.listParametersChanged = true;
+        })
+    }
+
+    @action setSortDirection(sortAscending) {
+        runInAction(() => {
+            this.sortAscending = sortAscending;
+            this.listParametersChanged = true;
+        })
+    }
+
     @computed get listSorted () {
-        let list = [...this.list].sort((a, b) => this.compare(a, b));
-        if (this.sortAscending) {
-            list = list.reverse();
-        }
-        return list;
+        const list = [...this.list];
+        const sortedList = list.sort((a, b) => this.compare(a[1], b[1]));
+        return sortedList;
     }
 
     @computed get uid () {
@@ -314,19 +387,23 @@ class DownloadStatusStore {
     }
 
     compare(a, b) {
+        //Moment(item.release.toDate())
+        let comparison = false;
         if (this.sortField === 'timestamp') {
-            return a.timestamp < b.timestamp ? this.sortAscending : !this.sortAscending;
+            comparison = Moment(a.timestamp.toDate()) > Moment(b.timestamp.toDate());
+        } else if (this.sortField === 'release') {
+            comparison = Moment(a.release.toDate()) > Moment(b.release.toDate());
+        } else if (this.sortField === 'title') {
+            comparison = a.title > b.title;
+        } else if (this.sortField === 'priority') {
+            const aPriority = a.priority ? a.priority : 100;
+            const bPriority = b.priority ? b.priority : 100;
+            comparison = aPriority < bPriority;
         }
-        if (this.sortField === 'release') {
-            return a.release < b.release ? this.sortAscending : !this.sortAscending;
-        }
-        if (this.sortField === 'title') {
-            return a.title < b.title ? this.sortAscending : !this.sortAscending;
-        }
-        if (this.sortField === 'priority') {
-            return a.priority < b.priority ? this.sortAscending : !this.sortAscending;
-        }
-        return -1;
+        const before = comparison ? this.sortAscending : !this.sortAscending;
+        const value = before ? 1 : -1;
+        // console.debug('DownloadStatusStore.compare()', a, b, this.sortField, this.sortAscending, comparison, before, value);
+        return value;
     }
 }
 

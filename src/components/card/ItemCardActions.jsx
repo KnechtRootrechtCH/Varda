@@ -9,7 +9,6 @@ import { CardActions } from '@material-ui/core';
 import { Star } from '@material-ui/icons';
 
 import ItemCardStatusIcon from './ItemCardStatusIcon'
-import MetadataService from '../../service/MetadataService';
 
 @withNamespaces()
 @inject('ConfigurationStore')

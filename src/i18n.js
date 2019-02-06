@@ -77,6 +77,34 @@ i18n.init({
                     },
                 },
 
+                list: {
+                    sort: {
+                        ascending: 'Ascending',
+                        descending: 'Descending',
+                        title: 'Title',
+                        release: 'Release date',
+                        priority: 'Priority',
+                        timestamp: 'Last change',
+                    },
+                    filter: {
+                        mediaType: {
+                            none: 'All',
+                            movie: 'Movies',
+                            tv: 'TV Series',
+                        },
+                        status: {
+                            none: 'Status: All',
+                            queued: 'Status: Queued',
+                            notReleased: 'Status: Unreleased',
+                            notAvailable: 'Status: Not yet available',
+                            notFound: 'Status: Not found',
+                            redownload: 'Status: Redownload',
+                            downloading: 'Status: Downloading',
+                            downloaded: 'Status: Done',
+                        },
+                    },
+                },
+
                 details: {
                     originalTitle: 'Original title',
                     runtime: 'Runtime',
@@ -230,6 +258,34 @@ i18n.init({
                             downloading: 'wird heruntergeladen',
                             downloaded: '',
                             loading: '',
+                        },
+                    },
+                },
+
+                list: {
+                    sort: {
+                        ascending: 'Aufsteigend',
+                        descending: 'Absteigend',
+                        title: 'Titel',
+                        release: 'Veröffentlichung',
+                        priority: 'Priorität',
+                        timestamp: 'Letzte Änderung',
+                    },
+                    filter: {
+                        mediaType: {
+                            none: 'Alle',
+                            movie: 'Filme',
+                            tv: 'Serien',
+                        },
+                        status: {
+                            none: 'Status: Alle',
+                            queued: 'Status: Hinzugefügt',
+                            notReleased: 'Status: Unveröffentlicht',
+                            notAvailable: 'Status: Noch nicht erhältlich',
+                            notFound: 'Status: Nicht gefunden',
+                            redownload: 'Status: Erneut herunterladen',
+                            downloading: 'Status: Wird heruntergeladen',
+                            downloaded: 'Status: Erledigt',
                         },
                     },
                 },
