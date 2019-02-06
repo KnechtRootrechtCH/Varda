@@ -153,6 +153,9 @@ class TitleBar extends React.Component {
         if (location.includes('/history')) {
             showSearch = false;
         }
+        if (location.includes('/messages')) {
+            showSearch = false;
+        }
 
         return (
             <div className={classes.root}>

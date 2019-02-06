@@ -12,6 +12,7 @@ class DownloadStatusStore {
 
     @observable list = new Map();
     @observable loading = false;
+    @observable searchString = '';
     @observable filter = {
         mediaType: 'movie',
         status: null,
@@ -115,24 +116,9 @@ class DownloadStatusStore {
             runInAction(() => {
                 snapshot.forEach(doc => {
                     this.lastItem = doc.data();
-                    if (this.lastItem.status && this.lastItem.status !== constants.STATUS.REMOVED) {
-                        if (this.filter.status === 'notReleased') {
-                            const now = Moment(new Date());
-                            const release = Moment(this.lastItem.release.toDate());
-                            if (now < release) {
-                                this.list.set(doc.id, this.lastItem);
-                            }
-                        } else if (this.filter.status && this.filter.status !== 'none' && this.filter.status !== 'notReleased'){
-                            const now = Moment(new Date());
-                            const release = Moment(this.lastItem.release.toDate());
-                            if (now > release) {
-                                this.list.set(doc.id, this.lastItem);
-                            }
-                        } else {
-                            this.list.set(doc.id, this.lastItem);
-                        }
+                    if (this.filterItem(this.lastItem)){
+                        this.list.set(doc.id, this.lastItem);
                     }
-
                 });
                 this.loading = false;
             });
@@ -310,6 +296,10 @@ class DownloadStatusStore {
             });
     }
 
+    @action setSearchString(searchString) {
+        this.searchString = searchString;
+    }
+
     @action setFilter(filter) {
         runInAction(() => {
             this.filter = filter;
@@ -386,7 +376,7 @@ class DownloadStatusStore {
         return this.isAdmin && this.dataUid !== this.uid;
     }
 
-    compare(a, b) {
+    compare (a, b) {
         //Moment(item.release.toDate())
         let comparison = false;
         if (this.sortField === 'timestamp') {
@@ -404,6 +394,33 @@ class DownloadStatusStore {
         const value = before ? 1 : -1;
         // console.debug('DownloadStatusStore.compare()', a, b, this.sortField, this.sortAscending, comparison, before, value);
         return value;
+    }
+
+    filterItem (item) {
+        if (!this.lastItem.status || this.lastItem.status === constants.STATUS.REMOVED) {
+            return false;
+        }
+        if (this.searchString && this.searchString.length >= 2) {
+            const itemTitle = item.title.toLowerCase();
+            const searchString = this.searchString.toLowerCase();
+            if (!itemTitle.includes(searchString)) {
+                return false;
+            }
+        }
+        if (this.filter.status === 'notReleased') {
+            const now = Moment(new Date());
+            const release = Moment(this.lastItem.release.toDate());
+            if (now > release) {
+                return false;
+            }
+        } else if (this.filter.status !== 'none') {
+            const now = Moment(new Date());
+            const release = Moment(this.lastItem.release.toDate());
+            if (now < release) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 

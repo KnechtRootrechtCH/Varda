@@ -57,7 +57,7 @@ class DownloadList extends React.Component {
     }
 
     loadItems = () => {
-        // console.debug(`${this.constructor.name}.loadItems() : Media type => `, this.props.match.params.mediaType);
+        console.debug(`${this.constructor.name}.loadItems()`);
         window.scrollTo(0, 0);
         this.props.DownloadStatusStore.resetStatusList();
         this.props.DownloadStatusStore.loadStatusList();
