@@ -69,8 +69,13 @@ class ItemCardStatusIcon extends React.Component {
         const t = this.props.t;
         const status = this.props.statusItem ? this.props.statusItem.status : null;
         const mobile = this.props.mobile;
-        const release = MetadataService.getReleaseDateMoment(this.props.item);
-        const unreleased = Moment().isBefore(release);
+
+        let release = MetadataService.getReleaseDateMoment(this.props.item)
+        if (!release) {
+             release = this.props.statusItem && this.props.statusItem.release ? Moment(this.props.statusItem.release.toDate()) : null;
+        }
+        const unreleased = release ? Moment().isBefore(release) : false;
+        // console.debug(`${this.constructor.name}.render()`, this.props.item.title, release, unreleased, status);
 
         return (
             <Fade className={mobile ? classes.rootMobile : classes.root} in={status !== constants.STATUS.LOADING}>

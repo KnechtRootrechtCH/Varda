@@ -74,7 +74,7 @@ class DownloadList extends React.Component {
 
         if (offset >= height - 100) {
             // console.debug(`${this.constructor.name}.handleScroll() : load next page!`);
-            this.props.DownloadStatusStore.loadStatusList();
+            this.props.DownloadStatusStore.loadNextPage();
         }
     }, 100)
 
@@ -83,13 +83,18 @@ class DownloadList extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
         const mobile = isWidthDown('xs', this.props.width);
+        const itemCount = this.props.DownloadStatusStore.list.size;
+        let itemCountString = '';
+        if (itemCount > 0) {
+            itemCountString = mobile ? ` (${itemCount})` : ` (${itemCount} ${t('common.items')})`
+        }
 
         return (
             <div className={classes.root}>
                 <div className={mobile ? classes.containerMobile : classes.container}>
                     <div className={mobile ? classes.headerMobile : classes.header}>
                         <Typography className={classes.title} variant='h6' component='h2'>
-                            <span>{t('common.list')}</span>
+                            <span>{t('common.list')}{itemCountString}</span>
                         </Typography>
                         <div className={classes.controls}>
                             <DownloadListFilterMenu onUpdateList={this.loadItems}/>

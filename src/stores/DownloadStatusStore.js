@@ -21,8 +21,9 @@ class DownloadStatusStore {
     @observable sortField = 'title';
     @observable sortAscending = true;
     @observable listParametersChanged = false;
-    pageSize = 100;
+    @observable page = 1;
     lastItem = null;
+    pageSize = 50;
 
     @action async loadStatus(item) {
         const key = MetadataService.getKey(item);
@@ -66,11 +67,12 @@ class DownloadStatusStore {
 
     @action async resetStatusList () {
         this.list = new Map();
+        this.page = 1;
         this.lastItem = null;
     }
 
     @action async loadStatusList() {
-        console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid, this.filter);
+        console.debug('DownloadStatusStore.loadStatusList() : loading');
         runInAction(() => {
             this.loading = true;
             this.listParametersChanged = false;
@@ -111,14 +113,16 @@ class DownloadStatusStore {
         }
 
         query
-        .limit(this.pageSize)
         .onSnapshot((snapshot) => {
             runInAction(() => {
                 snapshot.forEach(doc => {
                     this.lastItem = doc.data();
                     if (this.filterItem(this.lastItem)){
                         this.list.set(doc.id, this.lastItem);
+                    } else {
+                        this.list.delete(doc.id);
                     }
+
                 });
                 this.loading = false;
             });
@@ -296,6 +300,12 @@ class DownloadStatusStore {
             });
     }
 
+    @action loadNextPage() {
+        runInAction(() => {
+            this.page++;
+        });
+    }
+
     @action setSearchString(searchString) {
         this.searchString = searchString;
     }
@@ -304,28 +314,28 @@ class DownloadStatusStore {
         runInAction(() => {
             this.filter = filter;
             this.listParametersChanged = true;
-        })
+        });
     }
 
     @action setMediaTypeFilter(value) {
         runInAction(() => {
             this.filter.mediaType = value;
             this.listParametersChanged = true;
-        })
+        });
     }
 
     @action setStatusFilter(value) {
         runInAction(() => {
             this.filter.status = value;
             this.listParametersChanged = true;
-        })
+        });
     }
 
     @action setPriorityFilter(value) {
         runInAction(() => {
             this.filter.priority = value;
             this.listParametersChanged = true;
-        })
+        });
     }
 
     @action setSorting(sortField, sortAscending) {
@@ -333,27 +343,27 @@ class DownloadStatusStore {
             this.sortField = sortField;
             this.sortAscending = sortAscending;
             this.listParametersChanged = true;
-        })
+        });
     }
 
     @action setSortField(sortField) {
         runInAction(() => {
             this.sortField = sortField;
             this.listParametersChanged = true;
-        })
+        });
     }
 
     @action setSortDirection(sortAscending) {
         runInAction(() => {
             this.sortAscending = sortAscending;
             this.listParametersChanged = true;
-        })
+        });
     }
 
     @computed get listSorted () {
         const list = [...this.list];
         const sortedList = list.sort((a, b) => this.compare(a[1], b[1]));
-        return sortedList;
+        return sortedList.slice(0, this.pageSize * this.page);
     }
 
     @computed get uid () {
@@ -410,13 +420,13 @@ class DownloadStatusStore {
         if (this.filter.status === 'notReleased') {
             const now = Moment(new Date());
             const release = Moment(this.lastItem.release.toDate());
-            if (now > release) {
+            if (now.isAfter(release)) {
                 return false;
             }
         } else if (this.filter.status !== 'none') {
             const now = Moment(new Date());
             const release = Moment(this.lastItem.release.toDate());
-            if (now < release) {
+            if (now.isBefore(release)) {
                 return false;
             }
         }
