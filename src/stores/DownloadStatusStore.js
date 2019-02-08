@@ -21,9 +21,8 @@ class DownloadStatusStore {
     @observable sortField = 'title';
     @observable sortAscending = true;
     @observable listParametersChanged = false;
-    @observable page = 1;
     lastItem = null;
-    pageSize = 50;
+    pageSize = 20;
 
     @action async loadStatus(item) {
         const key = MetadataService.getKey(item);
@@ -67,12 +66,11 @@ class DownloadStatusStore {
 
     @action async resetStatusList () {
         this.list = new Map();
-        this.page = 1;
         this.lastItem = null;
     }
 
-    @action async loadStatusList() {
-        console.debug('DownloadStatusStore.loadStatusList() : loading');
+    @action async loadStatusList(noPaging) {
+        console.debug('DownloadStatusStore.loadStatusList() : loading', this.filter);
         runInAction(() => {
             this.loading = true;
             this.listParametersChanged = false;
@@ -82,7 +80,13 @@ class DownloadStatusStore {
             .collection('users')
             .doc(this.dataUid)
             .collection('items')
-            .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
+
+        if (!noPaging) {
+            query = query
+                        .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
+                        .limit(this.pageSize)
+        }
+
 
         if (this.filter.status && this.filter.status !== 'none' && this.filter.status !== 'notReleased') {
             query = query.where('status', '==', this.filter.status);
@@ -96,8 +100,12 @@ class DownloadStatusStore {
         if (this.filter.prioriy && this.filter !== 'none' && this.filter.status > 0) {
             query = query.where('prioriy', '==', this.filter.prioriy);
         }
+        if (this.searchString && this.searchString.length > 0) {
+            // TODO... how?
+        }
 
         if (this.lastItem) {
+            console.debug('DownloadStatusStore.loadStatusList() : loading', this.lastItem);
             if (this.sortField === 'timestamp') {
                 query = query.startAfter(this.lastItem.timestamp.toDate());
             }
@@ -131,6 +139,7 @@ class DownloadStatusStore {
 
     @action async updateStatus(item, status, previousStatus, comment, skipLog) {
         const key = MetadataService.getKey(item);
+        const id = item.id;
         const mediaType = MetadataService.getMediaType(item);
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateMoment(item);
@@ -146,6 +155,7 @@ class DownloadStatusStore {
 
         const data = {
             status: status,
+            id: id,
             mediaType: mediaType,
             title: title ? title : '',
             release: release ? release.toDate() : new Date(0, 0, 0, 0, 0, 0, 0),
@@ -196,6 +206,7 @@ class DownloadStatusStore {
 
     @action async updatePriority(item, priority, previousPrority, comment, isImport) {
         const key = MetadataService.getKey(item);
+        const id = item.id;
         const mediaType = MetadataService.getMediaType(item);
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateMoment(item);
@@ -210,6 +221,7 @@ class DownloadStatusStore {
         const collection = userDoc.collection('items');
         collection.doc(`${key}`).set({
             priority: priority,
+            id: id,
             mediaType: mediaType,
             title: title ? title : '',
             release: release ? release.toDate() : new Date(0, 0, 0, 0, 0, 0, 0),
@@ -300,12 +312,6 @@ class DownloadStatusStore {
             });
     }
 
-    @action loadNextPage() {
-        runInAction(() => {
-            this.page++;
-        });
-    }
-
     @action setSearchString(searchString) {
         this.searchString = searchString;
     }
@@ -363,7 +369,7 @@ class DownloadStatusStore {
     @computed get listSorted () {
         const list = [...this.list];
         const sortedList = list.sort((a, b) => this.compare(a[1], b[1]));
-        return sortedList.slice(0, this.pageSize * this.page);
+        return sortedList; //.slice(0, this.pageSize * this.page);
     }
 
     @computed get uid () {
@@ -409,26 +415,6 @@ class DownloadStatusStore {
     filterItem (item) {
         if (!this.lastItem.status || this.lastItem.status === constants.STATUS.REMOVED) {
             return false;
-        }
-        if (this.searchString && this.searchString.length >= 2) {
-            const itemTitle = item.title.toLowerCase();
-            const searchString = this.searchString.toLowerCase();
-            if (!itemTitle.includes(searchString)) {
-                return false;
-            }
-        }
-        if (this.filter.status === 'notReleased') {
-            const now = Moment(new Date());
-            const release = Moment(this.lastItem.release.toDate());
-            if (now.isAfter(release)) {
-                return false;
-            }
-        } else if (this.filter.status !== 'none') {
-            const now = Moment(new Date());
-            const release = Moment(this.lastItem.release.toDate());
-            if (now.isBefore(release)) {
-                return false;
-            }
         }
         return true;
     }

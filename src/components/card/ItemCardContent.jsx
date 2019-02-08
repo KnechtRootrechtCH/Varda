@@ -50,7 +50,7 @@ class ItemCardContent extends React.Component {
     render () {
         // console.debug(`${this.constructor.name}.render()`, this.props.item);
         const classes = this.props.classes;
-        // const t = this.props.t;
+        const t = this.props.t;
 
         const mobile = this.props.mobile;
         const downloadList = this.props.downloadList;
@@ -62,15 +62,18 @@ class ItemCardContent extends React.Component {
         const isTv = this.props.mediaType === 'tv';
 
         let title;
-        let release;
+        let releaseMoment;
         if (downloadList) {
-            const moment = Moment(item.release.toDate());
             title = item.title;
-            release = moment.format('YYYY');
+            releaseMoment = Moment(item.release.toDate());
         } else {
             title = MetadataService.getTitle(item);
-            release = MetadataService.getReleaseDateFormated(item, 'YYYY');
+            releaseMoment = MetadataService.getReleaseDateMoment(item);
         }
+
+        const release = releaseMoment ? releaseMoment.format('YYYY') : '????';
+        const unreleased = releaseMoment ? Moment().isBefore(releaseMoment) : true;
+        const releaseDateColor = unreleased ? 'error' : 'textPrimary';
 
         const priority = this.state.priority < 100 ? this.state.priority : statusItem ? statusItem.priority : 100;
         const priorityCount = this.props.ConfigurationStore.configuration.priorityCount;
@@ -86,10 +89,10 @@ class ItemCardContent extends React.Component {
                     {title}
                 </Typography>
 
-                <Typography className={classes.relaseDate} color='textSecondary'>
+                <Typography className={classes.relaseDate} color='textSecondary' color={releaseDateColor}>
                     {release}
                     { isMovie &&
-                        <Movie className={classes.mediaTypeIcon} color='inherit'/>
+                        <Movie className={classes.mediaTypeIcon} color='action'/>
                     }
                     { isTv &&
                         <Tv className={classes.mediaTypeIcon} color='secondary'/>

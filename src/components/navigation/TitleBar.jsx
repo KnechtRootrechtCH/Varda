@@ -129,33 +129,28 @@ class TitleBar extends React.Component {
         let showBackButton = false;
         let headerColor = isAdmin ? 'secondary' : 'primary';
         let subheaderColor = isAdmin ? 'inherit' : 'inherit';
-        let showSearch = true;
+        let showSearch = false;
 
         const item = this.props.MovieDbStore.item;
-        if (item) {
-            if (!desktop) {
-                title = ''; // MetadataService.getTitle(item);
-                showBackButton = true;
-                headerColor = 'inherit';
-                subTitle = false;
-            }
+        if (item && !desktop) {
+            title = ''; // MetadataService.getTitle(item);
+            showBackButton = true;
+            headerColor = 'inherit';
+            subTitle = false;
+        }
+        if (location.includes('/settings') && !desktop) {
+            title = t('common.settings');
+            showBackButton = true;
+            headerColor = 'inherit';
+            subTitle = false;
+        }
+        if (location === '/' || location.includes('/browse')) {
+            showSearch = true;
+        }
+        if (location.includes('/list')) {
             showSearch = false;
         }
-        if (location.includes('/settings')) {
-            if (!desktop) {
-                title = t('common.settings');
-                showBackButton = true;
-                headerColor = 'inherit';
-                subTitle = false;
-            }
-            showSearch = false;
-        }
-        if (location.includes('/history')) {
-            showSearch = false;
-        }
-        if (location.includes('/messages')) {
-            showSearch = false;
-        }
+
 
         return (
             <div className={classes.root}>

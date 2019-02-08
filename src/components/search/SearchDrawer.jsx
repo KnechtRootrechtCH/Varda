@@ -69,8 +69,8 @@ class SearchDrawer extends React.Component {
     loadItems = () => {
         const location = this.props.location.pathname.toLowerCase();
         if (location.includes('/list')) {
-            this.props.DownloadStatusStore.resetStatusList();
-            this.props.DownloadStatusStore.loadStatusList();
+            // this.props.DownloadStatusStore.resetStatusList();
+            // this.props.DownloadStatusStore.loadStatusList();
         }
         if (location.includes('/browse')) {
             this.props.MovieDbStore.clearItems();

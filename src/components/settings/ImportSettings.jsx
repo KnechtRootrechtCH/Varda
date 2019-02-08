@@ -14,6 +14,7 @@ import {
 import constants from '../../config/constants';
 
 @withNamespaces()
+@inject('AuthenticationStore')
 @inject('ConfigurationStore')
 @inject('DownloadStatusStore')
 @observer
@@ -91,6 +92,7 @@ class ImportSettings extends React.Component {
         status = status === 'notYetAvailable' ? constants.STATUS.NOT_AVAILABLE : status;
         status = status === 'queued' ? constants.STATUS.DOWNLOADING : status;
         status = status === null || status === undefined || status.length === 0 ? constants.STATUS.QUEUED : status;
+        status = item.downloaded ? constants.STATUS.DOWNLOADED : status;
         this.props.DownloadStatusStore.updateStatus(item, status, '', comment, true);
         this.props.DownloadStatusStore.updatePriority(item, priority, 0, comment, true);
     }
@@ -111,10 +113,15 @@ class ImportSettings extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
 
+        const userInfo = `Data UID: ${this.props.AuthenticationStore.dataUid}`
+
         return (
             <div className={classes.root}>
                 <Typography className={classes.title} variant='subtitle1' component='h2'>
                     <span>{t('settings.importSettings')}</span>
+                </Typography>
+                <Typography className={classes.user} variant='body2' component='h2'>
+                    <span>{userInfo}</span>
                 </Typography>
                 <TextField
                     label='Import Data'

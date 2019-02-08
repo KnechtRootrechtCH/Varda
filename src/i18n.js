@@ -36,6 +36,7 @@ i18n.init({
                     comment: 'Comment',
                     more: 'more',
                     less: 'less',
+                    unknown: 'unknown',
                     priority: {
                         1: 'High',
                         2: 'Medium',
@@ -222,6 +223,7 @@ i18n.init({
                     comment: 'Kommentar',
                     more: 'mehr',
                     less: 'weniger',
+                    unknown: 'unbekannt',
                     priority: {
                         1: 'Hoch',
                         2: 'Mittel',
@@ -281,7 +283,7 @@ i18n.init({
                         },
                         status: {
                             none: 'Status: Alle',
-                            queued: 'Status: Hinzugefügt',
+                            queued: 'Status: Todo',
                             notReleased: 'Status: Unveröffentlicht',
                             notAvailable: 'Status: Noch nicht erhältlich',
                             notFound: 'Status: Nicht gefunden',

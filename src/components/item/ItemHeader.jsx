@@ -43,13 +43,13 @@ class ItemHeader extends React.Component {
                     { !mobile &&
                         <ItemPriority item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                     }
-
-                    { tagline &&
-                        <Typography className={classes.tagline} variant='caption' component='h2' noWrap>
-                            {tagline}
-                        </Typography>
-                    }
-
+                    <Typography className={classes.tagline} variant='caption' component='h2' noWrap>
+                        { tagline ?
+                            <span>{tagline}</span>
+                            :
+                            <span>&nbsp;</span>
+                        }
+                    </Typography>
                 </div>
             </div>
         );

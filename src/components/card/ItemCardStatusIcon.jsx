@@ -70,13 +70,15 @@ class ItemCardStatusIcon extends React.Component {
         const status = this.props.statusItem ? this.props.statusItem.status : null;
         const mobile = this.props.mobile;
 
+        /*
         let release = MetadataService.getReleaseDateMoment(this.props.item)
         if (!release) {
              release = this.props.statusItem && this.props.statusItem.release ? Moment(this.props.statusItem.release.toDate()) : null;
         }
         const unreleased = release ? Moment().isBefore(release) : false;
-        // console.debug(`${this.constructor.name}.render()`, this.props.item.title, release, unreleased, status);
+        */
 
+        // console.debug(`${this.constructor.name}.render()`, this.props.item.title, release, unreleased, status);
         return (
             <Fade className={mobile ? classes.rootMobile : classes.root} in={status !== constants.STATUS.LOADING}>
                 <div>
@@ -86,8 +88,6 @@ class ItemCardStatusIcon extends React.Component {
                         <Download className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.DOWNLOADED ?
                         <Check className={classes.statusIconPrimary} onClick={this.handleItemEditOpen} />
-                    : unreleased ?
-                        <Calendar className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.QUEUED ?
                         <ClockOutline className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.NOT_AVAILABLE ?

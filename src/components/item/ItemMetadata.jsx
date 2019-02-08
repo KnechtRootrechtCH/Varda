@@ -15,7 +15,8 @@ import {
 
 import {
     Amazon,
-    InformationOutline,
+    Calendar,
+    LinkVariant,
     Netflix }  from 'mdi-material-ui';
 
 import MetadataService from '../../service/MetadataService';
@@ -79,7 +80,7 @@ class ItemMetadata extends React.Component {
 
     render () {
         const classes = this.props.classes;
-        // const t = this.props.t;
+        const t = this.props.t;
 
         const item = this.props.item;
         // const isMovie = MetadataService.isMovie(item);
@@ -101,12 +102,12 @@ class ItemMetadata extends React.Component {
 
         // director
         const director = MetadataService.getDirector(item);
-        const directorName = director ? director.name : '';
-        const directorUrl = director ? `https://www.themoviedb.org/person/${director.id}` : '';
+        const directorName = director ? director.name : t('common.unknown');
+        const directorUrl = director ? `https://www.themoviedb.org/person/${director.id}` : null;
         rows.push({
             key: 'director',
             value:  directorName,
-            display: director,
+            display: true,
             url: directorUrl,
         });
 
@@ -128,17 +129,22 @@ class ItemMetadata extends React.Component {
 
         // release date
         const releaseDate = MetadataService.getReleaseDateFormated(item, 'DD.MM.YYYY');
+        const release = MetadataService.getReleaseDateMoment(this.props.item);
+        const unreleased = Moment().isBefore(release);
+        const releaseDateColor = unreleased ? 'error' : 'textPrimary';
         if (isTv) {
             rows.push({
                 key: 'firstAirDate',
                 value: releaseDate,
                 display: releaseDate,
+                color: releaseDateColor,
             });
         } else {
             rows.push({
                 key: 'releaseDate',
                 value: releaseDate,
                 display: releaseDate,
+                color: releaseDateColor,
             });
         }
 
@@ -178,7 +184,7 @@ class ItemMetadata extends React.Component {
                 <table className={classes.table}>
                     <tbody>
                         { rows.filter(r => r.display).map((row) => {
-                            return this.renderRow(row.key, row.value, row.url);
+                            return this.renderRow(row.key, row.value, row.url, row.color);
                         })}
                     </tbody>
                 </table>
@@ -190,13 +196,14 @@ class ItemMetadata extends React.Component {
         );
     }
 
-    renderRow (key, value, url) {
+    renderRow (key, value, url, color) {
         const classes = this.props.classes;
         const t = this.props.t;
+        color = color ? color : 'textPrimary';
 
         return (
             <tr key={key}>
-                <td className={classes.cell}>
+                <td className={classes.labelCell}>
                     <Typography variant='body2'>
                         <span className={classes.label}>
                             {t(`details.${key}`)}&nbsp;
@@ -204,27 +211,27 @@ class ItemMetadata extends React.Component {
                     </Typography>
                 </td>
                 { key === 'links' ?
-                <td>
+                <td className={classes.dataCell}>
                     {this.renderLinks(value)}
                 </td>
                 :  url ?
-                <td>
-                    <Link href={url} target='_blank' color='textPrimary'>
+                <td className={classes.dataCell}>
+                    <Link href={url} target='_blank' color={color}>
                         <Typography className={classes.infoActive} variant='body2'>
                             {value}
-                            <InformationOutline className={classes.linkIcon} color='primary' onClick={() => this.handleOpenUrl(url)}/>
+                            <LinkVariant className={classes.linkIcon} color='primary' onClick={() => this.handleOpenUrl(url)}/>
                         </Typography>
                     </Link>
                 </td>
                 : key === 'releaseDate' ?
-                <td>
-                    <Typography className={classes.infoActive} color='textPrimary' onClick={this.handleReleaseDateExpand} variant='body2'>
+                <td className={classes.dataCell}>
+                    <Typography className={classes.infoActive} color={color} onClick={this.handleReleaseDateExpand} variant='body2'>
                         {value}
-                        <InformationOutline className={classes.linkIcon} color='primary'/>
+                        <Calendar className={classes.linkIcon} color='primary'/>
                     </Typography>
                 </td>
                 :
-                <td>
+                <td className={classes.dataCell}>
                     <Typography className={classes.info} variant='body2'>
                         {value}
                     </Typography>
@@ -316,15 +323,20 @@ class ItemMetadata extends React.Component {
 
 const styles = theme => ({
     root: {
+
     },
     table: {
         borderSpacing: 0,
     },
-    cell: {
+    labelCell: {
         minWidth: 140,
         paddingRight: theme.spacing.unit,
         paddingLeft: 0,
         verticalAlign: 'text-top',
+    },
+    dataCell: {
+        overflow: 'hidden',
+        width: 10000,
     },
     label: {
         textTransform: 'uppercase',

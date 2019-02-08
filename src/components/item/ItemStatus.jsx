@@ -62,8 +62,8 @@ class ItemStatus extends React.Component {
         const t = this.props.t;
         const status = this.props.statusItem ? this.props.statusItem.status : null;
         const mobile = this.props.mobile;
-        const release = MetadataService.getReleaseDateMoment(this.props.item);
-        const unreleased = Moment().isBefore(release);
+        // const release = MetadataService.getReleaseDateMoment(this.props.item);
+        // const unreleased = Moment().isBefore(release);
 
         return (
             <Fade className={mobile ? classes.rootMobile : classes.root} in={status !== constants.STATUS.LOADING}>
@@ -74,8 +74,6 @@ class ItemStatus extends React.Component {
                         <Download className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.DOWNLOADED ?
                         <Check className={classes.statusIconPrimary} onClick={this.handleItemEditOpen} />
-                    : unreleased ?
-                        <Calendar className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.QUEUED ?
                         <ClockOutline className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.NOT_AVAILABLE ?

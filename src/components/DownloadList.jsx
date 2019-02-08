@@ -57,8 +57,12 @@ class DownloadList extends React.Component {
     }
 
     loadItems = () => {
-        console.debug(`${this.constructor.name}.loadItems()`);
         window.scrollTo(0, 0);
+        if (this.props.DownloadStatusStore.loading) {
+            console.warn(`${this.constructor.name}.loadItems(): already loading!`);
+            return;
+        }
+        console.debug(`${this.constructor.name}.loadItems()`);
         this.props.DownloadStatusStore.resetStatusList();
         this.props.DownloadStatusStore.loadStatusList();
     }
@@ -74,7 +78,7 @@ class DownloadList extends React.Component {
 
         if (offset >= height - 100) {
             // console.debug(`${this.constructor.name}.handleScroll() : load next page!`);
-            this.props.DownloadStatusStore.loadNextPage();
+            this.props.DownloadStatusStore.loadStatusList();
         }
     }, 100)
 
@@ -85,9 +89,11 @@ class DownloadList extends React.Component {
         const mobile = isWidthDown('xs', this.props.width);
         const itemCount = this.props.DownloadStatusStore.list.size;
         let itemCountString = '';
+        /*
         if (itemCount > 0) {
             itemCountString = mobile ? ` (${itemCount})` : ` (${itemCount} ${t('common.items')})`
         }
+        */
 
         return (
             <div className={classes.root}>

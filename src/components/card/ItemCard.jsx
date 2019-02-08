@@ -66,9 +66,13 @@ class ItemCard extends React.Component {
         const mediaType = downloadList ? key.split(':')[0] : MetadataService.getMediaType(item);
         const id = downloadList ? key.split(':')[1] : item.id;
         const title = downloadList ? item.title : MetadataService.getTitle(item);
-        const image = downloadList ?
-            ImageService.getMovieDbImage(item.backdrop, constants.IMAGESIZE.BACKDROP.W500) :
-            ImageService.getBackdropImage(item, constants.IMAGESIZE.BACKDROP.W500);
+        const image = !downloadList ?
+            ImageService.getBackdropImage(item, constants.IMAGESIZE.BACKDROP.W500) :
+            item.backdrop ?
+                ImageService.getMovieDbImage(item.backdrop, constants.IMAGESIZE.BACKDROP.W500) :
+                ImageService.getBackdropPlaceholder(constants.IMAGESIZE.BACKDROP.W500);
+
+
 
         const route = `/browse/${mediaType}/${id}`;
 
