@@ -121,6 +121,7 @@ i18n.init({
                     comments: 'Comments',
                     cast: 'Cast',
                     recommendations: 'Recommendations',
+                    downloadActions: 'Download actions',
                     release: {
                         ch: {
                             type1: 'CH Premiere',
@@ -143,7 +144,12 @@ i18n.init({
                         add: 'Add',
                         remove: 'Remove',
                         redownload: 'Redownload',
-                        comment: 'Add comment',
+                        notAvailable: 'Not yet available',
+                        notFound: 'Not found',
+                        downloading: 'Downloading',
+                        donwloaded: 'Done',
+                        comment: 'Comment',
+                        addComment: 'Add comment',
                         submit: 'Submit',
                         cancel: 'Cancel',
                     }
@@ -308,6 +314,7 @@ i18n.init({
                     comments: 'Kommentare',
                     cast: 'Besetzung',
                     recommendations: 'Empfehlungen',
+                    downloadActions: 'Download Aktionen',
                     release: {
                         ch: {
                             type1: 'CH Premiere',
@@ -330,7 +337,12 @@ i18n.init({
                         add: 'Hinzufügen',
                         remove: 'Entfernen',
                         redownload: 'Nochmals herunterladen',
-                        comment: 'Kommentar hinzufügen',
+                        notAvailable: 'Noch nicht verfügbar',
+                        notFound: 'Nicht gefunden',
+                        downloading: 'Wird heruntergeladen',
+                        donwloaded: 'Erledigt',
+                        comment: 'Kommentar',
+                        addComment: 'Kommentar hinzufügen',
                         submit: 'Speichern',
                         cancel: 'Abbrechen',
                     }

@@ -9,6 +9,8 @@ import { Divider } from '@material-ui/core';
 
 import ItemCast from './ItemCast';
 import ItemComments from './ItemComments';
+import ItemDownloadActions from './ItemDownloadActions';
+import ItemDownloadLinks from './ItemDownloadLinks';
 import ItemHistory from './ItemHistory';
 import ItemHeader from './ItemHeader'
 import ItemMetadata from './ItemMetadata'
@@ -17,6 +19,7 @@ import ItemRecommendations from './ItemRecommendations';
 import ItemStatus from './ItemStatus'
 
 import MetadataService from '../../service/MetadataService';
+import constants from '../../config/constants';
 
 @withNamespaces()
 @inject('AuthenticationStore')
@@ -35,6 +38,9 @@ class ItemDetailPanel extends React.Component {
         const statusItem = this.props.statusItem
         const key = MetadataService.getKey(item);
 
+        const status = statusItem ? statusItem.status : null;
+        const active = status && status.length > 0 && status !== constants.STATUS.REMOVED
+
         return (
             <div className={classes.root}>
                 <ItemHeader itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
@@ -45,6 +51,15 @@ class ItemDetailPanel extends React.Component {
                     </div>
                 }
                 <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
+                { this.props.AuthenticationStore.isAdmin && active &&
+                    <React.Fragment>
+                        <Divider className={classes.divider}/>
+                        <ItemDownloadLinks itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                        <Divider className={classes.divider}/>
+                        <ItemDownloadActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                    </React.Fragment>
+                }
 
                 <Divider className={classes.divider}/>
                 <ItemComments itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>

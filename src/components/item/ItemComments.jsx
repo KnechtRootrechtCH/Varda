@@ -93,7 +93,7 @@ class ItemComments extends React.Component {
                         <CommentsList itemComments={true} mobile={mobile} desktop={desktop}/>
                     </div>
                 </Grow>
-                { !this.state.showCommentInput &&
+                <Grow in={!this.state.showCommentInput}>
                     <div className={classes.buttonContainer}>
                         <Button
                             className={classes.button}
@@ -101,10 +101,10 @@ class ItemComments extends React.Component {
                             variant={buttonVariant}
                             onClick={() => this.handleOpenCommentDialog()}>
                             <CommentText className={classes.buttonIcon}/>
-                            {t('details.actions.comment')}
+                            {t('details.actions.addComment')}
                         </Button>
                     </div>
-                }
+                </Grow>
                 <Grow in={this.state.showCommentInput} mountOnEnter={true} unmountOnExit={true}>
                     <div className={classes.inputContainer}>
                         <TextField
