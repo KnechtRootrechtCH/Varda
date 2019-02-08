@@ -50,7 +50,7 @@ class ItemCardContent extends React.Component {
     render () {
         // console.debug(`${this.constructor.name}.render()`, this.props.item);
         const classes = this.props.classes;
-        const t = this.props.t;
+        // const t = this.props.t;
 
         const mobile = this.props.mobile;
         const downloadList = this.props.downloadList;
@@ -89,7 +89,7 @@ class ItemCardContent extends React.Component {
                     {title}
                 </Typography>
 
-                <Typography className={classes.relaseDate} color='textSecondary' color={releaseDateColor}>
+                <Typography className={classes.relaseDate} color={releaseDateColor}>
                     {release}
                     { isMovie &&
                         <Movie className={classes.mediaTypeIcon} color='action'/>

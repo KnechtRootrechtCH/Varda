@@ -110,6 +110,7 @@ const styles = theme => ({
     list: {
         // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
         transform: 'translateZ(0)',
+        width: '100%',
     },
     header: {
         textTransform: 'uppercase',

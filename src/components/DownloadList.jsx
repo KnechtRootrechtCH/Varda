@@ -90,9 +90,9 @@ class DownloadList extends React.Component {
         const classes = this.props.classes;
         const t = this.props.t;
         const mobile = isWidthDown('xs', this.props.width);
-        const itemCount = this.props.DownloadStatusStore.list.size;
-        let itemCountString = '';
+        const itemCountString = '';
         /*
+        const itemCount = this.props.DownloadStatusStore.list.size;
         if (itemCount > 0) {
             itemCountString = mobile ? ` (${itemCount})` : ` (${itemCount} ${t('common.items')})`
         }

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
-import * as Moment from 'moment';
 
 import {
     Fade,
@@ -13,7 +12,6 @@ import {
 
 import {
     AlertCircleOutline,
-    Calendar,
     CalendarQuestion,
     Check,
     ClockOutline,
@@ -23,7 +21,6 @@ import {
     PlusCircleOutline,
     Sync }  from 'mdi-material-ui';
 
-import MetadataService from '../../service/MetadataService';
 import constants from '../../config/constants';
 
 @withNamespaces()
