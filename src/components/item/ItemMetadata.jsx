@@ -336,7 +336,7 @@ const styles = theme => ({
     },
     dataCell: {
         overflow: 'hidden',
-        width: 10000,
+        width: 10000, // fill full width, overflow is hidden
     },
     label: {
         textTransform: 'uppercase',

@@ -21,6 +21,7 @@ class DownloadStatusStore {
     @observable sortField = 'title';
     @observable sortAscending = true;
     @observable listParametersChanged = false;
+    @observable hasMoreItems = null;
     lastItem = null;
     pageSize = 20;
 
@@ -67,6 +68,7 @@ class DownloadStatusStore {
     @action async resetStatusList () {
         this.list = new Map();
         this.lastItem = null;
+        this.hasMoreItems = true;
     }
 
     @action async loadStatusList(noPaging) {
@@ -82,9 +84,13 @@ class DownloadStatusStore {
             .collection('items')
 
         if (!noPaging) {
-            query = query
-                        .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
-                        .limit(this.pageSize)
+            if (this.sortField === 'priority') {
+                query = query.orderBy(this.sortField, !this.sortAscending ? 'asc' : 'desc');
+                query = query.orderBy('timestamp', this.sortAscending ? 'asc' : 'desc');
+            } else {
+                query = query.orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc');
+            }
+            query = query.limit(this.pageSize);
         }
 
 
@@ -116,7 +122,7 @@ class DownloadStatusStore {
                 query = query.startAfter(this.lastItem.title);
             }
             if (this.sortField === 'priority') {
-                query = query.startAfter(this.lastItem.priority);
+                query = query.startAfter(this.lastItem.priority, this.lastItem.timestamp.toDate());
             }
         }
 
@@ -132,6 +138,7 @@ class DownloadStatusStore {
                     }
 
                 });
+                this.hasMoreItems = !noPaging && this.pageSize === snapshot.size;
                 this.loading = false;
             });
         });
@@ -404,7 +411,11 @@ class DownloadStatusStore {
         } else if (this.sortField === 'priority') {
             const aPriority = a.priority ? a.priority : 100;
             const bPriority = b.priority ? b.priority : 100;
-            comparison = aPriority < bPriority;
+            if (aPriority === bPriority) {
+                comparison = Moment(a.timestamp.toDate()) > Moment(b.timestamp.toDate());
+            } else {
+                comparison = aPriority < bPriority;
+            }
         }
         const before = comparison ? this.sortAscending : !this.sortAscending;
         const value = before ? 1 : -1;

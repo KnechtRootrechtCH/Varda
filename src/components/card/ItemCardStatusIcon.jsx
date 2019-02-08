@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
-import * as Moment from 'moment';
 
 import {
     Fade,
@@ -13,8 +12,7 @@ import {
 
 import {
     AlertCircleOutline,
-    Calendar,
-    CalendarQuestion,
+    CalendarSearch,
     Check,
     ClockOutline,
     Delete,
@@ -23,7 +21,6 @@ import {
     PlusCircleOutline,
     Sync }  from 'mdi-material-ui';
 
-import MetadataService from '../../service/MetadataService';
 import constants from '../../config/constants';
 
 @withNamespaces()
@@ -91,7 +88,7 @@ class ItemCardStatusIcon extends React.Component {
                     : status === constants.STATUS.QUEUED ?
                         <ClockOutline className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.NOT_AVAILABLE ?
-                        <CalendarQuestion className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
+                        <CalendarSearch className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.NOT_FOUND ?
                         <EyeOff className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.REDOWNLOAD ?

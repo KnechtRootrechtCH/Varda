@@ -71,6 +71,9 @@ class DownloadList extends React.Component {
         if (this.props.DownloadStatusStore.loading) {
             return;
         }
+        if (!this.props.DownloadStatusStore.hasMoreItems) {
+            return;
+        }
 
         const d = document.documentElement
         const offset = d.scrollTop + window.innerHeight

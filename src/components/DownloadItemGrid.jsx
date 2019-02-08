@@ -24,11 +24,12 @@ class DownloadItemGrid extends React.Component {
         const desktop = isWidthUp('md', this.props.width);
 
         const spacing = mobile ? 0 : 8;
+        const list = this.props.DownloadStatusStore.listSorted;
 
         return (
             <div className={classes.root}>
                 <Grid container spacing={spacing}>
-                    {this.props.DownloadStatusStore.listSorted.map((item, index) => {
+                    {list.map((item, index) => {
                         return (
                             <Grid key={index} item xs={12} sm={4} md={4} lg={3} xl={3}>
                                 <ItemCard itemKey={item[0]} item={item[1]} downloadList={true}/>

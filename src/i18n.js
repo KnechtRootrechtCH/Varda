@@ -96,7 +96,7 @@ i18n.init({
                         },
                         status: {
                             none: 'Status: All',
-                            queued: 'Status: Queued',
+                            queued: 'Status: TodDo',
                             notReleased: 'Status: Unreleased',
                             notAvailable: 'Status: Not yet available',
                             notFound: 'Status: Not found',
@@ -283,7 +283,7 @@ i18n.init({
                         },
                         status: {
                             none: 'Status: Alle',
-                            queued: 'Status: Todo',
+                            queued: 'Status: ToDo',
                             notReleased: 'Status: Unveröffentlicht',
                             notAvailable: 'Status: Noch nicht erhältlich',
                             notFound: 'Status: Nicht gefunden',
