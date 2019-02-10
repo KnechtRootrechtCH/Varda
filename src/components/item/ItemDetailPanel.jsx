@@ -10,7 +10,6 @@ import { Divider } from '@material-ui/core';
 import ItemCast from './ItemCast';
 import ItemComments from './ItemComments';
 import ItemDownloadActions from './ItemDownloadActions';
-import ItemDownloadLinks from './ItemDownloadLinks';
 import ItemHistory from './ItemHistory';
 import ItemHeader from './ItemHeader'
 import ItemMetadata from './ItemMetadata'
@@ -52,17 +51,15 @@ class ItemDetailPanel extends React.Component {
                 }
                 <ItemMetadata itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
+                <Divider className={classes.divider}/>
+                <ItemComments itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+
                 { this.props.AuthenticationStore.isAdmin && active &&
                     <React.Fragment>
-                        <Divider className={classes.divider}/>
-                        <ItemDownloadLinks itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                         <Divider className={classes.divider}/>
                         <ItemDownloadActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                     </React.Fragment>
                 }
-
-                <Divider className={classes.divider}/>
-                <ItemComments itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
                 { item.recommendations && item.recommendations.results && item.recommendations.results.length > 0 &&
                     <React.Fragment>

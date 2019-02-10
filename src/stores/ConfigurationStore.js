@@ -11,6 +11,7 @@ class ConfigurationStore {
         importPriorityShift: 1,
         castDisplayRows: 2,
         recommendationDisplayRows: 2,
+        downloadLinks: new Map(),
     };
 
     constructor() {

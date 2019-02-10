@@ -117,11 +117,11 @@ i18n.init({
                     releaseDate: 'Release date',
                     releaseDates: 'Release dates',
                     links: 'Links',
-                    downloadActions: 'Actions',
+                    downloadActions: 'Downloads',
                     comments: 'Comments',
                     cast: 'Cast',
                     recommendations: 'Recommendations',
-                    downloadActions: 'Download actions',
+                    downloadLinks: 'Download search',
                     release: {
                         ch: {
                             type1: 'CH Premiere',
@@ -310,11 +310,11 @@ i18n.init({
                     releaseDate: 'Veröffentlichung',
                     releaseDates: 'Veröffentlichungs Daten',
                     links: 'Links',
-                    downloadActions: 'Aktionen',
+                    downloadActions: 'Downloads',
                     comments: 'Kommentare',
                     cast: 'Besetzung',
                     recommendations: 'Empfehlungen',
-                    downloadActions: 'Download Aktionen',
+                    downloadLinks: 'Download Suche',
                     release: {
                         ch: {
                             type1: 'CH Premiere',

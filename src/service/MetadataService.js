@@ -97,11 +97,23 @@ class MetadataService {
         return formated;
     }
 
-    getSanitizedSearchString (item) {
-        let query = this.getTitle(item);
+    sanitizeSearchString (query) {
         query = query.replace(/[-+():;]/gi, '');
         query = query.replace(/ +(?= )/g, '');
         query = query.replace(/\s/g, '+');
+        return query
+    }
+
+    deUmlautSearchString (query) { // de umlaut... :)
+        query = query.replace(/ä/g, 'ae');
+        query = query.replace(/ö/g, 'oe');
+        query = query.replace(/ü/g, 'ue');
+        query = query.replace(/ß/g, 'ss');
+        query = query.replace(/[áàâ]/g, 'a');
+        query = query.replace(/[úùû]/g, 'u');
+        query = query.replace(/[éè]/g, 'e');
+        query = query.replace(/[ìíï]/g, 'i');
+        query = query.replace(/[İ]/g, 'I');
         return query
     }
 

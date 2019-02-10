@@ -16,6 +16,7 @@ import {
     EyeOff,
     Sync }  from 'mdi-material-ui';
 
+import ItemDownloadLinks from './ItemDownloadLinks';
 import constants from '../../config/constants';
 
 @withNamespaces()
@@ -53,7 +54,7 @@ class ItemDownloadActions extends React.Component {
         return (
             <div className={classes.root}>
                 <Typography className={classes.header} variant='body2'>{t('details.downloadActions')}</Typography>
-
+                <ItemDownloadLinks item={this.props.item}/>
                 <TextField
                     className={classes.input}
                     value={this.state.comment}
