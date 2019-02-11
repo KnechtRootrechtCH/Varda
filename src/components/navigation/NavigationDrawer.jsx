@@ -75,7 +75,7 @@ class Navigation extends React.Component {
         }
 
         return (
-            <SwipeableDrawer className={classes.root} open={drawer} onOpen={this.handleOpenDrawer} onClose={this.handleCloseDrawer} variant={drawerVariant}>
+            <SwipeableDrawer className={classes.root} open={drawer} onOpen={() => this.handleOpenDrawer()} onClose={() => this.handleCloseDrawer()} variant={drawerVariant}>
                 <List className={desktop ? classes.drawerItemsDesktop : classes.drawerItems}>
                     { showDiscovery &&
                         <ListItem

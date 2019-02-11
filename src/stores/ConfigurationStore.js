@@ -8,16 +8,18 @@ class ConfigurationStore {
 
     @observable initialized = false;
     @observable configuration = {
-        priorityCount: 5,
-        showDiscovery: false,
-        importPriorityShift: 1,
         castDisplayRows: 2,
-        recommendationDisplayRows: 2,
         downloadLinks: new Map(),
+        importPriorityShift: 1,
+        recommendationDisplayRows: 2,
+        priorityCount: 5,
+        showCommentsInNavbar: false,
+        showDiscovery: false,
+        showHistoryInNavbar: true,
     };
 
     constructor() {
-        this.init();
+
     }
 
     @action async init() {

@@ -2,6 +2,7 @@ import {observable, action, computed, runInAction} from 'mobx';
 import {fire, firestore, googleAuthProvider} from '../config/fire'
 import * as Moment from 'moment';
 
+import ConfigurationStore from './ConfigurationStore';
 import ErrorHandlingStore from './ErrorHandlingStore';
 
 class AuthenticationStore {
@@ -27,13 +28,14 @@ class AuthenticationStore {
         runInAction(() => {
             this.user = user;
             this.isAdmin = false;
-            if(user) {
+            if (user) {
                 this.uid = user.uid;
                 this.dataUid = user.uid;
                 this.displayName = user.email;
                 this.logAccess();
                 this.loadAdminSettings();
                 this.loadUserData();
+                ConfigurationStore.init();
             } else {
                 this.uid = null;
                 this.dataUid = null;

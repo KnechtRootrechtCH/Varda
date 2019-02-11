@@ -37,17 +37,21 @@ class PrivateRouter extends React.Component {
                 <div className={classes.root}>
                     <TitleBar/>
                     <NavigationDrawer/>
-                    { mobile && this.props.AuthenticationStore.initialized ?
+                    { mobile && this.props.AuthenticationStore.initialized && this.props.ConfigurationStore.initialized ?
                         <div className={classes.mobileNavSpacer}/>
-                    : this.props.AuthenticationStore.initialized &&
+                    :
                         <div className={classes.desktopNavSpacer}/>
                     }
-                    { !this.props.AuthenticationStore.initialized || !this.props.ConfigurationStore.initialized  ?
+                    { !this.props.AuthenticationStore.authenticationInitialized ?
                         <div className={classes.progressContainer}>
                             <CircularProgress className={classes.progress} color='secondary'/>
                         </div>
                     : !this.props.AuthenticationStore.authenticated ?
                         <SignIn/>
+                    : !this.props.AuthenticationStore.initialized || !this.props.ConfigurationStore.initialized ?
+                        <div className={classes.progressContainer}>
+                            <CircularProgress className={classes.progress} color='secondary'/>
+                        </div>
                     :
                         <main className={classNames(classes.content, {
                             [classes.contentShift]: drawerOpen,
@@ -91,7 +95,7 @@ class PrivateRouter extends React.Component {
                             </Switch>
                         </main>
                     }
-                    { mobile && this.props.AuthenticationStore.initialized &&
+                    { mobile && this.props.AuthenticationStore.initialized && this.props.ConfigurationStore.initialized &&
                         <div className={classes.navBarSpacer}>
                             <NavigationBar/>
                         </div>
