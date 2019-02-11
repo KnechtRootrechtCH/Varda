@@ -7,6 +7,7 @@ import { inject, observer } from 'mobx-react';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
+import Notifier from './components/util/Notifier'
 import PrivateRouter from './components/PrivateRouter'
 
 @inject('ThemeStore')
@@ -27,22 +28,21 @@ class App extends Component {
 
         return (
             <div className={classes.root}>
-              <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' />
-              <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
-              <MetaTags>
-                  <meta name='theme-color' content={navbarColor} />
-                  <meta name='msapplication-navbutton-color' content={navbarColor}/>
-                  <meta name='apple-mobile-web-app-status-bar-style' content={navbarColor}/>
-                  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
-              </MetaTags>
-              <Helmet>
-                  <style>{`body { background-color: ${theme.palette.background.default}; }`}</style>
-              </Helmet>
-
-              <MuiThemeProvider theme={theme}>
-                  <PrivateRouter/>
-              </MuiThemeProvider>
-
+                <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' />
+                <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
+                <MetaTags>
+                    <meta name='theme-color' content={navbarColor} />
+                    <meta name='msapplication-navbutton-color' content={navbarColor}/>
+                    <meta name='apple-mobile-web-app-status-bar-style' content={navbarColor}/>
+                    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+                </MetaTags>
+                <Helmet>
+                    <style>{`body { background-color: ${theme.palette.background.default}; }`}</style>
+                </Helmet>
+                <MuiThemeProvider theme={theme}>
+                    <Notifier />
+                    <PrivateRouter/>
+                </MuiThemeProvider>
             </div>
           );
     }

@@ -3,6 +3,8 @@ import { firestore } from '../config/fire'
 import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
+import NotificationStore from './NotificationStore';
+
 class ErrorHandlingStore {
     @observable error = null;
 
@@ -14,7 +16,8 @@ class ErrorHandlingStore {
         const date = new Date();
         const message = info.message;
         const code = info.getCode ? info.getCode() : info.code ? info.code : info.status ? info.status : 0;
-        this.error = {
+        const timestamp = Moment(date).format('YYYY-MM-DD HH-mm-ss-SSSS ZZ');
+        const error = {
             source: source,
             code: code,
             message: message,
@@ -22,11 +25,13 @@ class ErrorHandlingStore {
             uid: AuthenticationStore.uid,
             dataUid: AuthenticationStore.dataUid,
             isAdmin: AuthenticationStore.isAdmin,
-            timestamp: Moment(date).format('YYYY-MM-DD HH-mm-ss-SSSS ZZ'),
+            timestamp: timestamp,
         }
 
         console.error(`ErrorHandlingStore.handlingError() : Error occured in '${source}'`, source, info);
-        firestore.collection('errors').add(this.error);
+        firestore.collection('errors').add(error);
+
+        NotificationStore.showNotification(timestamp, 'error.message', `error.${source}`, 'error', true, true);
     }
 }
 

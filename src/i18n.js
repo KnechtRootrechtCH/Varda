@@ -203,7 +203,64 @@ i18n.init({
                     startImport: 'Import data',
                     cullImport: 'Cull data',
                     validateImport: 'Validate data',
-                }
+                },
+
+                error: {
+                    message: 'Ooops, something went wrong',
+                    mobieDb: {
+                        items: {
+                            load: 'Unable to load data (themoviedb.org)',
+                        },
+                        item: {
+                            load: 'Unable to load data (themoviedb.org)',
+                        },
+                    },
+                    firebase: {
+                        auth: {
+                            settings: {
+                                admin: 'Error loading user data',
+                                user: 'Error loading user data',
+                            },
+                        },
+                        comments: {
+                            add: 'Failed to save comment',
+                            load: 'Error loading comments',
+                            item: {
+                                load: 'Error loading comments',
+                            },
+                        },
+                        configuration: {
+                            load: 'Error loading configuration',
+                        },
+                        history: {
+                            load: 'Error loading history',
+                            item: 'Error loading history',
+                        },
+                        transaction: {
+                            user: {
+                                add: '',
+                            },
+                            item: {
+                                add: '',
+                            },
+                            last: {
+                                update: '',
+                            },
+                        },
+                        status: {
+                            item: {
+                                load: 'Unable to load data (firebase)',
+                                update: 'Failed to update status',
+                            },
+                            list: {
+                                load: 'Unable to load data (firebase)',
+                            },
+                            priority: {
+                                update: 'Failed to update priority',
+                            }
+                        },
+                    },
+                },
             }
         },
         'de': {
@@ -396,7 +453,64 @@ i18n.init({
                     startImport: 'Import data',
                     cullImport: 'Cull data',
                     validateImport: 'Validate data',
-                }
+                },
+
+                error: {
+                    message: 'Ooops, da ging etwas schief',
+                    moviedb: {
+                        items: {
+                            load: 'TheMovieDb.org unerreichbar',
+                        },
+                        item: {
+                            load: 'TheMovieDb.org unerreichbar',
+                        },
+                    },
+                    firebase: {
+                        auth: {
+                            settings: {
+                                admin: 'Fehler beim Laden der Userdaten',
+                                user: 'Fehler beim Laden der Userdaten',
+                            },
+                        },
+                        comments: {
+                            add: 'Kommentar konnte nicht gespeichert werden',
+                            load: 'Fehler beim Laden der Kommentare',
+                            item: {
+                                load: 'Fehler beim Laden der Kommentare',
+                            },
+                        },
+                        configuration: {
+                            load: 'Fehler beim Laden der Configuration',
+                        },
+                        history: {
+                            load: 'Verlauf konnte nicht geladen werden',
+                            item: 'Verlauf konnte nicht geladen werden',
+                        },
+                        transaction: {
+                            user: {
+                                add: '',
+                            },
+                            item: {
+                                add: '',
+                            },
+                            last: {
+                                update: '',
+                            },
+                        },
+                        status: {
+                            item: {
+                                load: 'Firebase unerreichbar',
+                                update: 'Status konnte nicht gespeichert werden',
+                            },
+                            list: {
+                                load: 'Firebase unerreichbar',
+                            },
+                            priority: {
+                                update: 'Priorität konnte nicht gespeichert werden',
+                            }
+                        },
+                    },
+                },
             }
         }
     }

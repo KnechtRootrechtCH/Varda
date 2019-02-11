@@ -7,6 +7,7 @@ import DownloadHistoryStore from '../stores/DownloadHistoryStore';
 import DownloadStatusStore from '../stores/DownloadStatusStore';
 import ErrorHandlingStore from '../stores/ErrorHandlingStore';
 import MovieDbStore from '../stores/MovieDbStore';
+import NotificationStore from '../stores/NotificationStore';
 import ThemeStore from '../stores/ThemeStore';
 
 // don't allow state modifications outside actions
@@ -20,5 +21,6 @@ export default {
     DownloadStatusStore,
     ErrorHandlingStore,
     MovieDbStore,
+    NotificationStore,
     ThemeStore,
 }

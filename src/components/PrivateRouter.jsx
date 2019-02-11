@@ -8,7 +8,7 @@ import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 
 import { CircularProgress } from '@material-ui/core';
 
-import TitleBar from './navigation/TitleBar';
+
 import Browse from './Browse';
 import History from './History';
 import ItemDetails from './ItemDetails';
@@ -18,6 +18,7 @@ import NavigationBar from './navigation/NavigationBar';
 import NavigationDrawer from './navigation/NavigationDrawer';
 import Settings from './Settings';
 import SignIn from './SignIn';
+import TitleBar from './navigation/TitleBar';
 
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
