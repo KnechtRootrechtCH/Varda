@@ -7,16 +7,16 @@ import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 
 import { Fade, CircularProgress, Grid } from '@material-ui/core';
 
-import ItemCard from './card/ItemCard';
+import ItemCard from '../card/ItemCard';
 
 @withNamespaces()
-@inject('DownloadStatusStore')
+@inject('MovieDbStore')
 @inject('ThemeStore')
 @observer
-class DownloadItemGrid extends React.Component {
+class ItemGrid extends React.Component {
 
     render () {
-        // console.debug(`${this.constructor.name}.render()`, this.props.DownloadStatusStore.listSorted);
+        // console.debug(`${this.constructor.name}.render()`, this.props.MovieDbStore.items);
         const classes = this.props.classes;
         // const t = this.props.t;
 
@@ -24,26 +24,25 @@ class DownloadItemGrid extends React.Component {
         const desktop = isWidthUp('md', this.props.width);
 
         const spacing = mobile ? 0 : 8;
-        const list = this.props.DownloadStatusStore.listSorted;
 
         return (
             <div className={classes.root}>
                 <Grid container spacing={spacing}>
-                    {list.map((item, index) => {
+                    { this.props.MovieDbStore.items.map((item, index) => {
                         return (
                             <Grid key={index} item xs={12} sm={4} md={4} lg={3} xl={3}>
-                                <ItemCard itemKey={item[0]} item={item[1]} downloadList={true}/>
+                                <ItemCard item={item} downloadList={false}/>
                             </Grid>
                         )
                     })}
-                    { this.props.DownloadStatusStore.lastItem &&
+                    { this.props.MovieDbStore.hasMore && this.props.MovieDbStore.page > 0 &&
                         <Grid key='loading' className={mobile ? classes.progressGridMobile : classes.progressGrid} item xs={12} sm={4} md={4} lg={3} xl={3}>
-                            { this.props.DownloadStatusStore.loading &&
+                            { this.props.MovieDbStore.loading &&
                                 <CircularProgress color='secondary'/>
                             }
                         </Grid>
                     }
-                    <Fade in={this.props.DownloadStatusStore.loading} mountOnEnter={true} unmountOnExit={true}>
+                    <Fade in={this.props.MovieDbStore.loading} mountOnEnter={true} unmountOnExit={true}>
                         <div className={classes.progressContainer}>
                             <div className={desktop && this.props.ThemeStore.drawerState ? classes.progressShift : classes.progress}>
                                 <CircularProgress color='secondary'/>
@@ -113,8 +112,8 @@ const styles = theme => ({
     },
 });
 
-DownloadItemGrid.propTypes = {
+ItemGrid.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withWidth()(DownloadItemGrid));
+export default withStyles(styles)(withWidth()(ItemGrid));

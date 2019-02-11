@@ -8,7 +8,7 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 import { Typography } from '@material-ui/core';
 
-import ItemGrid from './ItemGrid';
+import ItemGrid from './grid/ItemGrid';
 import constants from '../config/constants'
 
 @withNamespaces()

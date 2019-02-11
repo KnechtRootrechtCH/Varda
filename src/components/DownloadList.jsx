@@ -9,7 +9,7 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
     Typography } from '@material-ui/core';
 
-import DownloadItemGrid from './DownloadItemGrid';
+import DownloadItemGrid from './grid/DownloadItemGrid';
 import DownloadListFilterMenu from './list/DownloadListFilterMenu';
 import DownloadListSortMenu from './list/DownloadListSortMenu';
 
