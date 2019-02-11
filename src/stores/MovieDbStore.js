@@ -2,6 +2,7 @@ import {observable, action, runInAction} from 'mobx';
 import axios from 'axios';
 
 import ConfigurationStore from './ConfigurationStore';
+import ErrorHandlingStore from './ErrorHandlingStore';
 
 const movieDbApiKey = '23703a8a857927f41414fb155404393d';
 
@@ -100,7 +101,7 @@ class MovieDbStore {
                 } else {
                     this.items = [];
                     this.loading = false;
-                    console.error('MovieDbStore.loadItems() : error loading data from movieDb', response);
+                    ErrorHandlingStore.handleError('moviedb.items.load', response);
                 }
             });
 
@@ -108,7 +109,7 @@ class MovieDbStore {
             runInAction(() => {
                 this.items = [];
                 this.loading = false;
-                console.error('MovieDbStore.loadItems() : error loading data from movieDb', error);
+                ErrorHandlingStore.handleError('moviedb.items.load', error);
             });
         }
     }
@@ -131,18 +132,18 @@ class MovieDbStore {
                 if (response.status === 200) {
                     this.item = response.data;
                     this.loading = false;
-                    console.log('MovieDbStore.loadItem() : item loaded', response.data);
+                    console.debug('MovieDbStore.loadItem() : item loaded', response.data);
                 } else {
                     this.item = null;
                     this.loading = false;
-                    console.error('MovieDbStore.loadItem() : error loading item data from movieDb', response);
+                    ErrorHandlingStore.handleError('moviedb.item.load', response);
                 }
             });
         } catch (error) {
             runInAction(() => {
                 this.item = null;
                 this.loading = false;
-                console.error('MovieDbStore.loadItem() : error loading item data from movieDb', error);
+                ErrorHandlingStore.handleError('moviedb.item.load', error);
             });
 
         }

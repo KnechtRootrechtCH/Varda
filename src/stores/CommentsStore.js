@@ -3,6 +3,7 @@ import { firestore } from '../config/fire'
 import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
+import ErrorHandlingStore from './ErrorHandlingStore';
 import MetadataService from '../service/MetadataService';
 
 class CommentsStore {
@@ -43,6 +44,8 @@ class CommentsStore {
                     this.loading = false;
                     console.debug('CommentsStore.loadComments() : loaded', this.comments);
                 });
+            }, (error) => {
+                ErrorHandlingStore.handleError('firebase.comments.load', error);
             });
     }
 
@@ -73,6 +76,8 @@ class CommentsStore {
                     this.loading = false;
                     console.debug('CommentsStore.loadCommentsByKey() : loaded', this.comments);
                 });
+            }, (error) => {
+                ErrorHandlingStore.handleError('firebase.comments.item.load', error);
             });
     }
 
@@ -97,7 +102,13 @@ class CommentsStore {
             .doc(this.dataUid)
             .collection('comments')
             .doc(`${timestamp} - ${key}`)
-            .set(data);
+            .set(data)
+            .then(() => {
+                console.debug('CommentsStore.addComment() : successfull');
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.comments.add', error);
+            });
     }
 
     @action setSorting(sortField, sortAscending) {

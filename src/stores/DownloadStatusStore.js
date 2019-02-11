@@ -1,8 +1,10 @@
 import {observable, action, computed, runInAction} from 'mobx';
-import { firestore } from '../config/fire'
+import { firestore } from '../config/fire';
 import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
+import DownloadHistoryStore from './DownloadHistoryStore';
+import ErrorHandlingStore from './ErrorHandlingStore';
 import MetadataService from '../service/MetadataService';
 import constants from '../config/constants';
 
@@ -57,11 +59,13 @@ class DownloadStatusStore {
                         });
 
                     } else {
-                        // console.debug('DownloadStatusStore.loadStatus() : not found', data);
+                        // console.debug('DownloadStatusStore.loadStatus() : not found');
                         runInAction(() => {
                             this.items.set(key, { status: null });
                         });
                     }
+                }, (error) => {
+                    ErrorHandlingStore.handleError('firebase.status.item.load', error);
                 });
         }
     }
@@ -142,6 +146,8 @@ class DownloadStatusStore {
                 this.hasMoreItems = !noPaging && this.pageSize === snapshot.size;
                 this.loading = false;
             });
+        }, (error) => {
+            ErrorHandlingStore.handleError('firebase.status.list.load', error);
         });
     }
 
@@ -176,11 +182,17 @@ class DownloadStatusStore {
         const statusCollection = userDoc.collection('items');
         statusCollection.doc(`${key}`).set(data,{
             merge: true
+        })
+        .then(() => {
+            console.debug('DownloadStatusStore.updateStatus() : successfull');
+        })
+        .catch((error) => {
+            ErrorHandlingStore.handleError('firebase.status.item.update', error);
         });
 
         if (!skipLog) {
             // this.updateItemData(key, item);
-            this.logTransaction(key, 'updateStatus', title, status, previousStatus, comment);
+            DownloadHistoryStore.logTransaction(key, 'updateStatus', title, status, previousStatus, comment);
         }
     }
 
@@ -204,11 +216,17 @@ class DownloadStatusStore {
         const statusCollection = userDoc.collection('items');
         statusCollection.doc(`${key}`).set(data,{
             merge: true
+        })
+        .then(() => {
+            console.debug('DownloadStatusStore.updateStatusByKey() : successfull');
+        })
+        .catch((error) => {
+            ErrorHandlingStore.handleError('firebase.status.item.update', error);
         });
 
         if (!skipLog) {
             // this.updateItemData(key, item);
-            this.logTransaction(key, 'updateStatus', title, status, previousStatus, comment);
+            DownloadHistoryStore.logTransaction(key, 'updateStatus', title, status, previousStatus, comment);
         }
     }
 
@@ -237,11 +255,17 @@ class DownloadStatusStore {
             timestamp: new Date(),
         },{
             merge: true
+        })
+        .then(() => {
+            console.debug('DownloadStatusStore.updatePriority() : successfull');
+        })
+        .catch((error) => {
+            ErrorHandlingStore.handleError('firebase.status.priority.update', error);
         });
 
         if (!isImport) {
             // this.updateItemData(key, item);
-            this.logTransaction(key, 'updatePriority', title, priority, previousPrority, comment);
+            DownloadHistoryStore.logTransaction(key, 'updatePriority', title, priority, previousPrority, comment);
         }
     }
 
@@ -258,11 +282,17 @@ class DownloadStatusStore {
             timestamp: new Date(),
         },{
             merge: true
+        })
+        .then(() => {
+            console.debug('DownloadStatusStore.updatePriorityByKey() : successfull');
+        })
+        .catch((error) => {
+            ErrorHandlingStore.handleError('firebase.status.priority.update', error);
         });
 
         if (!isImport) {
             // this.updateItemData(key, item);
-            this.logTransaction(key, 'updatePriority', title, priority, previousPrority, comment);
+            DownloadHistoryStore.logTransaction(key, 'updatePriority', title, priority, previousPrority, comment);
         }
     }
 
@@ -276,67 +306,6 @@ class DownloadStatusStore {
         itemDataCollection
             .doc('movieDb')
             .set(item);
-    }
-
-    @action async logTransaction(key, transaction, title, newValue, previousValue, comment){
-        const date = new Date();
-        const timestamp = Moment(date).format('YYYY-MM-DD HH-mm-ss-SSSS ZZ');
-        comment = comment ? comment : '';
-        previousValue = previousValue ? previousValue : '';
-        // console.debug('DownloadStatusStore.logTransaction()', timestamp, transaction, newValue, comment);
-
-        firestore.collection('users')
-            .doc(this.dataUid)
-            .collection('items')
-            .doc(key)
-            .collection('transactions')
-            .doc(`${timestamp} - ${transaction}`)
-            .set({
-                timestamp: date,
-                transaction: transaction,
-                newValue: newValue,
-                previousValue: previousValue,
-                isAdminAction: this.isAdminAction,
-                user: this.uid,
-                userName: this.displayName,
-                comment: comment,
-            });
-
-        firestore.collection('users')
-            .doc(this.dataUid)
-            .collection('transactions')
-            .doc(`${timestamp} - ${transaction}`)
-            .set({
-                timestamp: date,
-                transaction: transaction,
-                newValue: newValue,
-                previousValue: previousValue,
-                isAdminAction: this.isAdminAction,
-                user: this.uid,
-                userName: this.displayName,
-                key: key,
-                title: title,
-                comment: comment,
-            });
-
-            if (this.dataUid === this.uid) {
-                firestore.collection('users')
-                .doc(this.dataUid)
-                .set({transaction: {
-                        timestamp: date,
-                        transaction: transaction,
-                        newValue: newValue,
-                        previousValue: previousValue,
-                        isAdminAction: this.isAdminAction,
-                        user: this.uid,
-                        userName: this.displayName,
-                        key: key,
-                        title: title,
-                        comment: comment,
-                    }},{
-                        merge: true
-                    });
-            }
     }
 
     @action setSearchString(searchString) {

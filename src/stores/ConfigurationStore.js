@@ -1,6 +1,8 @@
 import { observable, action, runInAction } from 'mobx';
 import { firestore } from '../config/fire'
 
+import ErrorHandlingStore from './ErrorHandlingStore';
+
 class ConfigurationStore {
     userId = null;
 
@@ -28,7 +30,9 @@ class ConfigurationStore {
                 }
                 this.initialized = true;
             });
-        })
+        }, (error) => {
+            ErrorHandlingStore.handleError('firebase.configuration.load', error);
+        });
     }
 }
 

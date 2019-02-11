@@ -1,7 +1,9 @@
 import {observable, action, computed, runInAction} from 'mobx';
-import { firestore } from '../config/fire'
+import { firestore } from '../config/fire';
+import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
+import ErrorHandlingStore from './ErrorHandlingStore';
 
 class DownloadHistoryStore {
     @observable loading = false;
@@ -50,6 +52,8 @@ class DownloadHistoryStore {
                     });
                     this.loading = false;
                 });
+            }, (error) => {
+                ErrorHandlingStore.handleError('firebase.history.load', error);
             });
     }
 
@@ -77,7 +81,88 @@ class DownloadHistoryStore {
                    });
                     this.loading = false;
                 });
-        });
+            }, (error) => {
+                ErrorHandlingStore.handleError('firebase.history.item', error);
+            });
+    }
+
+    @action async logTransaction(key, transaction, title, newValue, previousValue, comment){
+        const date = new Date();
+        const timestamp = Moment(date).format('YYYY-MM-DD HH-mm-ss-SSSS ZZ');
+        comment = comment ? comment : '';
+        previousValue = previousValue ? previousValue : '';
+        // console.debug('DownloadHistoryStore.logTransaction()', timestamp, transaction, newValue, comment);
+
+        firestore.collection('users')
+            .doc(this.dataUid)
+            .collection('items')
+            .doc(key)
+            .collection('transactions')
+            .doc(`${timestamp} - ${transaction}`)
+            .set({
+                timestamp: date,
+                transaction: transaction,
+                newValue: newValue,
+                previousValue: previousValue,
+                isAdminAction: this.isAdminAction,
+                user: this.uid,
+                userName: this.displayName,
+                comment: comment,
+            })
+            .then(() => {
+                console.debug('DownloadHistoryStore.logTransaction() : item => successfull');
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.transaction.item.add', error);
+            });
+
+        firestore.collection('users')
+            .doc(this.dataUid)
+            .collection('transactions')
+            .doc(`${timestamp} - ${transaction}`)
+            .set({
+                timestamp: date,
+                transaction: transaction,
+                newValue: newValue,
+                previousValue: previousValue,
+                isAdminAction: this.isAdminAction,
+                user: this.uid,
+                userName: this.displayName,
+                key: key,
+                title: title,
+                comment: comment,
+            })
+            .then(() => {
+                console.debug('DownloadHistoryStore.logTransaction() : user => successfull');
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.transaction.user.add', error);
+            });
+
+            if (this.dataUid === this.uid) {
+                firestore.collection('users')
+                .doc(this.dataUid)
+                .set({transaction: {
+                        timestamp: date,
+                        transaction: transaction,
+                        newValue: newValue,
+                        previousValue: previousValue,
+                        isAdminAction: this.isAdminAction,
+                        user: this.uid,
+                        userName: this.displayName,
+                        key: key,
+                        title: title,
+                        comment: comment,
+                    }},{
+                        merge: true
+                    })
+                    .then(() => {
+                        console.debug('DownloadHistoryStore.logTransaction() : last => successfull');
+                    })
+                    .catch((error) => {
+                        ErrorHandlingStore.handleError('firebase.transaction.last.update', error);
+                    });
+            }
     }
 
     @action setFilter(filter) {
@@ -91,12 +176,28 @@ class DownloadHistoryStore {
         this.sortAscending = sortAscending;
     }
 
+    @computed get filterKey () {
+        return this.filter.key;
+    }
+
+    @computed get uid () {
+        return AuthenticationStore.uid;
+    }
+
     @computed get dataUid () {
         return AuthenticationStore.dataUid;
     }
 
-    @computed get filterKey () {
-        return this.filter.key;
+    @computed get isAdmin () {
+        return AuthenticationStore.isAdmin;
+    }
+
+    @computed get displayName () {
+        return AuthenticationStore.displayName;
+    }
+
+    @computed get isAdminAction(){
+        return this.isAdmin && this.dataUid !== this.uid;
     }
 }
 

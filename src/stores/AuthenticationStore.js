@@ -2,6 +2,8 @@ import {observable, action, computed, runInAction} from 'mobx';
 import {fire, firestore, googleAuthProvider} from '../config/fire'
 import * as Moment from 'moment';
 
+import ErrorHandlingStore from './ErrorHandlingStore';
+
 class AuthenticationStore {
     @observable user = null;
     @observable authenticationInitialized = false;
@@ -72,7 +74,7 @@ class AuthenticationStore {
         fire.auth().signOut().then((result) => {
             console.debug('AuthenticationStore.signOut() : successfull');
             this.clearMessage();
-        }, function(error) {
+        }, (error) => {
             console.error('AuthenticationStore.signOut() : failed!', error);
             this.setMessage('singedOutError', error);
         });
@@ -123,9 +125,12 @@ class AuthenticationStore {
                         this.isAdmin = data.isAdmin;
                     }
                     this.adminSettingsInitialized = true;
-                    console.debug('AuthenticationStore.loadAdminSettings() : done');
+                    // console.debug('AuthenticationStore.loadAdminSettings() : successfull');
                 });
-        })
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.auth.settings.admin', error);
+            });
     }
 
     @action async loadUserData() {
@@ -147,9 +152,12 @@ class AuthenticationStore {
                         this.displayName = this.user.email;
                     }
                     this.userDataInitialized = true;
-                    console.debug('AuthenticationStore.loadUserData() : done');
+                    console.debug('AuthenticationStore.loadUserData() : successfull');
                 });
-        })
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.auth.settings.user', error);
+            });
     }
 
     @action clearMessage = () => {

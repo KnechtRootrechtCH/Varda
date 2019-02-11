@@ -5,6 +5,7 @@ import CommentsStore from '../stores/CommentsStore';
 import ConfigurationStore from '../stores/ConfigurationStore';
 import DownloadHistoryStore from '../stores/DownloadHistoryStore';
 import DownloadStatusStore from '../stores/DownloadStatusStore';
+import ErrorHandlingStore from '../stores/ErrorHandlingStore';
 import MovieDbStore from '../stores/MovieDbStore';
 import ThemeStore from '../stores/ThemeStore';
 
@@ -17,6 +18,7 @@ export default {
     ConfigurationStore,
     DownloadHistoryStore,
     DownloadStatusStore,
+    ErrorHandlingStore,
     MovieDbStore,
     ThemeStore,
 }
