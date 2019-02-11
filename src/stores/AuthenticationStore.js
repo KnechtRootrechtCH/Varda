@@ -4,9 +4,9 @@ import * as Moment from 'moment';
 
 class AuthenticationStore {
     @observable user = null;
-    @observable initialized = false;
-    @observable adminSettingsLoaded = false;
-    @observable userDataLoaded = false;
+    @observable authenticationInitialized = false;
+    @observable userDataInitialized = false;
+    @observable adminSettingsInitialized = false;
     @observable message = null;
     @observable details = null;
     @observable isAdmin = false;
@@ -38,7 +38,7 @@ class AuthenticationStore {
                 this.displayName = null;
             }
         });
-        this.initialized = true;
+        this.authenticationInitialized = true;
 
     }
 
@@ -54,7 +54,7 @@ class AuthenticationStore {
     }
 
     @action authWithMail(mail, password) {
-        console.debug('AuthenticationStore.authWithMail()', mail, password);
+        console.debug('AuthenticationStore.authWithMail()', mail);
         fire.auth().signInWithEmailAndPassword(mail, password).then(
             (user) => {
                 this.clearMessage();
@@ -112,7 +112,8 @@ class AuthenticationStore {
             .doc('configuration')
             .collection('administrators')
             .doc(this.user.uid)
-            .onSnapshot((doc) => {
+            .get()
+            .then((doc) => {
                 runInAction(() => {
                     let data = doc.data();
                     if (data) {
@@ -121,7 +122,8 @@ class AuthenticationStore {
                         }
                         this.isAdmin = data.isAdmin;
                     }
-                    this.adminSettingsLoaded = true;
+                    this.adminSettingsInitialized = true;
+                    console.debug('AuthenticationStore.loadAdminSettings() : done');
                 });
         })
     }
@@ -129,7 +131,8 @@ class AuthenticationStore {
     @action async loadUserData() {
         firestore.collection('users')
             .doc(this.user.uid)
-            .onSnapshot((doc) => {
+            .get()
+            .then((doc) => {
                 runInAction(() => {
                     let settings = doc.data().settings;
                     if (!settings) {
@@ -143,7 +146,8 @@ class AuthenticationStore {
                     } else {
                         this.displayName = this.user.email;
                     }
-                    this.userDataLoaded = true;
+                    this.userDataInitialized = true;
+                    console.debug('AuthenticationStore.loadUserData() : done');
                 });
         })
     }
@@ -156,6 +160,10 @@ class AuthenticationStore {
     @action setMessage = (message, details) => {
         this.message = message;
         this.details = details;
+    }
+
+    @computed get initialized () {
+        return this.authenticationInitialized && this.userDataInitialized && this.adminSettingsInitialized;
     }
 
     @computed get authenticated () {

@@ -41,6 +41,9 @@ class ItemDownloadActions extends React.Component {
         const comment = this.state.comment;
         // console.debug(`${this.constructor.name}.handleStatusChangee()`, item.media_type, item.id, status, previousStatus, comment);
         this.props.DownloadStatusStore.updateStatus(item, status, previousStatus, comment);
+        this.setState({
+            comment: '',
+        })
     }
 
     render () {

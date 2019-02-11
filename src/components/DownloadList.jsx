@@ -19,10 +19,6 @@ import DownloadListSortMenu from './list/DownloadListSortMenu';
 @observer
 class DownloadList extends React.Component {
 
-    state = {
-        isAdmin: false,
-    }
-
     componentDidMount = () => {
         console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
         const field = JSON.parse(localStorage.getItem('varda.list.sortField'));
@@ -44,16 +40,6 @@ class DownloadList extends React.Component {
     componentWillUnmount = () => {
         // console.debug(`${this.constructor.name}.componentWillUnmount() => removing scroll event listener`);
         window.removeEventListener('scroll', this.handleScroll)
-    }
-
-    componentDidUpdate (prevProps) {
-        if (!this.state.isAdmin && this.props.AuthenticationStore.isAdmin) {
-            this.setState({
-                isAdmin: true,
-            });
-            console.debug(`${this.constructor.name}.componentDidUpdate() : Media type changed => Load items`);
-            this.loadItems();
-        }
     }
 
     loadItems = () => {
@@ -106,8 +92,8 @@ class DownloadList extends React.Component {
                             <span>{t('common.list')}{itemCountString}</span>
                         </Typography>
                         <div className={classes.controls}>
-                            <DownloadListFilterMenu onUpdateList={this.loadItems}/>
-                            <DownloadListSortMenu onUpdateList={this.loadItems}/>
+                            <DownloadListFilterMenu onUpdateList={this.loadItems} />
+                            <DownloadListSortMenu onUpdateList={this.loadItems} />
                         </div>
                     </div>
                 </div>

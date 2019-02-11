@@ -74,12 +74,8 @@ class PrivateRouter extends React.Component {
                                     component={DownloadList}/>
                                 <Route
                                     exact
-                                    path='/list/:mediaType'
-                                    component={DownloadList}/>
-                                <Route
-                                    exact
                                     path='/list/:mediaType/:itemId'
-                                    component={DownloadList}/>
+                                    component={ItemDetails}/>
                                 <Route
                                     exact
                                     path='/messages'

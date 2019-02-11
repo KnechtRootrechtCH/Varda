@@ -98,7 +98,7 @@ class MetadataService {
     }
 
     sanitizeSearchString (query) {
-        query = query.replace(/[-+():;]/gi, '');
+        query = query.replace(/[-+():;!]/gi, '');
         query = query.replace(/ +(?= )/g, '');
         query = query.replace(/\s/g, '+');
         return query

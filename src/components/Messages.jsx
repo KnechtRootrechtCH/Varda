@@ -20,27 +20,12 @@ import CommentsList from './comments/CommentsList'
 @observer
 class Messages extends React.Component {
 
-    state = {
-
-    }
-
     componentDidMount = () => {
         // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
         this.props.CommentsStore.setSorting('timestamp', false);
         this.props.CommentsStore.resetComments();
         this.props.CommentsStore.loadComments();
         window.addEventListener('scroll', this.handleScroll)
-    }
-
-    componentDidUpdate = () => {
-        if (!this.state.isAdmin && this.props.AuthenticationStore.isAdmin) {
-            this.setState({
-                isAdmin: true,
-            });
-            console.debug(`${this.constructor.name}.componentDidUpdate() : admin mode activated => reload`);
-            this.props.CommentsStore.resetComments();
-        this.props.CommentsStore.loadComments();
-        }
     }
 
     componentWillUnmount = () => {
@@ -81,8 +66,6 @@ class Messages extends React.Component {
         const mobile = isWidthDown('xs', this.props.width);
         const desktop = isWidthUp('md', this.props.width);
 
-        const isAdmin = this.props.AuthenticationStore.dataUid;
-
         return (
             <div className={classes.root}>
                 <div className={mobile ? classes.containerMobile : classes.container}>
@@ -99,7 +82,7 @@ class Messages extends React.Component {
                         </div>
                     </div>
                     <div className={mobile ? classes.listMobile : classes.list}>
-                        <CommentsList desktop={desktop} mobile={mobile} isAdmin={isAdmin}/>
+                        <CommentsList desktop={desktop} mobile={mobile}/>
                     </div>
                 </div>
             </div>

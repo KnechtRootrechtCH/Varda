@@ -6,6 +6,7 @@ import AuthenticationStore from './AuthenticationStore';
 class DownloadHistoryStore {
     @observable loading = false;
     @observable history = new Map();
+    @observable itemHistory = new Map();
     @observable filter = {
         key: 'all',
         field: 'timestamp',
@@ -23,7 +24,7 @@ class DownloadHistoryStore {
     }
 
     @action async loadHistory () {
-        // console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid, this.filter);
+        console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid, this.filter);
         runInAction(() => {
             this.loading = true;
         })
@@ -52,8 +53,12 @@ class DownloadHistoryStore {
             });
     }
 
+    @action async resetItemHistory () {
+        this.itemHistory = new Map();
+    }
+
     @action async loadItemHistory (key) {
-        // console.debug('DownloadHistoryStore.loadItemHistory() : loading', this.dataUid, loadItemHistory);
+        console.debug('DownloadHistoryStore.loadItemHistory() : loading', this.dataUid, key, this.filter);
         runInAction(() => {
             this.loading = true;
         })
@@ -68,8 +73,7 @@ class DownloadHistoryStore {
             .onSnapshot((snapshot) => {
                 runInAction(() => {
                     snapshot.forEach(doc => {
-                        this.lastItem = doc.data();
-                        this.history.set(doc.id, this.lastItem);
+                        this.itemHistory.set(doc.id, doc.data());
                    });
                     this.loading = false;
                 });

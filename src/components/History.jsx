@@ -31,7 +31,6 @@ class History extends React.Component {
 
     state = {
         filterMenuAnchor: null,
-        isAdmin: false,
     }
 
     defaultFilterIndex = 2;
@@ -95,21 +94,7 @@ class History extends React.Component {
         this.props.DownloadHistoryStore.resetHistory();
         this.props.DownloadHistoryStore.setFilter(this.filters[i]);
         this.props.DownloadHistoryStore.loadHistory();
-        this.setState({
-            isAdmin: this.props.AuthenticationStore.isAdmin,
-        });
         window.addEventListener('scroll', this.handleScroll)
-    }
-
-    componentDidUpdate = () => {
-        if (!this.state.isAdmin && this.props.AuthenticationStore.isAdmin) {
-            this.setState({
-                isAdmin: true,
-            });
-            console.debug(`${this.constructor.name}.componentDidUpdate() : admin mode activated => reload`);
-            this.props.DownloadHistoryStore.resetHistory();
-            this.props.DownloadHistoryStore.loadHistory();
-        }
     }
 
     componentWillUnmount = () => {
@@ -164,7 +149,6 @@ class History extends React.Component {
 
         const activeFilter = this.props.DownloadHistoryStore.filter
         const activeFilterKey = activeFilter.key;
-        const isAdmin = this.props.AuthenticationStore.dataUid;
 
         return (
             <div className={classes.root}>
@@ -183,7 +167,7 @@ class History extends React.Component {
                         </div>
                     </div>
                     <div className={mobile ? classes.listMobile : classes.list}>
-                        <TransactionList desktop={desktop} mobile={mobile} isAdmin={isAdmin}/>
+                        <TransactionList desktop={desktop} mobile={mobile}/>
                     </div>
                 </div>
                 <Menu

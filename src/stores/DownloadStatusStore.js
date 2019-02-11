@@ -35,6 +35,7 @@ class DownloadStatusStore {
     }
 
     @action async loadStatusByKey(key) {
+        // console.debug('DownloadStatusStore.loadStatusByKey()', key);
         const statusItem = this.items.get(key);
         if (!statusItem || statusItem.status === constants.STATUS.LOADING) {
             // console.debug('DownloadStatusStore.loadStatus() : loading', key, this.dataUid);
@@ -317,6 +318,25 @@ class DownloadStatusStore {
                 title: title,
                 comment: comment,
             });
+
+            if (this.dataUid === this.uid) {
+                firestore.collection('users')
+                .doc(this.dataUid)
+                .set({transaction: {
+                        timestamp: date,
+                        transaction: transaction,
+                        newValue: newValue,
+                        previousValue: previousValue,
+                        isAdminAction: this.isAdminAction,
+                        user: this.uid,
+                        userName: this.displayName,
+                        key: key,
+                        title: title,
+                        comment: comment,
+                    }},{
+                        merge: true
+                    });
+            }
     }
 
     @action setSearchString(searchString) {

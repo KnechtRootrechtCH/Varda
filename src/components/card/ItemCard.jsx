@@ -73,8 +73,8 @@ class ItemCard extends React.Component {
                 ImageService.getBackdropPlaceholder(constants.IMAGESIZE.BACKDROP.W500);
 
 
-
-        const route = `/browse/${mediaType}/${id}`;
+        const mode = downloadList ? 'list' : 'browse';
+        const route = `/${mode}/${mediaType}/${id}`;
 
         let statusItem = downloadList ? item : this.props.DownloadStatusStore.items.get(key);
         if (!statusItem) {

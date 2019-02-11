@@ -13,6 +13,7 @@ import {
 import {
     Comment,
     Explore,
+    History,
     Movie,
     Tv } from '@material-ui/icons';
 
@@ -33,6 +34,8 @@ class NavigationBar extends React.Component {
         const t = this.props.t;
         const location = this.props.location.pathname.toLowerCase();
         const showDiscovery = this.props.ConfigurationStore.configuration.showDiscovery;
+        const showComments = this.props.ConfigurationStore.configuration.showCommentsInNavbar;
+        const showHistory = this.props.ConfigurationStore.configuration.showHistoryInNavbar;
 
         let loc = showDiscovery ? 'browse' : 'movies';
         if (!this.props.AuthenticationStore.authenticated) {
@@ -82,12 +85,23 @@ class NavigationBar extends React.Component {
                     icon={<BriefcaseDownload />}
                     component={Link}
                     to='/list'/>
-                <BottomNavigationAction
-                    value='messages'
-                    label={t('common.messages')}
-                    icon={<Comment />}
-                    component={Link}
-                    to='/messages'/>
+                { showHistory &&
+                    <BottomNavigationAction
+                        value='history'
+                        label={t('common.history')}
+                        icon={<History />}
+                        component={Link}
+                        to='/history'/>
+                }
+                { showComments &&
+                    <BottomNavigationAction
+                        value='messages'
+                        label={t('common.messages')}
+                        icon={<Comment />}
+                        component={Link}
+                        to='/messages'/>
+                }
+
             </BottomNavigation>
         );
      }

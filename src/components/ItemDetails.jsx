@@ -22,18 +22,11 @@ import { Fade } from '@material-ui/core';
 @observer
 class ItemDetails extends React.Component {
 
-    state = {
-        isAdmin: false,
-    }
-
     componentDidMount = () => {
         console.debug(`${this.constructor.name}.componentDidMount() => Load item`);
         this.loadItem();
         console.debug(`${this.constructor.name}.componentDidMount() => Load history`);
         this.loadHistory();
-        this.setState({
-            isAdmin: this.props.AuthenticationStore.isAdmin,
-        });
     }
 
     componentWillUnmount = () => {
@@ -44,23 +37,17 @@ class ItemDetails extends React.Component {
         if (prevProps.match.params.mediaType !== this.props.match.params.mediaType) {
             console.debug(`${this.constructor.name}.componentDidUpdate() : Media type changed => Load item`);
             this.loadItem();
+            this.loadHistory();
         }
         if (prevProps.match.params.itemId !== this.props.match.params.itemId) {
             console.debug(`${this.constructor.name}.componentDidUpdate() : ItemId changed => Load item`);
             this.loadItem();
-        }
-
-        if (!this.state.isAdmin && this.props.AuthenticationStore.isAdmin) {
-            this.setState({
-                isAdmin: true,
-            });
-            console.debug(`${this.constructor.name}.componentDidUpdate() : admin mode activated => reload history`);
             this.loadHistory();
         }
     }
 
     loadItem = () => {
-        // console.debug(`${this.constructor.name}.loadItems() : Media type => `, this.props.match.params.mediaType);
+        console.debug(`${this.constructor.name}.loadItem()`, this.props.match.params.mediaType, this.props.match.params.itemId);
         const mediaType = this.props.match.params.mediaType
         const itemId = this.props.match.params.itemId
         this.props.MovieDbStore.loadItem(mediaType, itemId);
@@ -71,9 +58,10 @@ class ItemDetails extends React.Component {
     }
 
     loadHistory = () => {
+        // console.debug(`${this.constructor.name}.loadHistory()`, this.props.match.params.mediaType, this.props.match.params.itemId);
         const mediaType = this.props.match.params.mediaType
         const itemId = this.props.match.params.itemId
-        this.props.DownloadHistoryStore.resetHistory();
+        this.props.DownloadHistoryStore.resetItemHistory();
         this.props.DownloadHistoryStore.setSorting('timestamp', true);
         this.props.DownloadHistoryStore.setFilter({
             key: 'all',

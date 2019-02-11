@@ -15,22 +15,23 @@ import TransactionPanel from './TransactionPanel';
 class TransactionList extends React.Component {
 
     render () {
-        // console.debug(`${this.constructor.name}.render()`, this.props.DownloadHistoryStore.history);
         const classes = this.props.classes;
         // const t = this.props.t;
         // const mobile = this.props.mobile;
         const desktop = this.props.desktop;
+        const itemHistory = this.props.itemHistory;
 
-        let transactions = [...this.props.DownloadHistoryStore.history].sort();
+        let transactions = itemHistory ? [...this.props.DownloadHistoryStore.itemHistory].sort() : [...this.props.DownloadHistoryStore.history].sort();
         if (!this.props.DownloadHistoryStore.sortAscending) {
             transactions = transactions.reverse();
         }
 
+        // console.debug(`${this.constructor.name}.render()`, itemHistory, transactions);
         return (
             <div className={classes.root}>
                 { transactions.map(([key, value], index) => {
                     return (
-                        <TransactionPanel key={key} transaction={value} index={index} itemHistory={this.props.itemHistory}/>
+                        <TransactionPanel key={key} transaction={value} index={index} itemHistory={itemHistory}/>
                     )
                 })}
 

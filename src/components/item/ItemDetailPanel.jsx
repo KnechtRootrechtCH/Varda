@@ -58,6 +58,12 @@ class ItemDetailPanel extends React.Component {
                     <React.Fragment>
                         <Divider className={classes.divider}/>
                         <ItemDownloadActions itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                        { !this.props.DownloadHistoryStore.loading && this.props.DownloadHistoryStore.itemHistory && this.props.DownloadHistoryStore.itemHistory.size  > 0 &&
+                            <React.Fragment>
+                                <Divider className={classes.divider}/>
+                                <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                            </React.Fragment>
+                        }
                     </React.Fragment>
                 }
 
@@ -75,7 +81,7 @@ class ItemDetailPanel extends React.Component {
                     </React.Fragment>
                 }
 
-                { !this.props.DownloadHistoryStore.loading && this.props.DownloadHistoryStore.history && this.props.DownloadHistoryStore.history.size  > 0 &&
+                { !this.props.AuthenticationStore.isAdmin && !this.props.DownloadHistoryStore.loading && this.props.DownloadHistoryStore.itemHistory && this.props.DownloadHistoryStore.itemHistory.size  > 0 &&
                     <React.Fragment>
                         <Divider className={classes.divider}/>
                         <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
