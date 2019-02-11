@@ -18,10 +18,6 @@ class ConfigurationStore {
         showHistoryInNavbar: true,
     };
 
-    constructor() {
-
-    }
-
     @action async init() {
         firestore.collection('static').doc('configuration').onSnapshot((doc) => {
             // console.debug('ConfigurationStore.init() : configuration loaded', doc.data());

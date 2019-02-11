@@ -110,7 +110,7 @@ class DownloadHistoryStore {
                 comment: comment,
             })
             .then(() => {
-                console.debug('DownloadHistoryStore.logTransaction() : item => successfull');
+                // console.debug('DownloadHistoryStore.logTransaction() : item => successfull');
             })
             .catch((error) => {
                 ErrorHandlingStore.handleError('firebase.transaction.item.add', error);
@@ -133,7 +133,7 @@ class DownloadHistoryStore {
                 comment: comment,
             })
             .then(() => {
-                console.debug('DownloadHistoryStore.logTransaction() : user => successfull');
+                // console.debug('DownloadHistoryStore.logTransaction() : user => successfull');
             })
             .catch((error) => {
                 ErrorHandlingStore.handleError('firebase.transaction.user.add', error);
@@ -157,7 +157,7 @@ class DownloadHistoryStore {
                         merge: true
                     })
                     .then(() => {
-                        console.debug('DownloadHistoryStore.logTransaction() : last => successfull');
+                        // console.debug('DownloadHistoryStore.logTransaction() : last => successfull');
                     })
                     .catch((error) => {
                         ErrorHandlingStore.handleError('firebase.transaction.last.update', error);
