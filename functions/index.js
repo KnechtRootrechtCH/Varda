@@ -5,13 +5,6 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send('Hello from Firebase!');
-});
-
 exports.itemUpdateListener = functions.firestore.document('users/{userId}/items/{itemId}').onWrite((change, context) => {
     // console.log(change);
     // console.log(context);
@@ -57,7 +50,8 @@ exports.itemUpdateListener = functions.firestore.document('users/{userId}/items/
                 const plain = JSON.parse(JSON.stringify(counts));
                 console.log('New counts object', plain);
 
-                return admin.firestore()
+                return admin
+                    .firestore()
                     .collection('users')
                     .doc(uid)
                     .set({
@@ -66,4 +60,68 @@ exports.itemUpdateListener = functions.firestore.document('users/{userId}/items/
                         merge: true
                     });
             })
+});
+
+exports.updateItemCounts = functions.https.onCall((data, context) => {
+    const uid = data.uid ? data.uid : context.auth.uid;
+    console.log('data', data);
+    console.log('context', context);
+    console.log('uid', uid);
+    let result = {
+        success: false,
+        uid: uid,
+    }
+
+    return admin
+        .firestore()
+        .collection('users')
+        .doc(uid)
+        .collection('items')
+        .get()
+        .then((snapshot) => {
+            console.log('items loaded', snapshot);
+            let itemCounts = new Object();
+            snapshot.forEach(doc => {
+                const item = doc.data();
+                if (item.status && item.status !== 'removed') {
+                    let total = itemCounts['total'];
+                    total = total ? total + 1 : 1;
+                    itemCounts['total'] = total;
+
+                    let value = itemCounts[item.status];
+                    value = value ? value + 1 : 1;
+                    itemCounts[item.status] = value;
+                }
+            });
+
+            const plain = JSON.parse(JSON.stringify(itemCounts));
+            result.itemCounts = plain;
+            console.log('item count complete => saving', plain)
+            return admin
+                .firestore()
+                .collection('users')
+                .doc(uid)
+                .set({
+                    itemCounts: plain,
+                    itemCountsTimestamp: new Date(),
+                }, {
+                    merge: true
+                })
+                .then(() => {
+                    result.success = true;
+                    return result;
+                })
+                .catch((error) => {
+                    result.success = false;
+                    result.error = error;
+                    result.message = error.message;
+                    return result;
+                });
+        })
+        .catch((error) => {
+            result.success = false;
+            result.error = error;
+            result.message = error.message;
+            return result;
+        });
 });

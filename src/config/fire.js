@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import auth from 'firebase/auth'; // eslint-disable-line no-unused-vars
 import store from 'firebase/firestore'; // eslint-disable-line no-unused-vars
+import func from 'firebase/functions'; // eslint-disable-line no-unused-vars
 
 const config = {
     apiKey: 'AIzaSyD-HqBxheYcdQUAUB1beYZCX60U51G5L5A',
@@ -14,7 +15,8 @@ const config = {
 const fire = firebase.initializeApp(config)
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
 const firestore = firebase.firestore();
+const functions = firebase.functions();
 const settings = { timestampsInSnapshots: true };
 firestore.settings(settings);
 
-export {fire, googleAuthProvider, firestore};
+export {fire, googleAuthProvider, firestore, functions};

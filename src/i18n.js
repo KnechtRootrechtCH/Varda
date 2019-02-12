@@ -203,6 +203,8 @@ i18n.init({
                     startImport: 'Import data',
                     cullImport: 'Cull data',
                     validateImport: 'Validate data',
+                    cloudFunctions: 'Cloud Functions',
+                    executeItemCountUpdate: 'Item Count Update',
                 },
 
                 error: {
@@ -453,6 +455,8 @@ i18n.init({
                     startImport: 'Import data',
                     cullImport: 'Cull data',
                     validateImport: 'Validate data',
+                    cloudFunctions: 'Cloud Functions',
+                    executeItemCountUpdate: 'Item Count Update',
                 },
 
                 error: {

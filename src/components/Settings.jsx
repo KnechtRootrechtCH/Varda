@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 
 import { Divider } from '@material-ui/core';
 
+import CloudFunctionsSettings from './settings/CloudFunctionsSettings';
 import ImportSettings from './settings/ImportSettings';
 import ThemeSettings from './settings/ThemeSettings';
 
@@ -23,6 +24,8 @@ class Settings extends React.Component {
                 { this.props.AuthenticationStore.isAdmin &&
                     <React.Fragment>
                         <ImportSettings/>
+                        <Divider className={classes.divider}/>
+                        <CloudFunctionsSettings/>
                         <Divider className={classes.divider}/>
                     </React.Fragment>
                 }
