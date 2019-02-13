@@ -94,6 +94,7 @@ exports.updateItemCounts = functions.https.onCall((data, context) => {
                 }
             });
 
+            itemCounts['timestamp'] = new Date();
             const plain = JSON.parse(JSON.stringify(itemCounts));
             result.itemCounts = plain;
             console.log('item count complete => saving', plain)
@@ -103,7 +104,6 @@ exports.updateItemCounts = functions.https.onCall((data, context) => {
                 .doc(uid)
                 .set({
                     itemCounts: plain,
-                    itemCountsTimestamp: new Date(),
                 }, {
                     merge: true
                 })
@@ -117,6 +117,84 @@ exports.updateItemCounts = functions.https.onCall((data, context) => {
                     result.message = error.message;
                     return result;
                 });
+        })
+        .catch((error) => {
+            result.success = false;
+            result.error = error;
+            result.message = error.message;
+            return result;
+        });
+});
+
+exports.updateItemStatus = functions.https.onCall((data, context) => {
+    const uid = data.uid ? data.uid : context.auth.uid;
+    console.log('data', data);
+    console.log('context', context);
+    console.log('uid', uid);
+    let result = {
+        success: false,
+        uid: uid,
+    }
+
+    return admin.firestore()
+        .collection('users')
+        .doc(uid)
+        .collection('items')
+        .get()
+        .then((snapshot) => {
+            console.log('items loaded', snapshot);
+            const now = new Date();
+            result.timestamp = now;
+            let updates = [];
+
+            let batch = admin.firestore().batch();
+
+            let collection = admin.firestore()
+                                .collection('users')
+                                .doc(uid)
+                                .collection('items')
+
+            snapshot.forEach(doc => {
+                const item = doc.data();
+                const status = item.status;
+                const release = item.release.toDate();
+                let newStatus = null;
+                if (status === 'queued' && now < release) {
+                    newStatus = 'notReleased';
+                } else if (status === 'notReleased' && now > release) {
+                    newStatus = 'queued';
+                }
+
+                if (newStatus) {
+                    const ref = collection.doc(doc.id);
+                    batch.update(ref, {
+                        status: newStatus
+                    });
+                    item.status = newStatus;
+                    updates.push(item);
+                }
+            });
+
+            const ref = admin.firestore()
+                            .collection('users')
+                            .doc(uid);
+            batch.update(ref, {
+                statusUpdateTimestamp: now,
+            })
+
+            result.updates = updates;
+
+            batch.commit().then((data) => {
+                result.success = true;
+                result.data = data;
+                return result;
+            })
+            .catch((error) => {
+                result.success = false;
+                result.error = error;
+                result.message = error.message;
+                return result;
+            });
         })
         .catch((error) => {
             result.success = false;
