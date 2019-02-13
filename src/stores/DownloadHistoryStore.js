@@ -139,30 +139,33 @@ class DownloadHistoryStore {
                 ErrorHandlingStore.handleError('firebase.transaction.user.add', error);
             });
 
-            if (this.dataUid === this.uid) {
-                firestore.collection('users')
-                .doc(this.dataUid)
-                .set({transaction: {
-                        timestamp: date,
-                        transaction: transaction,
-                        newValue: newValue,
-                        previousValue: previousValue,
-                        isAdminAction: this.isAdminAction,
-                        user: this.uid,
-                        userName: this.displayName,
-                        key: key,
-                        title: title,
-                        comment: comment,
-                    }},{
-                        merge: true
-                    })
-                    .then(() => {
-                        // console.debug('DownloadHistoryStore.logTransaction() : last => successfull');
-                    })
-                    .catch((error) => {
-                        ErrorHandlingStore.handleError('firebase.transaction.last.update', error);
-                    });
+
+            let transactionObject = {
+                timestamp: date,
+                transaction: transaction,
+                newValue: newValue,
+                previousValue: previousValue,
+                key: key,
+                title: title,
+                comment: comment,
+            };
+
+            if (this.dataUid !== this.uid) {
+                transactionObject.dataUid = this.dataUid;
+                transactionObject.isAdminAction = this.isAdminAction;
             }
+
+            firestore.collection('users')
+            .doc(this.uid)
+            .set({transaction: transactionObject},{
+                    merge: true
+                })
+                .then(() => {
+                    // console.debug('DownloadHistoryStore.logTransaction() : last => successfull');
+                })
+                .catch((error) => {
+                    ErrorHandlingStore.handleError('firebase.transaction.last.update', error);
+                });
     }
 
     @action setFilter(filter) {

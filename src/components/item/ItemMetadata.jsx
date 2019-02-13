@@ -15,11 +15,11 @@ import {
 
 import {
     Amazon,
-    Calendar,
-    LinkVariant,
+    InformationOutline,
     Netflix }  from 'mdi-material-ui';
 
 import MetadataService from '../../service/MetadataService';
+import constants from '../../config/constants';
 
 @withNamespaces()
 class ItemMetadata extends React.Component {
@@ -83,6 +83,7 @@ class ItemMetadata extends React.Component {
         const t = this.props.t;
 
         const item = this.props.item;
+        const statusItem = this.props.statusItem;
         // const isMovie = MetadataService.isMovie(item);
         const isTv = MetadataService.isTv(item);
         // const statusItem = this.props.statusItem
@@ -97,8 +98,16 @@ class ItemMetadata extends React.Component {
         rows.push({
             key: 'originalTitle',
             value: `${originalTitle} (${originalLanguage})`,
-            display: originalTitle !== title,
+        display: originalTitle !== title,
         });
+
+        // status
+        const status = statusItem ?  statusItem.status : null;
+        rows.push({
+            key: 'status',
+            value: t(`common.status.${status}`),
+            display: status && status !== constants.STATUS.REMOVED,
+        })
 
         // director
         const director = MetadataService.getDirector(item);
@@ -219,7 +228,7 @@ class ItemMetadata extends React.Component {
                     <Link href={url} target='_blank' color={color}>
                         <Typography className={classes.infoActive} variant='body2'>
                             {value}
-                            <LinkVariant className={classes.linkIcon} color='primary' onClick={() => this.handleOpenUrl(url)}/>
+                            <InformationOutline className={classes.linkIcon} color='primary' onClick={() => this.handleOpenUrl(url)}/>
                         </Typography>
                     </Link>
                 </td>
@@ -227,7 +236,7 @@ class ItemMetadata extends React.Component {
                 <td className={classes.dataCell}>
                     <Typography className={classes.infoActive} color={color} onClick={this.handleReleaseDateExpand} variant='body2'>
                         {value}
-                        <Calendar className={classes.linkIcon} color='primary'/>
+                        <InformationOutline className={classes.linkIcon} color='primary'/>
                     </Typography>
                 </td>
                 :

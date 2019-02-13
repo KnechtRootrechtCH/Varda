@@ -37,10 +37,22 @@ i18n.init({
                     more: 'more',
                     less: 'less',
                     unknown: 'unknown',
+                    total: 'Total',
                     priority: {
                         1: 'High',
                         2: 'Medium',
                         3: 'Low',
+                    },
+                    status: {
+                        label: 'Status',
+                        removed: '',
+                        queued: 'Todo',
+                        notReleased: 'Unreleased',
+                        notAvailable: 'Not yey available',
+                        notFound: 'Not found',
+                        redownload: 'Redownload',
+                        downloading: 'Downloading',
+                        downloaded: 'Done',
                     },
                 },
 
@@ -109,6 +121,7 @@ i18n.init({
 
                 details: {
                     originalTitle: 'Original title',
+                    status: 'Status',
                     runtime: 'Runtime',
                     rating: 'Rating',
                     director: 'Director',
@@ -204,7 +217,12 @@ i18n.init({
                     cullImport: 'Cull data',
                     validateImport: 'Validate data',
                     cloudFunctions: 'Cloud Functions',
-                    executeItemCountUpdate: 'Item Count Update',
+                    executeItemCountUpdate: 'Calculate item count',
+                    executeStatusUpdate : 'Execute status update',
+                    itemCount: 'Item count',
+                    statusUpdate: 'Status update',
+                    lastUpdate: 'Updated',
+                    neverRun: 'Cloud function never executed!',
                 },
 
                 error: {
@@ -289,10 +307,22 @@ i18n.init({
                     more: 'mehr',
                     less: 'weniger',
                     unknown: 'unbekannt',
+                    total: 'Total',
                     priority: {
                         1: 'Hoch',
                         2: 'Mittel',
                         3: 'Tief',
+                    },
+                    status: {
+                        label: 'Status',
+                        removed: '',
+                        queued: 'Todo',
+                        notReleased: 'Unveröffentlicht',
+                        notAvailable: 'Noch nicht erhältlich',
+                        notFound: 'Nicht gefunden',
+                        redownload: 'Nochmals herunterladen',
+                        downloading: 'Wird heruntergeladen',
+                        downloaded: 'Erledigt',
                     },
                 },
 
@@ -361,6 +391,7 @@ i18n.init({
 
                 details: {
                     originalTitle: 'Originaltitel',
+                    status: 'Status',
                     runtime: 'Laufzeit',
                     rating: 'Bewertung',
                     director: 'Regisseur',
@@ -456,7 +487,12 @@ i18n.init({
                     cullImport: 'Cull data',
                     validateImport: 'Validate data',
                     cloudFunctions: 'Cloud Functions',
-                    executeItemCountUpdate: 'Item Count Update',
+                    executeItemCountUpdate: 'Download Anzahl berechnen',
+                    executeStatusUpdate : 'Status update durchführen',
+                    itemCount: 'Download Anzahl',
+                    statusUpdate: 'Status Update',
+                    lastUpdate: 'Aktualisiert',
+                    neverRun: 'Cloud function nie ausgeführt!',
                 },
 
                 error: {

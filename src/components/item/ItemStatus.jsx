@@ -12,6 +12,7 @@ import {
 
 import {
     AlertCircleOutline,
+    Calendar,
     CalendarQuestion,
     Check,
     ClockOutline,
@@ -73,6 +74,8 @@ class ItemStatus extends React.Component {
                         <Check className={classes.statusIconPrimary} onClick={this.handleItemEditOpen} />
                     : status === constants.STATUS.QUEUED ?
                         <ClockOutline className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
+                    : status === constants.STATUS.NOT_RELEASED ?
+                        <Calendar className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.NOT_AVAILABLE ?
                         <CalendarQuestion className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.NOT_FOUND ?
@@ -145,12 +148,3 @@ ItemStatus.propTypes = {
 };
 
 export default withStyles(styles)(ItemStatus);
-/*
-        REMOVED: 'removed',
-        QUEUED: 'queued',
-        NOT_RELEASED: 'notReleased',
-        NOT_AVAILABLE: 'notAvailable',
-        NOT_FOUND: 'notFound',
-        DOWNLOADING: 'downloading',
-        DOWNLOADED: 'downloaded',
-*/

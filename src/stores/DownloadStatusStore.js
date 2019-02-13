@@ -50,7 +50,7 @@ class DownloadStatusStore {
                 .onSnapshot((doc) => {
                     const data = doc.data();
                     if (data) {
-                        // console.debug('DownloadStatusStore.loadStatus() : item loaded/updated', data);
+                        console.debug('DownloadStatusStore.loadStatus() : item loaded/updated', doc.id);
                         if (!data.status) {
                             data.status = '';
                         }
@@ -99,7 +99,7 @@ class DownloadStatusStore {
         }
 
 
-        if (this.filter.status && this.filter.status !== 'none' && this.filter.status !== 'notReleased') {
+        if (this.filter.status && this.filter.status !== 'none') {
             query = query.where('status', '==', this.filter.status);
         }
         if (this.filter.mediaType === 'movie') {
@@ -158,6 +158,7 @@ class DownloadStatusStore {
         const title = MetadataService.getTitle(item);
         const release = MetadataService.getReleaseDateMoment(item);
         const backdrop = item.backdrop_path;
+        const timestamp = new Date();
 
         if (!previousStatus) {
             previousStatus = '';
@@ -167,14 +168,16 @@ class DownloadStatusStore {
             return;
         }
 
+        const unreleased = status === constants.STATUS.QUEUED && Moment(timestamp).isBefore(release);
+
         const data = {
-            status: status,
+            status: unreleased ? constants.STATUS.NOT_RELEASED : unreleased,
             id: id,
             mediaType: mediaType,
             title: title ? title : '',
             release: release ? release.toDate() : new Date(0, 0, 0, 0, 0, 0, 0),
             backdrop: backdrop ? backdrop: '',
-            timestamp: new Date(),
+            timestamp: timestamp,
         };
 
         // console.debug('DownloadStatusStore.updateStatus()', key, data);
@@ -196,8 +199,10 @@ class DownloadStatusStore {
         }
     }
 
-    @action async updateStatusByKey(key, title, status, previousStatus, comment, skipLog) {
+    @action async updateStatusByKey(key, title, status, previousStatus, comment, release, skipLog) {
         console.debug('DownloadStatusStore.updateStatusByKey()', key, title, status, previousStatus);
+        const timestamp = new Date();
+
         if (!previousStatus) {
             previousStatus = '';
         }
@@ -206,9 +211,11 @@ class DownloadStatusStore {
             return;
         }
 
+        const unreleased = status === constants.STATUS.QUEUED && release && Moment(timestamp).isBefore(release);
+
         const data = {
-            status: status,
-            timestamp: new Date(),
+            status: unreleased ? constants.STATUS.NOT_RELEASED : unreleased,
+            timestamp: timestamp,
         };
 
         // console.debug('DownloadStatusStore.updateStatus()', key, data);

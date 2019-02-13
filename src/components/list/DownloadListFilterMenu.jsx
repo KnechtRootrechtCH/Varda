@@ -67,7 +67,7 @@ class DownloadListFilterMenu extends React.Component {
         const anchor = this.state.anchor;
 
         const mediaType = ['none', 'movie', 'tv'];
-        const status = ['none', 'queued', 'notAvailable', 'notFound', 'redownload', 'downloading', 'downloaded'];
+        const status = ['none', 'queued', 'notReleased', 'notAvailable', 'notFound', 'redownload', 'downloading', 'downloaded'];
         // const priority = [0, 1, 2, 3, 4, 5];
 
         const mediaTypeValue = this.props.DownloadStatusStore.filter.mediaType;

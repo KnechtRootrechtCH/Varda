@@ -12,6 +12,7 @@ import {
 
 import {
     AlertCircleOutline,
+    Calendar,
     CalendarSearch,
     Check,
     ClockOutline,
@@ -37,7 +38,8 @@ class ItemCardStatusIcon extends React.Component {
         if (this.props.downloadList) {
             const key = this.props.itemKey;
             const title = this.props.statusItem.title;
-            this.props.DownloadStatusStore.updateStatusByKey(key, title, status, previous);
+            const release = this.props.statusItem.release;
+            this.props.DownloadStatusStore.updateStatusByKey(key, title, status, previous, release);
         } else {
             const item = this.props.item;
             this.props.DownloadStatusStore.updateStatus(item, status, previous);
@@ -87,6 +89,8 @@ class ItemCardStatusIcon extends React.Component {
                         <Check className={classes.statusIconPrimary} onClick={this.handleItemEditOpen} />
                     : status === constants.STATUS.QUEUED ?
                         <ClockOutline className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
+                    : status === constants.STATUS.NOT_RELEASED ?
+                        <Calendar className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.NOT_AVAILABLE ?
                         <CalendarSearch className={classes.statusIconPrimary} onClick={this.handleItemEditOpen}/>
                     : status === constants.STATUS.NOT_FOUND ?
@@ -145,6 +149,10 @@ const styles = theme => ({
         cursor: 'pointer',
         color: theme.palette.primary.main,
     },
+    statusIconSecondary: {
+        cursor: 'pointer',
+        color: theme.palette.secondary.main,
+    },
     statusIconDisabled: {
         cursor: 'wait',
         color: theme.palette.action.disabled,
@@ -159,12 +167,3 @@ ItemCardStatusIcon.propTypes = {
 };
 
 export default withStyles(styles)(ItemCardStatusIcon);
-/*
-        REMOVED: 'removed',
-        QUEUED: 'queued',
-        NOT_RELEASED: 'notReleased',
-        NOT_AVAILABLE: 'notAvailable',
-        NOT_FOUND: 'notFound',
-        DOWNLOADING: 'downloading',
-        DOWNLOADED: 'downloaded',
-*/
