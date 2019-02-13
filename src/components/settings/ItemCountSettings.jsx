@@ -44,7 +44,7 @@ class ItemCountSettings extends React.Component {
         const downloading = itemCounts && itemCounts['downloading'] ? itemCounts['downloading'] : '0';
         const downloaded = itemCounts && itemCounts['downloaded'] ? itemCounts['downloaded'] : '0';
         const lastUpdated = itemCounts && itemCounts['timestamp'] ? Moment(itemCounts['timestamp']) : null;
-        const updateString = lastUpdated ? `${t('settings.lastUpdate')}: ${lastUpdated.format('DD.MM.YYYY')}` : t('settings.neverRun');
+        const updateString = lastUpdated ? `${t('settings.lastUpdate')}: ${lastUpdated.format('DD.MM.YYYY HH:mm')}` : t('settings.neverRun');
 
         return (
             <div className={classes.root}>

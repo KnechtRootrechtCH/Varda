@@ -1,5 +1,6 @@
 import {observable, computed, action, runInAction} from 'mobx';
 import {functions} from '../config/fire'
+import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
 
@@ -11,6 +12,17 @@ class CloudFunctionsStore {
 
     @action init () {
         // TODO: check execution data, then execute release status update (if x time has passed)
+    }
+
+    @action executeAutomatedStatusUpdate () {
+        let date = Moment();
+        date.subtract(20, 'h');
+        const timestamp = this.statusUpdateTimestamp ? Moment(this.statusUpdateTimestamp.toDate()) : null;
+
+        if (!timestamp || timestamp.isBefore(date)) {
+            console.log('CloudFunctionsStore.executeAutomatedFunctions() : More than 20 hours passed since the last update ==> execute status update');
+            this.executeStatusUpdateCloudFunction();
+        }
     }
 
     @action executeUpdateItemCountsFunction () {
@@ -46,7 +58,6 @@ class CloudFunctionsStore {
             .then((result) => {
                 console.debug('CloudFunctionsStore.executeStatusUpdateCloudFunction() : successfull', result);
                 runInAction(() => {
-                    this.statusUpdateTimestamp = result.timestamp;
                     this.actionRunning = false;
                 });
             })

@@ -25,8 +25,8 @@ class StatusUpdateSettings extends React.Component {
         const t = this.props.t;
 
         const timestamp = this.props.CloudFunctionsStore.statusUpdateTimestamp;
-        const lastUpdated = timestamp ? Moment(timestamp) : null;
-        const updateString = lastUpdated ? `${t('settings.lastUpdate')}: ${lastUpdated.format('DD.MM.YYYY')}` : t('settings.neverRun');
+        const lastUpdated = timestamp ? Moment(timestamp.toDate()) : null;
+        const updateString = lastUpdated ? `${t('settings.lastUpdate')}: ${lastUpdated.format('DD.MM.YYYY HH:mm')}` : t('settings.neverRun');
 
         return (
             <div className={classes.root}>

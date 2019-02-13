@@ -154,6 +154,7 @@ class AuthenticationStore {
                     }
                     CloudFunctionsStore.setItemCounts(itemCounts);
                     CloudFunctionsStore.setStatusUpdateTimestamp(doc.data().statusUpdateTimestamp);
+                    CloudFunctionsStore.executeAutomatedStatusUpdate();
 
 
                     const displayName = doc.data().displayName;

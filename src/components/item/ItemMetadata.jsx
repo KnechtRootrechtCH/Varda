@@ -105,7 +105,7 @@ class ItemMetadata extends React.Component {
         const status = statusItem ?  statusItem.status : null;
         rows.push({
             key: 'status',
-            value: t(`common.status.${status}`),
+            value: status ? t(`common.status.${status}`) : '',
             display: status && status !== constants.STATUS.REMOVED,
         })
 
