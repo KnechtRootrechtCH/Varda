@@ -2,6 +2,7 @@ import {observable, action, computed, runInAction} from 'mobx';
 import {fire, firestore, googleAuthProvider} from '../config/fire'
 import * as Moment from 'moment';
 
+import CloudFunctionsStore from './CloudFunctionsStore';
 import ConfigurationStore from './ConfigurationStore';
 import ErrorHandlingStore from './ErrorHandlingStore';
 
@@ -146,6 +147,14 @@ class AuthenticationStore {
                         settings = {}
                     }
                     this.userSettings = settings;
+
+                    let itemCounts = doc.data().itemCounts;
+                    if (!itemCounts) {
+                        itemCounts = {}
+                    }
+                    CloudFunctionsStore.setItemCounts(itemCounts);
+                    CloudFunctionsStore.setStatusUpdateTimestamp(doc.data().statusUpdateTimestamp);
+
 
                     const displayName = doc.data().displayName;
                     if (displayName) {
