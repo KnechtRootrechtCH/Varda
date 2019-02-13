@@ -10,10 +10,6 @@ class CloudFunctionsStore {
     @observable itemCounts = {};
     @observable statusUpdateTimestamp = null;
 
-    @action init () {
-        // TODO: check execution data, then execute release status update (if x time has passed)
-    }
-
     @action executeAutomatedStatusUpdate () {
         let date = Moment();
         date.subtract(20, 'h');
