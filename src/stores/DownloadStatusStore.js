@@ -171,7 +171,7 @@ class DownloadStatusStore {
         const unreleased = status === constants.STATUS.QUEUED && Moment(timestamp).isBefore(release);
 
         const data = {
-            status: unreleased ? constants.STATUS.NOT_RELEASED : unreleased,
+            status: unreleased ? constants.STATUS.NOT_RELEASED : status,
             id: id,
             mediaType: mediaType,
             title: title ? title : '',
@@ -180,7 +180,7 @@ class DownloadStatusStore {
             timestamp: timestamp,
         };
 
-        // console.debug('DownloadStatusStore.updateStatus()', key, data);
+        console.debug('DownloadStatusStore.updateStatus()', key, data);
         const userDoc = firestore.collection('users').doc(this.dataUid);
         const statusCollection = userDoc.collection('items');
         statusCollection.doc(`${key}`).set(data,{
@@ -214,7 +214,7 @@ class DownloadStatusStore {
         const unreleased = status === constants.STATUS.QUEUED && release && Moment(timestamp).isBefore(release);
 
         const data = {
-            status: unreleased ? constants.STATUS.NOT_RELEASED : unreleased,
+            status: unreleased ? constants.STATUS.NOT_RELEASED : status,
             timestamp: timestamp,
         };
 
