@@ -127,7 +127,7 @@ class TitleBar extends React.Component {
         let title = t('title');
         let subTitle = true;
         let showBackButton = false;
-        let headerColor = isAdmin ? 'primary' : 'secondary';
+        let headerColor = isAdmin ? 'inherit' : 'secondary';
         let subheaderColor = isAdmin ? 'inherit' : 'inherit';
         let showSearch = false;
 
