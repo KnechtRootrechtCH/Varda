@@ -35,7 +35,6 @@ class AuthenticationStore {
                 this.displayName = user.email;
                 this.logAccess();
                 this.loadAdminSettings();
-                this.loadUserData();
                 ConfigurationStore.init();
             } else {
                 this.uid = null;
@@ -128,6 +127,7 @@ class AuthenticationStore {
                         this.isAdmin = data.isAdmin;
                     }
                     this.adminSettingsInitialized = true;
+                    this.loadUserData();
                     // console.debug('AuthenticationStore.loadAdminSettings() : successfull');
                 });
             })
@@ -138,7 +138,7 @@ class AuthenticationStore {
 
     @action async loadUserData() {
         firestore.collection('users')
-            .doc(this.user.uid)
+            .doc(this.dataUid)
             .get()
             .then((doc) => {
                 runInAction(() => {
@@ -148,22 +148,23 @@ class AuthenticationStore {
                     }
                     this.userSettings = settings;
 
-                    let itemCounts = doc.data().itemCounts;
-                    if (!itemCounts) {
-                        itemCounts = {}
-                    }
-                    CloudFunctionsStore.setItemCounts(itemCounts);
-                    CloudFunctionsStore.setStatusUpdateTimestamp(doc.data().statusUpdateTimestamp);
-                    CloudFunctionsStore.executeAutomatedStatusUpdate();
-
-
                     const displayName = doc.data().displayName;
                     if (displayName) {
                         this.displayName = displayName;
                     } else {
                         this.displayName = this.user.email;
                     }
+
+                    let itemCounts = doc.data().itemCounts;
+                    if (!itemCounts) {
+                        itemCounts = {}
+                    }
+
                     this.userDataInitialized = true;
+
+                    CloudFunctionsStore.setItemCounts(itemCounts);
+                    CloudFunctionsStore.setStatusUpdateTimestamp(doc.data().statusUpdateTimestamp);
+                    CloudFunctionsStore.executeAutomatedStatusUpdate();
                     console.debug('AuthenticationStore.loadUserData() : successfull');
                 });
             })
