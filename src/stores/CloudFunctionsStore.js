@@ -7,8 +7,8 @@ import AuthenticationStore from './AuthenticationStore';
 class CloudFunctionsStore {
     @observable result = null;
     @observable actionRunning = false;
-    @observable itemCounts = {};
     @observable statusUpdateTimestamp = null;
+    @observable itemCountTimestamp = null;
 
     @action executeAutomatedStatusUpdate () {
         let date = Moment();
@@ -31,7 +31,6 @@ class CloudFunctionsStore {
             .then((result) => {
                 console.debug('CloudFunctionsStore.executeUpdateItemCountsFunction() : successfull', result);
                 runInAction(() => {
-                    this.itemCounts = result.data.itemCounts;
                     this.actionRunning = false;
                 });
             })
@@ -65,12 +64,12 @@ class CloudFunctionsStore {
             });
     }
 
-    @action setItemCounts (itemCounts) {
-        this.itemCounts = itemCounts;
-    }
-
     @action setStatusUpdateTimestamp (timestamp) {
         this.statusUpdateTimestamp = timestamp;
+    }
+
+    @action setItemCountUpdateTimestamp (timestamp) {
+        this.itemCountTimestamp = timestamp;
     }
 
     @action incrementIndex () {

@@ -9,14 +9,16 @@ import ErrorHandlingStore from './ErrorHandlingStore';
 class AuthenticationStore {
     @observable user = null;
     @observable authenticationInitialized = false;
-    @observable userDataInitialized = false;
-    @observable adminSettingsInitialized = false;
+    @observable userInfoLoaded = false;
+    @observable userDataLoaded = false;
+    @observable adminSettingsLoaded = false;
     @observable message = null;
     @observable details = null;
     @observable isAdmin = false;
     @observable dataUid = null;
     @observable displayName = null;
-    dispalyNameInternal = null;
+    @observable dataUserDisplayName = null;
+    @observable itemCounts = {};
 
     constructor() {
         fire.auth().onAuthStateChanged((user) => {
@@ -32,8 +34,8 @@ class AuthenticationStore {
             if (user) {
                 this.uid = user.uid;
                 this.dataUid = user.uid;
-                this.displayName = user.email;
                 this.logAccess();
+                this.loadUserInfo();
                 this.loadAdminSettings();
                 ConfigurationStore.init();
             } else {
@@ -126,7 +128,7 @@ class AuthenticationStore {
                         }
                         this.isAdmin = data.isAdmin;
                     }
-                    this.adminSettingsInitialized = true;
+                    this.adminSettingsLoaded = true;
                     this.loadUserData();
                     // console.debug('AuthenticationStore.loadAdminSettings() : successfull');
                 });
@@ -136,39 +138,67 @@ class AuthenticationStore {
             });
     }
 
-    @action async loadUserData() {
+    @action async loadUserInfo() {
         firestore.collection('users')
-            .doc(this.dataUid)
+            .doc(this.uid)
             .get()
             .then((doc) => {
                 runInAction(() => {
-                    let settings = doc.data().settings;
-                    if (!settings) {
-                        settings = {}
-                    }
-                    this.userSettings = settings;
-
                     const displayName = doc.data().displayName;
                     if (displayName) {
-                        this.displayName = displayName;
+                        this.displayName = this.displayName ? this.displayName : displayName;
                     } else {
-                        this.displayName = this.user.email;
+                        this.displayName = this.displayName ? this.displayName : this.user.email;
+                    }
+
+                    this.userInfoLoaded = true;
+                    console.debug('AuthenticationStore.loadUserInfo() : successfull');
+                });
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.auth.settings.user', error);
+            });
+    }
+
+    @action async loadUserData() {
+        firestore.collection('users')
+            .doc(this.dataUid)
+            .onSnapshot((doc) => {
+                runInAction(() => {
+                    const displayName = doc.data().displayName;
+                    if (displayName) {
+                        this.dataUserDisplayName = displayName;
+                    } else {
+                        this.dataUserDisplayName = doc.data().mail;
                     }
 
                     let itemCounts = doc.data().itemCounts;
                     if (!itemCounts) {
                         itemCounts = {}
                     }
+                    this.itemCounts = itemCounts;
 
-                    this.userDataInitialized = true;
+                    this.userDataLoaded = true;
 
-                    CloudFunctionsStore.setItemCounts(itemCounts);
                     CloudFunctionsStore.setStatusUpdateTimestamp(doc.data().statusUpdateTimestamp);
-                    CloudFunctionsStore.executeAutomatedStatusUpdate();
+                    CloudFunctionsStore.setItemCountUpdateTimestamp(itemCounts.timestamp);
+                    //CloudFunctionsStore.executeAutomatedStatusUpdate();
+
+
+                    let statusUpdateTimestamp = doc.data().statusUpdateTimestamp
+                    let date = Moment();
+                    date.subtract(20, 'h');
+                    const timestamp = Moment(statusUpdateTimestamp.toDate());
+
+                    if (!timestamp || timestamp.isBefore(date)) {
+                        console.log('CloudFunctionsStore.executeAutomatedFunctions() : More than 20 hours passed since the last update ==> execute status update', timestamp, date);
+                        //this.executeStatusUpdateCloudFunction();
+                    } else {
+                        console.log('CloudFunctionsStore.executeAutomatedFunctions() : Less than 20 hours passed since the last update ==> dont execute status update', timestamp, date);
+                    }
                     console.debug('AuthenticationStore.loadUserData() : successfull');
                 });
-            })
-            .catch((error) => {
+            }, (error) => {
                 ErrorHandlingStore.handleError('firebase.auth.settings.user', error);
             });
     }
@@ -184,7 +214,7 @@ class AuthenticationStore {
     }
 
     @computed get initialized () {
-        return this.authenticationInitialized && this.userDataInitialized && this.adminSettingsInitialized;
+        return this.authenticationInitialized && this.userInfoLoaded && this.adminSettingsLoaded && this.userDataLoaded;
     }
 
     @computed get authenticated () {

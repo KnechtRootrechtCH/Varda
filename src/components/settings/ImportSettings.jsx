@@ -160,12 +160,18 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         marginBottom: theme.spacing.unit,
     },
+    user: {
+        marginBottom: theme.spacing.unit / 2,
+        color: theme.palette.text.disabled,
+    },
     actions: {
 
     },
     button: {
-
-    }
+        paddingLeft: 0,
+        paddingRight: 0,
+        marginRight: theme.spacing.unit * 2,
+    },
 });
 
 ImportSettings.propTypes = {

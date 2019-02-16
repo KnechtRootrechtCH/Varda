@@ -5,9 +5,9 @@ import { inject, observer } from 'mobx-react';
 
 import { Divider } from '@material-ui/core';
 
-import ItemCountSettings from './settings/ItemCountSettings';
+import AccountInformationSettings from './settings/AccountInformationSettings';
+import CloudFunctionSettings from './settings/CloudFunctionSettings';
 import ImportSettings from './settings/ImportSettings';
-import StatusUpdateSettings from './settings/StatusUpdateSettings';
 import ThemeSettings from './settings/ThemeSettings';
 
 @inject('AuthenticationStore')
@@ -20,13 +20,13 @@ class Settings extends React.Component {
 
         return (
             <div className={classes.root}>
+                <AccountInformationSettings/>
+                <Divider className={classes.divider}/>
+
                 <ThemeSettings/>
                 <Divider className={classes.divider}/>
 
-                <ItemCountSettings/>
-                <Divider className={classes.divider}/>
-
-                <StatusUpdateSettings/>
+                <CloudFunctionSettings/>
                 <Divider className={classes.divider}/>
 
                 { this.props.AuthenticationStore.isAdmin &&

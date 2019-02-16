@@ -206,6 +206,10 @@ i18n.init({
                 },
 
                 settings: {
+                    accountInformation: 'User Information',
+                    userName: 'Username',
+                    dataUserName: 'Data Username',
+                    id: 'User ID',
                     themeSettings: 'Theme settings',
                     darkTheme: 'Dark theme',
                     on: 'On',
@@ -221,7 +225,7 @@ i18n.init({
                     executeStatusUpdate : 'Execute status update',
                     itemCount: 'Item count',
                     statusUpdate: 'Status update',
-                    lastUpdate: 'Updated',
+                    lastUpdate: 'Last execution',
                     neverRun: 'Cloud function never executed!',
                 },
 
@@ -476,6 +480,10 @@ i18n.init({
                 },
 
                 settings: {
+                    accountInformation: 'User Informationen',
+                    userName: 'Benutzername',
+                    dataUserName: 'Daten Beutzername',
+                    id: 'Benutzer ID',
                     themeSettings: 'Darstellungsoptionen',
                     darkTheme: 'Dunkles Design',
                     on: 'Ein',
@@ -491,8 +499,8 @@ i18n.init({
                     executeStatusUpdate : 'Status update durchführen',
                     itemCount: 'Download Anzahl',
                     statusUpdate: 'Status Update',
-                    lastUpdate: 'Aktualisiert',
-                    neverRun: 'Cloud function nie ausgeführt!',
+                    lastUpdate: 'Letzte Ausführung',
+                    neverRun: 'Cloud Function nie ausgeführt!',
                 },
 
                 error: {
