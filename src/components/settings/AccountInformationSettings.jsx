@@ -4,10 +4,8 @@ import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
-import * as Moment from 'moment';
 
 import {
-    Button,
     Typography } from '@material-ui/core';
 
 import {
@@ -21,20 +19,15 @@ import {
     Sync }  from 'mdi-material-ui';
 
 @withNamespaces()
-@inject('CloudFunctionsStore')
+@inject('AuthenticationStore')
 @observer
-class ItemCountSettings extends React.Component {
-
-    handleExecute = () => {
-        // console.debug(`${this.constructor.name}.handleExecute()`);
-        this.props.CloudFunctionsStore.executeUpdateItemCountsFunction();
-    }
+class AccountInformationSettings extends React.Component {
 
     render () {
         const classes = this.props.classes;
         const t = this.props.t;
 
-        const itemCounts = this.props.CloudFunctionsStore.itemCounts;
+        const itemCounts = this.props.AuthenticationStore.itemCounts;
         const total = itemCounts && itemCounts['total'] ? itemCounts['total'] : '0';
         const queued = itemCounts && itemCounts['queued'] ? itemCounts['queued'] : '0';
         const notReleased = itemCounts && itemCounts['notReleased'] ? itemCounts['notReleased'] : '0';
@@ -43,18 +36,31 @@ class ItemCountSettings extends React.Component {
         const redownload = itemCounts && itemCounts['redownload'] ? itemCounts['redownload'] : '0';
         const downloading = itemCounts && itemCounts['downloading'] ? itemCounts['downloading'] : '0';
         const downloaded = itemCounts && itemCounts['downloaded'] ? itemCounts['downloaded'] : '0';
-        const lastUpdated = itemCounts && itemCounts['timestamp'] ? Moment(itemCounts['timestamp']) : null;
-        const updateString = lastUpdated ? `${t('settings.lastUpdate')}: ${lastUpdated.format('DD.MM.YYYY HH:mm')}` : t('settings.neverRun');
+        const usernameString = `${t('settings.userName')}: ${this.props.AuthenticationStore.displayName}`;
+        const dataUsernameString = `${t('settings.dataUserName')}: ${this.props.AuthenticationStore.dataUserDisplayName}`;
+        const uidString = `${t('settings.id')}: ${this.props.AuthenticationStore.dataUid}`;
+        const crossAccountAdmin = this.props.AuthenticationStore.isAdmin && this.props.AuthenticationStore.dataUid !== this.props.AuthenticationStore.uid;
 
         return (
             <div className={classes.root}>
                 <Typography className={classes.title} variant='subtitle1' component='h2'>
+                    <span>{t('settings.accountInformation')}</span>
+                </Typography>
+                <Typography className={classes.text} variant='body2' component='h2'>
+                    <span>{usernameString}</span>
+                </Typography>
+                    { crossAccountAdmin &&
+                        <Typography className={classes.text} variant='body2' component='h2'>
+                            <span>{dataUsernameString}</span>
+                        </Typography>
+                    }
+                <Typography className={classes.text} variant='body2' component='h2'>
+                    <span>{uidString}</span>
+                </Typography>
+                <Typography className={classes.title} variant='subtitle1' component='h2'>
                     <span>{t('settings.itemCount')}</span>
                 </Typography>
                 <div className={classes.actions}>
-                    <Typography className={classes.text} variant='body2' component='h2'>
-                        <span>{updateString}</span>
-                    </Typography>
                     <Typography className={classes.text} variant='body2' component='h2'>
                         <ClockOutline className={classes.icon} color='primary'/>
                         <span>{queued}</span>
@@ -95,14 +101,6 @@ class ItemCountSettings extends React.Component {
                         <span>{total}</span>
                         <span>&nbsp;&ndash;&nbsp;{t('common.total')}</span>
                     </Typography>
-                    <Button
-                        className={classes.button}
-                        color='primary'
-                        variant='text'
-                        disabled={this.props.CloudFunctionsStore.actionRunning}
-                        onClick={() => this.handleExecute()}>
-                        {t('settings.executeItemCountUpdate')}
-                    </Button>
                 </div>
             </div>
         );
@@ -121,11 +119,12 @@ const styles = theme => ({
     },
     text: {
         marginBottom: theme.spacing.unit / 2,
+        color: theme.palette.text.disabled,
     },
 });
 
-ItemCountSettings.propTypes = {
+AccountInformationSettings.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withWidth()(ItemCountSettings));
+export default withStyles(styles)(withWidth()(AccountInformationSettings));

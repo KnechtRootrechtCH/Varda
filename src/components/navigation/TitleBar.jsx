@@ -120,15 +120,15 @@ class TitleBar extends React.Component {
         const photoUrl = this.props.AuthenticationStore.photoUrl;
         const darkThemeStateKey = this.props.ThemeStore.type === 'dark' ? 'settings.on' : 'settings.off'
 
-        const isAdmin = this.props.AuthenticationStore.isAdmin;
-        const barColor = isAdmin ? 'secondary' : 'default';
+        const crossAccountAdmin = this.props.AuthenticationStore.isAdmin && this.props.AuthenticationStore.uid !== this.props.AuthenticationStore.dataUid;
+        const barColor = crossAccountAdmin ? 'secondary' : 'default';
         const loading = false; //this.props.MovieDbStore.loading;
 
         let title = t('title');
         let subTitle = true;
         let showBackButton = false;
-        let headerColor = isAdmin ? 'inherit' : 'secondary';
-        let subheaderColor = isAdmin ? 'inherit' : 'inherit';
+        let headerColor = crossAccountAdmin ? 'inherit' : 'secondary';
+        let subheaderColor = crossAccountAdmin ? 'inherit' : 'inherit';
         let showSearch = false;
 
         const item = this.props.MovieDbStore.item;
