@@ -182,20 +182,8 @@ class AuthenticationStore {
 
                     CloudFunctionsStore.setStatusUpdateTimestamp(doc.data().statusUpdateTimestamp);
                     CloudFunctionsStore.setItemCountUpdateTimestamp(itemCounts.timestamp);
-                    //CloudFunctionsStore.executeAutomatedStatusUpdate();
+                    CloudFunctionsStore.executeAutomatedStatusUpdate();
 
-
-                    let statusUpdateTimestamp = doc.data().statusUpdateTimestamp
-                    let date = Moment();
-                    date.subtract(20, 'h');
-                    const timestamp = Moment(statusUpdateTimestamp.toDate());
-
-                    if (!timestamp || timestamp.isBefore(date)) {
-                        console.log('CloudFunctionsStore.executeAutomatedFunctions() : More than 20 hours passed since the last update ==> execute status update', timestamp, date);
-                        //this.executeStatusUpdateCloudFunction();
-                    } else {
-                        console.log('CloudFunctionsStore.executeAutomatedFunctions() : Less than 20 hours passed since the last update ==> dont execute status update', timestamp, date);
-                    }
                     console.debug('AuthenticationStore.loadUserData() : successfull');
                 });
             }, (error) => {
