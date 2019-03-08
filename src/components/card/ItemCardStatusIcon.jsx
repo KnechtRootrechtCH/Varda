@@ -39,7 +39,7 @@ class ItemCardStatusIcon extends React.Component {
             const key = this.props.itemKey;
             const title = this.props.statusItem.title;
             const release = this.props.statusItem.release;
-            this.props.DownloadStatusStore.updateStatusByKey(key, title, status, previous, release);
+            this.props.DownloadStatusStore.updateStatusByKey(key, title, status, previous, '', release);
         } else {
             const item = this.props.item;
             this.props.DownloadStatusStore.updateStatus(item, status, previous);
