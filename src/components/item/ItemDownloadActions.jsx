@@ -12,6 +12,7 @@ import {
 import {
     CalendarQuestion,
     Check,
+    ClockOutline,
     Download,
     EyeOff,
     Sync }  from 'mdi-material-ui';
@@ -77,6 +78,14 @@ class ItemDownloadActions extends React.Component {
                         className={classes.action}
                         color='default'
                         variant={buttonVariant}
+                        onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}>
+                        <ClockOutline className={classes.buttonIcon}/>
+                        {t('details.actions.reset')}
+                    </Button>
+                    <Button
+                        className={classes.action}
+                        color='default'
+                        variant={buttonVariant}
                         onClick={() => this.handleStatusChange(constants.STATUS.NOT_FOUND)}>
                         <EyeOff className={classes.buttonIcon}/>
                         {t('details.actions.notFound')}
@@ -97,6 +106,7 @@ class ItemDownloadActions extends React.Component {
                         <Sync className={classes.buttonIcon}/>
                         {t('details.actions.redownload')}
                     </Button>
+                    <br/>
                     <Button
                         className={classes.action}
                         color='secondary'
