@@ -9,6 +9,8 @@ import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import {
     Typography } from '@material-ui/core';
 
+import { Reload } from 'mdi-material-ui';
+
 import DownloadItemGrid from './grid/DownloadItemGrid';
 import DownloadListFilterMenu from './list/DownloadListFilterMenu';
 import DownloadListSortMenu from './list/DownloadListSortMenu';
@@ -92,6 +94,7 @@ class DownloadList extends React.Component {
                             <span>{t('common.list')}{itemCountString}</span>
                         </Typography>
                         <div className={classes.controls}>
+                            <Reload className={classes.control} onClick={this.loadItems}/>
                             <DownloadListFilterMenu onUpdateList={this.loadItems} />
                             <DownloadListSortMenu onUpdateList={this.loadItems} />
                         </div>

@@ -26,6 +26,7 @@ class DownloadStatusStore {
     @observable hasMoreItems = null;
     lastItem = null;
     pageSize = 20;
+    lastQuery = null;
 
     @action async loadStatus(item) {
         const key = MetadataService.getKey(item);
@@ -77,6 +78,12 @@ class DownloadStatusStore {
     }
 
     @action async loadStatusList(noPaging) {
+        if (this.lastQuery) {
+            console.debug('DownloadStatusStore.loadStatusList() : unsubscribing from last query', this.lastQuery);
+            this.lastQuery.onSnapshot(function (){
+                // Unsubscribe
+              });
+        }
         console.debug('DownloadStatusStore.loadStatusList() : loading', this.filter);
         runInAction(() => {
             this.loading = true;
@@ -133,12 +140,15 @@ class DownloadStatusStore {
 
         query
         .onSnapshot((snapshot) => {
+            console.debug('DownloadStatusStore.loadStatusList() : snapshot', snapshot);
             runInAction(() => {
                 snapshot.forEach(doc => {
                     this.lastItem = doc.data();
                     if (this.filterItem(this.lastItem)){
+                        console.debug('DownloadStatusStore.loadStatusList() : add/update doc', this.lastItem);
                         this.list.set(doc.id, this.lastItem);
                     } else {
+                        console.debug('DownloadStatusStore.loadStatusList() : remove doc', this.lastItem);
                         this.list.delete(doc.id);
                     }
 
@@ -149,6 +159,8 @@ class DownloadStatusStore {
         }, (error) => {
             ErrorHandlingStore.handleError('firebase.status.list.load', error);
         });
+
+        this.lastQuery = query;
     }
 
     @action async updateStatus(item, status, previousStatus, comment, skipLog) {
@@ -166,6 +178,11 @@ class DownloadStatusStore {
 
         if (!status) {
             return;
+        }
+
+        let listItem = this.list.get(id);
+        if (listItem) {
+            listItem.status = status;
         }
 
         const unreleased = status === constants.STATUS.QUEUED && Moment(timestamp).isBefore(release);
@@ -209,6 +226,11 @@ class DownloadStatusStore {
 
         if (!status) {
             return;
+        }
+
+        let listItem = this.list.get(key);
+        if (listItem) {
+            listItem.status = status;
         }
 
         const unreleased = status === constants.STATUS.QUEUED && release && Moment(timestamp).isBefore(release);
