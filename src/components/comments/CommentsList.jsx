@@ -19,7 +19,7 @@ class CommentsList extends React.Component {
         const desktop = this.props.desktop;
         const itemComments = this.props.itemComments;
 
-        let comments = [...this.props.CommentsStore.comments].sort();
+        let comments = itemComments ? [...this.props.CommentsStore.itemComments].sort() : [...this.props.CommentsStore.comments].sort();
         if (!this.props.CommentsStore.sortAscending) {
             comments = comments.reverse();
         }

@@ -53,7 +53,7 @@ class ItemDetails extends React.Component {
         this.props.MovieDbStore.loadItem(mediaType, itemId);
         this.props.DownloadStatusStore.loadStatusById(mediaType, itemId);
         this.props.CommentsStore.setSorting('timestamp', true);
-        this.props.CommentsStore.resetComments();
+        this.props.CommentsStore.resetItemComments();
         this.props.CommentsStore.loadCommentsById(mediaType, itemId);
     }
 

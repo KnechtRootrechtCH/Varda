@@ -10,6 +10,7 @@ class CommentsStore {
     loading = false;
     lastItem = null;
     @observable comments = new Map();
+    @observable itemComments = new Map();
     @observable sortField = 'timestamp';
     @observable sortAscending = false;
     pageSize = 100;
@@ -49,6 +50,10 @@ class CommentsStore {
             });
     }
 
+    @action resetItemComments() {
+        this.itemComments = new Map();
+    }
+
     @action loadCommentsByItem(item) {
         const key = MetadataService.getKey(item);
         this.loadCommentsByKey(key);
@@ -71,10 +76,10 @@ class CommentsStore {
             .onSnapshot((snapshot) => {
                 runInAction(() => {
                     snapshot.forEach(doc => {
-                        this.comments.set(doc.id, doc.data());
+                        this.itemComments.set(doc.id, doc.data());
                     });
                     this.loading = false;
-                    console.debug('CommentsStore.loadCommentsByKey() : loaded', this.comments);
+                    console.debug('CommentsStore.loadCommentsByKey() : loaded', this.itemComments);
                 });
             }, (error) => {
                 ErrorHandlingStore.handleError('firebase.comments.item.load', error);

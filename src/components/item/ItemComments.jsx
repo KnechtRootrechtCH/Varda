@@ -78,7 +78,7 @@ class ItemComments extends React.Component {
         const desktop = this.props.desktop;
         const buttonVariant = mobile ? 'text' : 'text';
 
-        const hasComments = this.props.CommentsStore.comments.size > 0;
+        const hasComments = this.props.CommentsStore.itemComments.size > 0;
 
         // const item = this.props.item;
         // const statusItem = this.props.statusItem;

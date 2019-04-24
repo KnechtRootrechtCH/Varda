@@ -33,10 +33,12 @@ import { BriefcaseDownload }  from 'mdi-material-ui';
 class Navigation extends React.Component {
 
     handleOpenDrawer = () => {
+        console.debug(`${this.constructor.name}.handleOpenDrawer()`);
         this.props.ThemeStore.setDrawerState(true);
     }
 
     handleCloseDrawer = () => {
+        console.debug(`${this.constructor.name}.handleCloseDrawer()`);
         const desktop = isWidthUp('md', this.props.width);
         if (desktop) {
             return;
