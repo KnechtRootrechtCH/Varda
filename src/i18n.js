@@ -155,7 +155,7 @@ i18n.init({
                     },
                     actions: {
                         add: 'Add',
-                        reset: 'Reset',
+                        queue: 'Queue',
                         remove: 'Remove',
                         redownload: 'Redownload',
                         notAvailable: 'Not yet available',
@@ -430,7 +430,7 @@ i18n.init({
                     },
                     actions: {
                         add: 'Hinzufügen',
-                        reset: 'Zurücksetzen',
+                        queue: 'ToDo',
                         remove: 'Entfernen',
                         redownload: 'Nochmals herunterladen',
                         notAvailable: 'Noch nicht verfügbar',

@@ -80,7 +80,7 @@ class ItemDownloadActions extends React.Component {
                         variant={buttonVariant}
                         onClick={() => this.handleStatusChange(constants.STATUS.QUEUED)}>
                         <ClockOutline className={classes.buttonIcon}/>
-                        {t('details.actions.reset')}
+                        {t('details.actions.queue')}
                     </Button>
                     <Button
                         className={classes.action}
@@ -106,7 +106,6 @@ class ItemDownloadActions extends React.Component {
                         <Sync className={classes.buttonIcon}/>
                         {t('details.actions.redownload')}
                     </Button>
-                    <br/>
                     <Button
                         className={classes.action}
                         color='secondary'
