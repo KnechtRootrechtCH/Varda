@@ -18,7 +18,6 @@ import ItemRecommendations from './ItemRecommendations';
 import ItemStatus from './ItemStatus'
 
 import MetadataService from '../../service/MetadataService';
-import constants from '../../config/constants';
 
 @withNamespaces()
 @inject('AuthenticationStore')
@@ -37,8 +36,8 @@ class ItemDetailPanel extends React.Component {
         const statusItem = this.props.statusItem
         const key = MetadataService.getKey(item);
 
-        const status = statusItem ? statusItem.status : null;
-        const active = status && status.length > 0 && status !== constants.STATUS.REMOVED
+        // const status = statusItem ? statusItem.status : null;
+        // const active = status && status.length > 0 && status !== constants.STATUS.REMOVED
 
         return (
             <div className={classes.root}>
