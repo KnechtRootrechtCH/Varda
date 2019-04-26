@@ -19,7 +19,9 @@ class ItemPriority extends React.Component {
     handlePriorityChange = (priority) => {
         console.debug(`${this.constructor.name}.handlePriorityChange()`, priority);
         const item = this.props.item;
+        const priorityCount = this.props.ConfigurationStore.configuration.priorityCount;
         const previous = this.props.statusItem ? this.props.statusItem.priority : 0;
+        priority = priority === priorityCount && priority === previous ? priority + 1 : priority;
         this.props.DownloadStatusStore.updatePriority(item, priority, previous);
     }
 

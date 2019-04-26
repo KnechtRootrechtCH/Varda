@@ -22,7 +22,9 @@ class ItemCardContent extends React.Component {
 
     handlePriorityChange = (priority) => {
         // console.debug(`${this.constructor.name}.handlePriorityChange()`, priority);
+        const priorityCount = this.props.ConfigurationStore.configuration.priorityCount;
         const previous = this.props.statusItem ? this.props.statusItem.priority : 0;
+        priority = priority === priorityCount && priority === previous ? priority + 1 : priority;
         if (this.props.downloadList) {
             const key = this.props.itemKey;
             const title = this.props.item.title;
