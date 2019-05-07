@@ -139,7 +139,6 @@ class CommentsStore {
 
     @action updateTimestamp() {
         const timestamp = new Date();
-        return;
 
         firestore
         .collection('users')
