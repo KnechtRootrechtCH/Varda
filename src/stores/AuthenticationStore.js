@@ -3,6 +3,7 @@ import {fire, firestore, googleAuthProvider} from '../config/fire'
 import * as Moment from 'moment';
 
 import CloudFunctionsStore from './CloudFunctionsStore';
+import CommentsStore from './CommentsStore';
 import ConfigurationStore from './ConfigurationStore';
 import ErrorHandlingStore from './ErrorHandlingStore';
 
@@ -18,6 +19,7 @@ class AuthenticationStore {
     @observable dataUid = null;
     @observable displayName = null;
     @observable dataUserDisplayName = null;
+    @observable commentsTimestamp = null;
     @observable itemCounts = {};
 
     constructor() {
@@ -141,8 +143,7 @@ class AuthenticationStore {
     @action async loadUserInfo() {
         firestore.collection('users')
             .doc(this.uid)
-            .get()
-            .then((doc) => {
+            .onSnapshot((doc) => {
                 runInAction(() => {
                     const displayName = doc.data().displayName;
                     if (displayName) {
@@ -151,11 +152,11 @@ class AuthenticationStore {
                         this.displayName = this.displayName ? this.displayName : this.user.email;
                     }
 
+                    this.commentsTimestamp = doc.data().commentsTimestamp;
                     this.userInfoLoaded = true;
                     console.debug('AuthenticationStore.loadUserInfo() : successfull');
                 });
-            })
-            .catch((error) => {
+            }, (error) => {
                 ErrorHandlingStore.handleError('firebase.auth.settings.user', error);
             });
     }
@@ -183,6 +184,7 @@ class AuthenticationStore {
                     CloudFunctionsStore.setStatusUpdateTimestamp(doc.data().statusUpdateTimestamp);
                     CloudFunctionsStore.setItemCountUpdateTimestamp(itemCounts.timestamp);
                     CloudFunctionsStore.executeAutomatedStatusUpdate();
+                    CommentsStore.loadNewCommentsCount();
 
                     console.debug('AuthenticationStore.loadUserData() : successfull');
                 });

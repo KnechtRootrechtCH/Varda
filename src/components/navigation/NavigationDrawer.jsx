@@ -8,6 +8,7 @@ import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { withNamespaces } from 'react-i18next';
 
 import {
+    Badge,
     Divider,
     List,
     ListItem,
@@ -27,6 +28,7 @@ import { BriefcaseDownload }  from 'mdi-material-ui';
 @withNamespaces()
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
+@inject('CommentsStore')
 @inject('MovieDbStore')
 @inject('ThemeStore')
 @observer
@@ -58,6 +60,9 @@ class Navigation extends React.Component {
         const drawerVariant = desktop ? 'persistent' : null;
 
         const showDiscovery = this.props.ConfigurationStore.configuration.showDiscovery;
+
+        const newCommentsCount = this.props.CommentsStore.newCommentsCount;
+        const badgeInvisible = !newCommentsCount || newCommentsCount < 1;
 
         let loc = showDiscovery ? 'browse' : 'movies';
         if (!this.props.AuthenticationStore.authenticated) {
@@ -133,7 +138,9 @@ class Navigation extends React.Component {
                         onClick={this.handleCloseDrawer}
                         className={loc === 'messages' ? classes.drawerItemActive : null}>
                         <ListItemIcon>
-                            <Comment className={loc === 'messages' ? classes.drawerIconActive : null}/>
+                            <Badge badgeContent={newCommentsCount} invisible={badgeInvisible} color='secondary' variant='standard' max={5} className={classes.badge}>
+                                <Comment className={loc === 'messages' ? classes.drawerIconActive : null}/>
+                            </Badge>
                         </ListItemIcon>
                         <ListItemText primary={t('common.messages')}/>
                     </ListItem>

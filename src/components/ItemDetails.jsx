@@ -52,7 +52,7 @@ class ItemDetails extends React.Component {
         const itemId = this.props.match.params.itemId
         this.props.MovieDbStore.loadItem(mediaType, itemId);
         this.props.DownloadStatusStore.loadStatusById(mediaType, itemId);
-        this.props.CommentsStore.setSorting('timestamp', true);
+        this.props.CommentsStore.setSorting('timestamp', false);
         this.props.CommentsStore.resetItemComments();
         this.props.CommentsStore.loadCommentsById(mediaType, itemId);
     }

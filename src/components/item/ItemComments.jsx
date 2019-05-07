@@ -87,12 +87,6 @@ class ItemComments extends React.Component {
 
         return (
             <div className={classes.root}>
-                <Grow in={hasComments} mountOnEnter={true} unmountOnExit={true}>
-                    <div className={classes.commentsList}>
-                        <Typography className={classes.header} variant='body2'>{t('details.comments')}</Typography>
-                        <CommentsList itemComments={true} mobile={mobile} desktop={desktop}/>
-                    </div>
-                </Grow>
                 <Grow in={!this.state.showCommentInput}>
                     <div className={classes.buttonContainer}>
                         <Button
@@ -141,6 +135,12 @@ class ItemComments extends React.Component {
                         </Button>
                     </div>
                 </Grow>
+                <Grow in={hasComments} mountOnEnter={true} unmountOnExit={true}>
+                    <div className={classes.commentsList}>
+                        <Typography className={classes.header} variant='body2'>{t('details.comments')}</Typography>
+                        <CommentsList itemComments={true} mobile={mobile} desktop={desktop}/>
+                    </div>
+                </Grow>
             </div>
         );
     }
@@ -158,16 +158,16 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit,
     },
     inputContainer: {
-        marginTop: theme.spacing.unit * 2,
+        marginTop: 0,
         marginRight: 0,
-        marginBottom: theme.spacing.unit * 2,
+        marginBottom: 0,
         marginLeft: 0,
         textAlign: 'right',
     },
     input: {
         marginTop: 0,
         marginRight: 0,
-        marginBottom: theme.spacing.unit,
+        marginBottom: 0,
         marginLeft: 0,
     },
     submit: {
@@ -182,7 +182,7 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit / 2,
     },
     commentsList: {
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing.unit * 2,
     }
 });
 

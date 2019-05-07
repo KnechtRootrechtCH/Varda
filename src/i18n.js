@@ -253,6 +253,8 @@ i18n.init({
                             item: {
                                 load: 'Error loading comments',
                             },
+                            updateTimestamp: 'Failed to save comments view timestamp',
+                            count: 'Failed to load new comments count',
                         },
                         configuration: {
                             load: 'Error loading configuration',
@@ -528,6 +530,8 @@ i18n.init({
                             item: {
                                 load: 'Fehler beim Laden der Kommentare',
                             },
+                            updateTimestamp: 'Fehler beim Speicher des Kommentar-Timestamps',
+                            count: 'Fehler beim Laden der Anzahl neuer Kommentare',
                         },
                         configuration: {
                             load: 'Fehler beim Laden der Configuration',

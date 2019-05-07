@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { withNamespaces } from 'react-i18next';
 
 import {
+    Badge,
     BottomNavigation,
     BottomNavigationAction } from '@material-ui/core';
 
@@ -22,6 +23,7 @@ import { BriefcaseDownload }  from 'mdi-material-ui';
 @withNamespaces()
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
+@inject('CommentsStore')
 @inject('MovieDbStore')
 @inject('ThemeStore')
 @observer
@@ -36,6 +38,9 @@ class NavigationBar extends React.Component {
         const showDiscovery = this.props.ConfigurationStore.configuration.showDiscovery;
         const showComments = this.props.ConfigurationStore.configuration.showCommentsInNavbar;
         const showHistory = this.props.ConfigurationStore.configuration.showHistoryInNavbar;
+
+        const newCommentsCount = this.props.CommentsStore.newCommentsCount;
+        const badgeInvisible = !newCommentsCount || newCommentsCount < 1;
 
         let loc = showDiscovery ? 'browse' : 'movies';
         if (!this.props.AuthenticationStore.authenticated) {
@@ -94,12 +99,16 @@ class NavigationBar extends React.Component {
                         to='/history'/>
                 }
                 { showComments &&
-                    <BottomNavigationAction
-                        value='messages'
-                        label={t('common.messages')}
-                        icon={<Comment />}
-                        component={Link}
-                        to='/messages'/>
+                        <BottomNavigationAction
+                            value='messages'
+                            label={t('common.messages')}
+                            icon={
+                                <Badge badgeContent={newCommentsCount} invisible={badgeInvisible} color='secondary' variant='standard' max={5} className={classes.badge}>
+                                    <Comment/>
+                                </Badge>
+                            }
+                            component={Link}
+                            to='/messages'/>
                 }
 
             </BottomNavigation>
@@ -114,6 +123,9 @@ const styles = theme => ({
         bottom: 0,
         zIndex: 100,
     },
+    badge: {
+
+    }
 });
 
 NavigationBar.propTypes = {

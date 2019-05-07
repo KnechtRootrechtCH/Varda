@@ -13,6 +13,7 @@ class CommentsStore {
     @observable itemComments = new Map();
     @observable sortField = 'timestamp';
     @observable sortAscending = false;
+    @observable newCommentsCount = 0;
     pageSize = 100;
 
     @action resetComments() {
@@ -86,6 +87,24 @@ class CommentsStore {
             });
     }
 
+    @action loadNewCommentsCount() {
+        console.debug('CommentsStore.loadCommentsByKey()', this.dataUid, this.commentsTimestamp);
+        firestore
+            .collection('users')
+            .doc(this.dataUid)
+            .collection('comments')
+            .orderBy('timestamp', 'desc')
+            .where('timestamp', '>', this.commentsTimestamp)
+            .onSnapshot((snapshot) => {
+                runInAction(() => {
+                    this.newCommentsCount = snapshot && snapshot.docs ? snapshot.docs.length : 0;
+                    console.log('CommentsStore.getNewCommentsCount() : loaded', snapshot, this.newCommentsCount);
+                });
+            }, (error) => {
+                ErrorHandlingStore.handleError('firebase.comments.item.count', error);
+            });
+    }
+
     @action addComment(item, comment, itemTitle) {
         const key = MetadataService.getKey(item);
         const userName = this.displayName;
@@ -114,6 +133,28 @@ class CommentsStore {
             .catch((error) => {
                 ErrorHandlingStore.handleError('firebase.comments.add', error);
             });
+
+        this.updateTimestamp();
+    }
+
+    @action updateTimestamp() {
+        const timestamp = new Date();
+        return;
+
+        firestore
+        .collection('users')
+        .doc(this.dataUid)
+        .set({
+            commentsTimestamp: timestamp
+        }, {
+            merge: true
+        })
+        .then(() => {
+            console.debug('CommentsStore.updateTimestamp() : successfull');
+        })
+        .catch((error) => {
+            ErrorHandlingStore.handleError('firebase.comments.updateTimestamp', error);
+        });
     }
 
     @action setSorting(sortField, sortAscending) {
@@ -136,6 +177,11 @@ class CommentsStore {
 
     @computed get displayName () {
         return AuthenticationStore.displayName;
+    }
+
+    @computed get commentsTimestamp () {
+        const timestamp = AuthenticationStore.commentsTimestamp
+        return timestamp ? timestamp : new Date(Date.UTC(0, 0, 0, 0, 0, 0));
     }
 
     @computed get isAdminAction(){

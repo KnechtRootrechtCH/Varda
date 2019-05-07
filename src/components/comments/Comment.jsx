@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import * as Moment from 'moment';
@@ -9,10 +9,13 @@ import {
     ExpansionPanel,
     ExpansionPanelDetails,
     ExpansionPanelSummary,
+    Fade,
     Grid,
     Typography } from '@material-ui/core';
 
-import { ExpandMore } from '@material-ui/icons';
+import {
+    ExpandMore,
+    NewReleases } from '@material-ui/icons';
 
 @withNamespaces()
 class Comment extends React.Component {
@@ -30,52 +33,51 @@ class Comment extends React.Component {
         const title = comment.itemTitle;
         const timestamp = Moment(comment.timestamp.toDate());
         const timestampString = timestamp.format('DD.MM.YYYY HH:mm');
+        const isNew = !this.props.commentsTimestamp || timestamp.isAfter(this.props.commentsTimestamp)
         const userName = comment.userName;
         const text = comment.text;
-        const expand = true; // this.props.index === 0;
+        // const expand = isNew || this.props.index === 0;
 
         const color = comment.isAdminComment ? 'secondary' : 'primary';
 
         const address = comment.key ? `/browse/${comment.key.replace(':', '/')}` : null;
         // console.debug(`${this.constructor.name}.render()`, key, title, itemComments, comment);
+        // console.debug(`${this.constructor.name}.render()`, timestamp, this.props.commentsTimestamp, isNew);
 
         return (
-            <ExpansionPanel key={key} className={classes.root} defaultExpanded={expand}>
+            <ExpansionPanel key={key} className={classes.root} defaultExpanded={true}>
                 <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
-                { itemComments ?
                     <Typography
                         className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title}
                         noWrap>
                         {timestampString}
+                        <Fade in={isNew} timeout={{enter: 100, exit: 2000}}>
+                            <NewReleases color='secondary' className={classes.newCommentBadge}/>
+                        </Fade>
                     </Typography>
-                :
                     <Typography
-                        className={classes.titleActive + ' ' + (mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title)}
-                        color='primary'
-                        component={Link}
-                        to={address}
-                        noWrap>
-                        {title}
+                        className={classes.userName}
+                        align='right'
+                        color={color}>
+                        {userName}
                     </Typography>
-                }
-                <Typography
-                    className={classes.userName}
-                    align='right'
-                    color={color}>
-                    {userName}
-                </Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails className={classes.details}>
                     <Grid container>
                         { !itemComments &&
                             <Grid item xs={12}>
-                                <Typography className={classes.timeHeader}>
-                                    {timestampString}
+                                <Typography
+                                    className={classes.titleActive + ' ' + (mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title)}
+                                    color='default'
+                                    component={Link}
+                                    to={address}
+                                    noWrap>
+                                    {title}
                                 </Typography>
                             </Grid>
                         }
                         <Grid item xs={12}>
-                            <Typography>
+                            <Typography color='textSecondary'>
                                 {text}
                             </Typography>
                         </Grid>
@@ -95,10 +97,7 @@ const styles = theme => ({
         paddingLeft: theme.spacing.unit * 2,
     },
     titleActive: {
-        textDecoration: 'none',
-        '&:hover': {
-            textDecoration: 'underline',
-        }
+        textDecoration: 'underline',
     },
     titleMobile: {
         display: 'inline-block',
@@ -113,7 +112,7 @@ const styles = theme => ({
         maxWidth: 350,
     },
     timeHeader: {
-        textDecoration: 'underline',
+
     },
     userName: {
         marginLeft: 'auto',
@@ -122,6 +121,13 @@ const styles = theme => ({
     details: {
         paddingTop: 0,
         paddingLeft: theme.spacing.unit * 2,
+    },
+    newCommentBadge: {
+        verticalAlign: 'middle',
+        marginBottom: 3,
+        marginLeft: theme.spacing.unit / 2,
+        marginRight: theme.spacing.unit / 2,
+        fontSize: 18,
     },
 });
 
