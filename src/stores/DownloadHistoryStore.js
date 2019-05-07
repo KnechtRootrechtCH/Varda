@@ -10,15 +10,19 @@ class DownloadHistoryStore {
     @observable history = new Map();
     @observable itemHistory = new Map();
     @observable filter = {
-        key: 'all',
-        field: 'timestamp',
-        operator: '>=',
-        value: new Date(0, 0, 0, 0, 0, 0, 0),
+        key: 'updateStatus',
+        field: 'transaction',
+        operator: '==',
+        value: 'updateStatus',
     }
     @observable sortField = 'timestamp';
     @observable sortAscending = false;
+    @observable newTransactionsCount = 0;
     pageSize = 25;
     lastItem = null;
+    newCountLimit = 5;
+    lastQuery = null;
+    lastCountQuery = null;
 
     @action async resetHistory () {
         this.history = new Map();
@@ -26,6 +30,12 @@ class DownloadHistoryStore {
     }
 
     @action async loadHistory () {
+        if (this.lastQuery) {
+            // console.debug('DownloadHistoryStore.loadHistory() : unsubscribing from last query', this.lastQuery);
+            this.lastQuery.onSnapshot(function (){
+                // Unsubscribe
+              });
+        }
         console.debug('DownloadHistoryStore.loadHistory() : loading', this.dataUid, this.filter);
         runInAction(() => {
             this.loading = true;
@@ -42,12 +52,12 @@ class DownloadHistoryStore {
             query = query.startAfter(this.lastItem.timestamp.toDate());
         }
 
-        query
-            .limit(this.pageSize)
-            .onSnapshot((snapshot) => {
+        query = query.limit(this.pageSize)
+        query.onSnapshot((snapshot) => {
                 runInAction(() => {
                     snapshot.forEach(doc => {
                         this.lastItem = doc.data();
+                        this.lastItem.external = this.lastItem.user !== this.uid;
                         this.history.set(doc.id, this.lastItem);
                     });
                     this.loading = false;
@@ -55,6 +65,8 @@ class DownloadHistoryStore {
             }, (error) => {
                 ErrorHandlingStore.handleError('firebase.history.load', error);
             });
+
+        this.lastQuery = query;
     }
 
     @action async resetItemHistory () {
@@ -62,28 +74,39 @@ class DownloadHistoryStore {
     }
 
     @action async loadItemHistory (key) {
+        if (this.lastQuery) {
+            // console.debug('DownloadHistoryStore.loadItemHistory() : unsubscribing from last query', this.lastQuery);
+            this.lastQuery.onSnapshot(function (){
+                // Unsubscribe
+            });
+        }
         console.debug('DownloadHistoryStore.loadItemHistory() : loading', this.dataUid, key, this.filter);
         runInAction(() => {
             this.loading = true;
         })
-        firestore
+        let query = firestore
             .collection('users')
             .doc(this.dataUid)
             .collection('items')
             .doc(key)
             .collection('transactions')
             .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
-            .where(this.filter.field, this.filter.operator, this.filter.value)
-            .onSnapshot((snapshot) => {
-                runInAction(() => {
-                    snapshot.forEach(doc => {
-                        this.itemHistory.set(doc.id, doc.data());
-                   });
-                    this.loading = false;
+            // .where(this.filter.field, this.filter.operator, this.filter.value)
+
+        query.onSnapshot((snapshot) => {
+            runInAction(() => {
+                snapshot.forEach(doc => {
+                    let item = doc.data();
+                    item.external = item.user !== this.uid;
+                    this.itemHistory.set(doc.id, item);
                 });
-            }, (error) => {
-                ErrorHandlingStore.handleError('firebase.history.item', error);
+                this.loading = false;
             });
+        }, (error) => {
+            ErrorHandlingStore.handleError('firebase.history.item', error);
+        });
+
+        this.lastQuery = query;
     }
 
     @action async logTransaction(key, transaction, title, newValue, previousValue, comment){
@@ -168,6 +191,76 @@ class DownloadHistoryStore {
                 });
     }
 
+    @action loadNewTransactionsCount() {
+        let timestamp = this.transactionsTimestamp;
+        if (!timestamp) {
+            console.debug('DownloadHistoryStore.loadNewTransactionsCount() => no timestamp!');
+        }
+
+        if (this.lastCountQuery) {
+            // console.debug('DownloadHistoryStore.loadNewTransactionsCount() : unsubscribing from last query', this.lastCountQuery);
+            this.lastCountQuery.onSnapshot(function (){
+                // Unsubscribe
+            });
+        }
+
+        let query = firestore
+            .collection('users')
+            .doc(this.dataUid)
+            .collection('transactions')
+            .orderBy('timestamp', 'desc');
+
+        if (timestamp) {
+            query = query.where('timestamp', '>', timestamp);
+        }
+
+        query = query
+            .where(this.filter.field, this.filter.operator, this.filter.value)
+            .limit(this.newCountLimit * 10);
+
+        console.debug('DownloadHistoryStore.loadNewTransactionsCount() => ', this.dataUid, this.uid, timestamp);
+        query.onSnapshot((snapshot) => {
+            runInAction(() => {
+                let count = 0;
+                snapshot.forEach(doc => {
+                    let data = doc.data();
+                    if (data.user !== this.uid) {
+                        // console.debug(data.user, doc.id);
+                        count++;
+                    }
+                });
+                this.newTransactionsCount = count;
+                console.debug('DownloadHistoryStore.loadNewTransactionsCount() : loaded', this.dataUid, this.newTransactionsCount, this.uid, timestamp);
+            });
+        }, (error) => {
+            ErrorHandlingStore.handleError('firebase.history.count', error);
+        });
+
+        this.lastCountQuery = query;
+    }
+
+    @action updateTimestamp(force) {
+        if (!force && this.newTransactionsCount <= 0) {
+            return;
+        }
+
+        const timestamp = new Date();
+        firestore
+            .collection('users')
+            .doc(this.uid)
+            .set({
+                transactionsTimestamp: timestamp
+            }, {
+                merge: true
+            })
+            .then(() => {
+                console.debug('DownloadHistoryStore.updateTimestamp() : successfull');
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.history.updateTimestamp', error);
+            });
+    }
+
     @action setFilter(filter) {
         this.resetHistory();
         this.filter = filter;
@@ -201,6 +294,10 @@ class DownloadHistoryStore {
 
     @computed get isAdminAction(){
         return this.isAdmin && this.dataUid !== this.uid;
+    }
+
+    @computed get transactionsTimestamp () {
+        return AuthenticationStore.transactionsTimestamp ? AuthenticationStore.transactionsTimestamp : null;
     }
 }
 

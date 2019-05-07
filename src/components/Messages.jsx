@@ -35,6 +35,7 @@ class Messages extends React.Component {
     componentWillUnmount = () => {
         // console.debug(`${this.constructor.name}.componentWillUnmount() => removing scroll event listener`);
         window.removeEventListener('scroll', this.handleScroll)
+        this.props.CommentsStore.updateTimestamp();
     }
 
     toggleSortDirection = () => {

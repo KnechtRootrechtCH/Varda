@@ -5,6 +5,7 @@ import * as Moment from 'moment';
 import CloudFunctionsStore from './CloudFunctionsStore';
 import CommentsStore from './CommentsStore';
 import ConfigurationStore from './ConfigurationStore';
+import DownloadHistoryStore from './DownloadHistoryStore';
 import ErrorHandlingStore from './ErrorHandlingStore';
 
 class AuthenticationStore {
@@ -20,6 +21,7 @@ class AuthenticationStore {
     @observable displayName = null;
     @observable dataUserDisplayName = null;
     @observable commentsTimestamp = null;
+    @observable transactionsTimestamp = null;
     @observable itemCounts = {};
 
     constructor() {
@@ -37,8 +39,6 @@ class AuthenticationStore {
                 this.uid = user.uid;
                 this.dataUid = user.uid;
                 this.logAccess();
-                this.loadUserInfo();
-                this.loadAdminSettings();
                 ConfigurationStore.init();
             } else {
                 this.uid = null;
@@ -112,6 +112,12 @@ class AuthenticationStore {
                 timestamp: now,
             }, {
                 merge: true
+            })
+            .then(() => {
+                this.loadAdminSettings();
+            })
+            .catch((error) => {
+                this.loadAdminSettings();
             });
     }
 
@@ -131,6 +137,7 @@ class AuthenticationStore {
                         this.isAdmin = data.isAdmin;
                     }
                     this.adminSettingsLoaded = true;
+                    this.loadUserInfo();
                     this.loadUserData();
                     // console.debug('AuthenticationStore.loadAdminSettings() : successfull');
                 });
@@ -152,13 +159,24 @@ class AuthenticationStore {
                         this.displayName = this.displayName ? this.displayName : this.user.email;
                     }
 
-                    this.commentsTimestamp = doc.data().commentsTimestamp;
+                    this.commentsTimestamp = doc.data().commentsTimestamp ? doc.data().commentsTimestamp.toDate() : this.commentsTimestamp;
+                    this.transactionsTimestamp = doc.data().transactionsTimestamp ? doc.data().transactionsTimestamp.toDate() : this.transactionsTimestamp;
+
                     this.userInfoLoaded = true;
-                    console.debug('AuthenticationStore.loadUserInfo() : successfull');
+
+                    console.debug('AuthenticationStore.loadUserInfo() : updated successfully');
+                    this.updateNotificationCounts();
                 });
             }, (error) => {
                 ErrorHandlingStore.handleError('firebase.auth.settings.user', error);
             });
+    }
+
+    @action async updateNotificationCounts() {
+        runInAction(() => {
+            CommentsStore.loadNewCommentsCount(this.commentsTimestamp);
+            DownloadHistoryStore.loadNewTransactionsCount(this.transactionsTimestamp);
+        });
     }
 
     @action async loadUserData() {
@@ -184,9 +202,8 @@ class AuthenticationStore {
                     CloudFunctionsStore.setStatusUpdateTimestamp(doc.data().statusUpdateTimestamp);
                     CloudFunctionsStore.setItemCountUpdateTimestamp(itemCounts.timestamp);
                     CloudFunctionsStore.executeAutomatedStatusUpdate();
-                    CommentsStore.loadNewCommentsCount();
 
-                    console.debug('AuthenticationStore.loadUserData() : successfull');
+                    console.debug('AuthenticationStore.loadUserData() : updated successfully');
                 });
             }, (error) => {
                 ErrorHandlingStore.handleError('firebase.auth.settings.user', error);

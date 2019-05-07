@@ -24,6 +24,7 @@ import { BriefcaseDownload }  from 'mdi-material-ui';
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
 @inject('CommentsStore')
+@inject('DownloadHistoryStore')
 @inject('MovieDbStore')
 @inject('ThemeStore')
 @observer
@@ -40,7 +41,12 @@ class NavigationBar extends React.Component {
         const showHistory = this.props.ConfigurationStore.configuration.showHistoryInNavbar;
 
         const newCommentsCount = this.props.CommentsStore.newCommentsCount;
-        const badgeInvisible = !newCommentsCount || newCommentsCount < 1;
+        const commentsBadgeInvisible = !newCommentsCount || newCommentsCount < 1;
+        const newCommentsCountMax = this.props.CommentsStore.newCountLimit;
+
+        const newTransactionsCount = this.props.DownloadHistoryStore.newTransactionsCount;
+        const transactionsBadgeInvisible = !newTransactionsCount || newTransactionsCount < 1;
+        const newTransactionsCountMax = this.props.DownloadHistoryStore.newCountLimit;
 
         let loc = showDiscovery ? 'browse' : 'movies';
         if (!this.props.AuthenticationStore.authenticated) {
@@ -94,7 +100,11 @@ class NavigationBar extends React.Component {
                     <BottomNavigationAction
                         value='history'
                         label={t('common.history')}
-                        icon={<History />}
+                        icon={
+                            <Badge badgeContent={newTransactionsCount} invisible={transactionsBadgeInvisible} color='secondary' variant='standard' max={newTransactionsCountMax} className={classes.badge}>
+                                <History />
+                            </Badge>
+                        }
                         component={Link}
                         to='/history'/>
                 }
@@ -103,7 +113,7 @@ class NavigationBar extends React.Component {
                             value='messages'
                             label={t('common.messages')}
                             icon={
-                                <Badge badgeContent={newCommentsCount} invisible={badgeInvisible} color='secondary' variant='standard' max={5} className={classes.badge}>
+                                <Badge badgeContent={newCommentsCount} invisible={commentsBadgeInvisible} color='secondary' variant='standard' max={newCommentsCountMax} className={classes.badge}>
                                     <Comment/>
                                 </Badge>
                             }

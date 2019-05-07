@@ -208,9 +208,11 @@ i18n.init({
 
                 settings: {
                     accountInformation: 'User Information',
+                    dataAccountInformation: 'User Information (Data)',
                     userName: 'Username',
                     dataUserName: 'Data Username',
                     id: 'User ID',
+                    dataId: 'Data User ID',
                     themeSettings: 'Theme settings',
                     darkTheme: 'Dark theme',
                     on: 'On',
@@ -262,6 +264,8 @@ i18n.init({
                         history: {
                             load: 'Error loading history',
                             item: 'Error loading history',
+                            updateTimestamp: 'Failed to save history view timestamp',
+                            count: 'Failed to load new history entries count',
                         },
                         transaction: {
                             user: {
@@ -485,9 +489,11 @@ i18n.init({
 
                 settings: {
                     accountInformation: 'User Informationen',
+                    dataAccountInformation: 'User Informationen (Daten)',
                     userName: 'Benutzername',
                     dataUserName: 'Daten Beutzername',
                     id: 'Benutzer ID',
+                    dataID: 'Daten Benutzer ID',
                     themeSettings: 'Darstellungsoptionen',
                     darkTheme: 'Dunkles Design',
                     on: 'Ein',
@@ -530,7 +536,7 @@ i18n.init({
                             item: {
                                 load: 'Fehler beim Laden der Kommentare',
                             },
-                            updateTimestamp: 'Fehler beim Speicher des Kommentar-Timestamps',
+                            updateTimestamp: 'Fehler beim Speicher des Kommentar-Zeitstempels',
                             count: 'Fehler beim Laden der Anzahl neuer Kommentare',
                         },
                         configuration: {
@@ -539,6 +545,8 @@ i18n.init({
                         history: {
                             load: 'Verlauf konnte nicht geladen werden',
                             item: 'Verlauf konnte nicht geladen werden',
+                            updateTimestamp: 'Fehler beim Speicher des Verlauf-Zeitstempels',
+                            count: 'Fehler beim Laden der Anzahl neuer Verlauf-Enträge',
                         },
                         transaction: {
                             user: {

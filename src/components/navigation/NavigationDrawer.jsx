@@ -29,6 +29,7 @@ import { BriefcaseDownload }  from 'mdi-material-ui';
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
 @inject('CommentsStore')
+@inject('DownloadHistoryStore')
 @inject('MovieDbStore')
 @inject('ThemeStore')
 @observer
@@ -62,7 +63,12 @@ class Navigation extends React.Component {
         const showDiscovery = this.props.ConfigurationStore.configuration.showDiscovery;
 
         const newCommentsCount = this.props.CommentsStore.newCommentsCount;
-        const badgeInvisible = !newCommentsCount || newCommentsCount < 1;
+        const commentsBadgeInvisible = !newCommentsCount || newCommentsCount < 1;
+        const newCommentsCountMax = this.props.CommentsStore.newCountLimit;
+
+        const newTransactionsCount = this.props.DownloadHistoryStore.newTransactionsCount;
+        const transactionsBadgeInvisible = !newTransactionsCount || newTransactionsCount < 1;
+        const newTransactionsCountMax = this.props.DownloadHistoryStore.newCountLimit;
 
         let loc = showDiscovery ? 'browse' : 'movies';
         if (!this.props.AuthenticationStore.authenticated) {
@@ -138,7 +144,7 @@ class Navigation extends React.Component {
                         onClick={this.handleCloseDrawer}
                         className={loc === 'messages' ? classes.drawerItemActive : null}>
                         <ListItemIcon>
-                            <Badge badgeContent={newCommentsCount} invisible={badgeInvisible} color='secondary' variant='standard' max={5} className={classes.badge}>
+                            <Badge badgeContent={newCommentsCount} invisible={commentsBadgeInvisible} color='secondary' variant='standard' max={newCommentsCountMax} className={classes.badge}>
                                 <Comment className={loc === 'messages' ? classes.drawerIconActive : null}/>
                             </Badge>
                         </ListItemIcon>
@@ -151,7 +157,9 @@ class Navigation extends React.Component {
                         onClick={this.handleCloseDrawer}
                         className={loc === 'history' ? classes.drawerItemActive : null}>
                         <ListItemIcon>
-                            <History className={loc === 'history' ? classes.drawerIconActive : null}/>
+                            <Badge badgeContent={newTransactionsCount} invisible={transactionsBadgeInvisible} color='secondary' variant='standard' max={newTransactionsCountMax} className={classes.badge}>
+                                <History className={loc === 'history' ? classes.drawerIconActive : null}/>
+                            </Badge>
                         </ListItemIcon>
                         <ListItemText primary={t('common.history')}/>
                     </ListItem>

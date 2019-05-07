@@ -10,10 +10,13 @@ import * as Moment from 'moment';
 import {
     ExpansionPanel,
     ExpansionPanelSummary,
+    Fade,
     Tooltip,
     Typography } from '@material-ui/core';
 
-import { ExpandMore } from '@material-ui/icons';
+import {
+    ExpandMore,
+    NewReleases } from '@material-ui/icons';
 
 import TransactionDetails from './TransactionDetails';
 
@@ -31,6 +34,7 @@ class TransactionPanel extends React.Component {
         const data = this.props.transaction;
         const timestamp = Moment(data.timestamp.toDate());
         const timestampString = timestamp.format('DD.MM.YYYY HH:mm');
+        const isNew = data.external && (!this.props.transactionsTimestamp || timestamp.isAfter(this.props.transactionsTimestamp));
         const itemHistory = this.props.itemHistory;
         const title = data.title ? data.title : '-';
 
@@ -39,20 +43,26 @@ class TransactionPanel extends React.Component {
         const transactionLong = data.transaction === 'comment' ? t( `history.transaction.${data.transaction}`) : `${t( `history.transaction.${data.transaction}`)}: ${newValue}`;
         const transactionColor = data.isAdminAction ? 'secondary' : 'primary';
 
-        const expand = !itemHistory && this.props.index === 0;
+        // const expand = !itemHistory && this.props.index === 0;
 
         const address = data.key ? `/browse/${data.key.replace(':', '/')}` : null;
 
         return (
-            <ExpansionPanel className={classes.root} defaultExpanded={expand}>
+            <ExpansionPanel className={classes.root} defaultExpanded={false}>
                 <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
                     { itemHistory ?
                         <Typography className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title} noWrap>
                             {timestampString}
+                            <Fade in={isNew} timeout={{enter: 100, exit: 2000}}>
+                                <NewReleases color='secondary' className={classes.newTransactionBadge}/>
+                            </Fade>
                         </Typography>
                     :
                         <Typography className={classes.titleActive + ' ' + (mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title)} component={Link} to={address} noWrap>
                             {title}
+                            <Fade in={isNew} timeout={{enter: 100, exit: 2000}}>
+                                <NewReleases color='secondary' className={classes.newTransactionBadge}/>
+                            </Fade>
                         </Typography>
                     }
                     <Tooltip title={transactionLong} aria-label={transactionLong}>
@@ -96,6 +106,13 @@ const styles = theme => ({
     transaction: {
         marginLeft: 'auto',
         display: 'inline-block',
+    },
+    newTransactionBadge: {
+        verticalAlign: 'middle',
+        marginBottom: 3,
+        marginLeft: theme.spacing.unit / 2,
+        marginRight: theme.spacing.unit / 2,
+        fontSize: 18,
     },
 });
 

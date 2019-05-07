@@ -33,7 +33,7 @@ class Comment extends React.Component {
         const title = comment.itemTitle;
         const timestamp = Moment(comment.timestamp.toDate());
         const timestampString = timestamp.format('DD.MM.YYYY HH:mm');
-        const isNew = !this.props.commentsTimestamp || timestamp.isAfter(this.props.commentsTimestamp)
+        const isNew = comment.external && (!this.props.commentsTimestamp || timestamp.isAfter(this.props.commentsTimestamp));
         const userName = comment.userName;
         const text = comment.text;
         // const expand = isNew || this.props.index === 0;

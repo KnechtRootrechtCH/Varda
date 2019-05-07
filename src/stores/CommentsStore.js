@@ -15,6 +15,9 @@ class CommentsStore {
     @observable sortAscending = false;
     @observable newCommentsCount = 0;
     pageSize = 100;
+    newCountLimit = 5;
+    lastQuery = null;
+    lastCountQuery = null;
 
     @action resetComments() {
         this.comments = new Map();
@@ -22,6 +25,13 @@ class CommentsStore {
     }
 
     @action loadComments() {
+        if (this.lastQuery) {
+            // console.debug('CommentsStore.loadCommentsByKey() : unsubscribing from last query', this.lastQuery);
+            this.lastQuery.onSnapshot(function (){
+                // Unsubscribe
+              });
+        }
+
         console.debug('CommentsStore.loadComments()', this.dataUid);
         this.loading = true;
         let query = firestore
@@ -35,20 +45,23 @@ class CommentsStore {
             query = query.startAfter(this.lastItem.timestamp.toDate());
         }
 
-        query
-            .limit(this.pageSize)
-            .onSnapshot((snapshot) => {
-                runInAction(() => {
-                    snapshot.forEach(doc => {
-                        this.lastItem = doc.data();
-                        this.comments.set(doc.id, this.lastItem);
-                    });
-                    this.loading = false;
-                    console.debug('CommentsStore.loadComments() : loaded', this.comments);
+        query = query.limit(this.pageSize);
+
+        query.onSnapshot((snapshot) => {
+            runInAction(() => {
+                snapshot.forEach(doc => {
+                    this.lastItem = doc.data();
+                    this.lastItem.external = this.lastItem.userName !== this.displayName;
+                    this.comments.set(doc.id, this.lastItem);
                 });
-            }, (error) => {
-                ErrorHandlingStore.handleError('firebase.comments.load', error);
+                this.loading = false;
+                console.debug('CommentsStore.loadComments() : loaded', this.comments);
             });
+        }, (error) => {
+            ErrorHandlingStore.handleError('firebase.comments.load', error);
+        });
+
+        this.lastQuery = query;
     }
 
     @action resetItemComments() {
@@ -66,43 +79,83 @@ class CommentsStore {
     }
 
     @action loadCommentsByKey(key) {
+        if (this.lastQuery) {
+            // console.debug('CommentsStore.loadCommentsByKey() : unsubscribing from last query', this.lastQuery);
+            this.lastQuery.onSnapshot(function (){
+                // Unsubscribe
+            });
+        }
+
         console.debug('CommentsStore.loadCommentsByKey()', this.dataUid, key);
         this.loading = true;
-        firestore
+
+        let query = firestore
             .collection('users')
             .doc(this.dataUid)
             .collection('comments')
             .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
-            .where('key', '==', key)
-            .onSnapshot((snapshot) => {
-                runInAction(() => {
-                    snapshot.forEach(doc => {
-                        this.itemComments.set(doc.id, doc.data());
-                    });
-                    this.loading = false;
-                    console.debug('CommentsStore.loadCommentsByKey() : loaded', this.itemComments);
+            .where('key', '==', key);
+
+        query.onSnapshot((snapshot) => {
+            runInAction(() => {
+                snapshot.forEach(doc => {
+                    let item = doc.data();
+                    item.external = item.userName !== this.displayName;
+                    this.itemComments.set(doc.id, item);
                 });
-            }, (error) => {
-                ErrorHandlingStore.handleError('firebase.comments.item.load', error);
+                this.loading = false;
+                console.debug('CommentsStore.loadCommentsByKey() : loaded', this.itemComments);
             });
+        }, (error) => {
+            ErrorHandlingStore.handleError('firebase.comments.item.load', error);
+        });
+
+        this.lastQuery = query;
     }
 
     @action loadNewCommentsCount() {
-        console.debug('CommentsStore.loadCommentsByKey()', this.dataUid, this.commentsTimestamp);
-        firestore
+        let timestamp = this.commentsTimestamp;
+        if (!timestamp) {
+            console.debug('CommentsStore.loadNewCommentsCount() => no timestamp!');
+        }
+
+        if (this.lastCountQuery) {
+            // console.debug('CommentsStore.loadNewCommentsCount() : unsubscribing from last query', this.lastCountQuery);
+            this.lastCountQuery.onSnapshot(function (){
+                // Unsubscribe
+            });
+        }
+
+        let query = firestore
             .collection('users')
             .doc(this.dataUid)
             .collection('comments')
-            .orderBy('timestamp', 'desc')
-            .where('timestamp', '>', this.commentsTimestamp)
-            .onSnapshot((snapshot) => {
-                runInAction(() => {
-                    this.newCommentsCount = snapshot && snapshot.docs ? snapshot.docs.length : 0;
-                    console.log('CommentsStore.getNewCommentsCount() : loaded', snapshot, this.newCommentsCount);
+            .orderBy('timestamp', 'desc');
+
+        if (timestamp) {
+            query = query.where('timestamp', '>', timestamp);
+        }
+
+        query = query.limit(this.newCountLimit * 5);
+
+        console.debug('CommentsStore.loadNewCommentsCount() => ', this.dataUid, this.uid, timestamp);
+        query.onSnapshot((snapshot) => {
+            runInAction(() => {
+                let count = 0;
+                snapshot.forEach(doc => {
+                    let data = doc.data();
+                    if (data.userName !== this.displayName) {
+                        count++;
+                    }
                 });
-            }, (error) => {
-                ErrorHandlingStore.handleError('firebase.comments.item.count', error);
+                this.newCommentsCount = count;
+                console.debug('CommentsStore.loadNewCommentsCount() : loaded', this.newCommentsCount, this.displayName, timestamp);
             });
+        }, (error) => {
+            ErrorHandlingStore.handleError('firebase.comments.count', error);
+        });
+
+        this.lastCountQuery = query;
     }
 
     @action addComment(item, comment, itemTitle) {
@@ -133,27 +186,28 @@ class CommentsStore {
             .catch((error) => {
                 ErrorHandlingStore.handleError('firebase.comments.add', error);
             });
-
-        this.updateTimestamp();
     }
 
-    @action updateTimestamp() {
-        const timestamp = new Date();
+    @action updateTimestamp(force) {
+        if (!force && this.newCommentsCount <= 0) {
+            return;
+        }
 
+        const timestamp = new Date();
         firestore
-        .collection('users')
-        .doc(this.dataUid)
-        .set({
-            commentsTimestamp: timestamp
-        }, {
-            merge: true
-        })
-        .then(() => {
-            console.debug('CommentsStore.updateTimestamp() : successfull');
-        })
-        .catch((error) => {
-            ErrorHandlingStore.handleError('firebase.comments.updateTimestamp', error);
-        });
+            .collection('users')
+            .doc(this.uid)
+            .set({
+                commentsTimestamp: timestamp
+            }, {
+                merge: true
+            })
+            .then(() => {
+                console.debug('CommentsStore.updateTimestamp() : successfull');
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.comments.updateTimestamp', error);
+            });
     }
 
     @action setSorting(sortField, sortAscending) {
@@ -179,8 +233,7 @@ class CommentsStore {
     }
 
     @computed get commentsTimestamp () {
-        const timestamp = AuthenticationStore.commentsTimestamp
-        return timestamp ? timestamp : new Date(Date.UTC(0, 0, 0, 0, 0, 0));
+        return AuthenticationStore.commentsTimestamp ? AuthenticationStore.commentsTimestamp : null;
     }
 
     @computed get isAdminAction(){

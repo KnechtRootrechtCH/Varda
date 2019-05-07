@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import {inject, observer} from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
+import * as Moment from 'moment';
 
 import { Fade, CircularProgress } from '@material-ui/core';
 
 import TransactionPanel from './TransactionPanel';
 
 @withNamespaces()
+@inject('AuthenticationStore')
 @inject('DownloadHistoryStore')
 @inject('ThemeStore')
 @observer
@@ -26,12 +28,15 @@ class TransactionList extends React.Component {
             transactions = transactions.reverse();
         }
 
+        const transactionsTimestamp = this.props.DownloadHistoryStore.transactionsTimestamp;
+        const transactionsTimestampMoment = transactionsTimestamp ? Moment(transactionsTimestamp) : null;
+
         // console.debug(`${this.constructor.name}.render()`, itemHistory, transactions);
         return (
             <div className={classes.root}>
                 { transactions.map(([key, value], index) => {
                     return (
-                        <TransactionPanel key={key} transaction={value} index={index} itemHistory={itemHistory}/>
+                        <TransactionPanel key={key} transaction={value} index={index} itemHistory={itemHistory} transactionsTimestamp={transactionsTimestampMoment}/>
                     )
                 })}
 

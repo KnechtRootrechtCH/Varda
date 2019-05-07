@@ -94,12 +94,16 @@ class History extends React.Component {
         this.props.DownloadHistoryStore.resetHistory();
         this.props.DownloadHistoryStore.setFilter(this.filters[i]);
         this.props.DownloadHistoryStore.loadHistory();
+        setTimeout(() => {
+            this.props.DownloadHistoryStore.updateTimestamp();
+        }, 5000);
         window.addEventListener('scroll', this.handleScroll)
     }
 
     componentWillUnmount = () => {
         // console.debug(`${this.constructor.name}.componentWillUnmount() => removing scroll event listener`);
-        window.removeEventListener('scroll', this.handleScroll)
+        window.removeEventListener('scroll', this.handleScroll);
+        this.props.DownloadHistoryStore.updateTimestamp();
     }
 
     toggleSortDirection = () => {

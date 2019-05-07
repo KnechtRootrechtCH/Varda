@@ -63,12 +63,14 @@ class ItemDetails extends React.Component {
         const itemId = this.props.match.params.itemId
         this.props.DownloadHistoryStore.resetItemHistory();
         this.props.DownloadHistoryStore.setSorting('timestamp', true);
+        /*
         this.props.DownloadHistoryStore.setFilter({
             key: 'all',
             field: 'timestamp',
             value: new Date(0, 0, 0, 0, 0, 0, 0),
             operator: '>=',
         });
+        */
         this.props.DownloadHistoryStore.loadItemHistory(`${mediaType}:${itemId}`);
     }
 

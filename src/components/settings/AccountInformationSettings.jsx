@@ -37,8 +37,9 @@ class AccountInformationSettings extends React.Component {
         const downloading = itemCounts && itemCounts['downloading'] ? itemCounts['downloading'] : '0';
         const downloaded = itemCounts && itemCounts['downloaded'] ? itemCounts['downloaded'] : '0';
         const usernameString = `${t('settings.userName')}: ${this.props.AuthenticationStore.displayName}`;
-        const dataUsernameString = `${t('settings.dataUserName')}: ${this.props.AuthenticationStore.dataUserDisplayName}`;
-        const uidString = `${t('settings.id')}: ${this.props.AuthenticationStore.dataUid}`;
+        const dataUsernameString = `${t('settings.userName')}: ${this.props.AuthenticationStore.dataUserDisplayName}`;
+        const uidString = `${t('settings.id')}: ${this.props.AuthenticationStore.uid}`;
+        const dataUidString = `${t('settings.id')}: ${this.props.AuthenticationStore.dataUid}`
         const crossAccountAdmin = this.props.AuthenticationStore.isAdmin && this.props.AuthenticationStore.dataUid !== this.props.AuthenticationStore.uid;
 
         return (
@@ -49,14 +50,22 @@ class AccountInformationSettings extends React.Component {
                 <Typography className={classes.text} variant='body2' component='h2'>
                     <span>{usernameString}</span>
                 </Typography>
-                    { crossAccountAdmin &&
-                        <Typography className={classes.text} variant='body2' component='h2'>
-                            <span>{dataUsernameString}</span>
-                        </Typography>
-                    }
                 <Typography className={classes.text} variant='body2' component='h2'>
                     <span>{uidString}</span>
                 </Typography>
+                    { crossAccountAdmin &&
+                        <React.Fragment>
+                            <Typography className={classes.title} variant='subtitle1' component='h2'>
+                                <span>{t('settings.dataAccountInformation')}</span>
+                            </Typography>
+                            <Typography className={classes.text} variant='body2' component='h2'>
+                                <span>{dataUsernameString}</span>
+                            </Typography>
+                            <Typography className={classes.text} variant='body2' component='h2'>
+                                <span>{dataUidString}</span>
+                            </Typography>
+                        </React.Fragment>
+                    }
                 <Typography className={classes.title} variant='subtitle1' component='h2'>
                     <span>{t('settings.itemCount')}</span>
                 </Typography>
