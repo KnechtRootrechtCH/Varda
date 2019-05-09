@@ -6,9 +6,16 @@ import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 
-import { Typography } from '@material-ui/core';
+import {
+    Button,
+    Grow,
+    TextField,
+    Typography } from '@material-ui/core';
 
 import {
+    CloseCircle,
+    CommentPlusOutline,
+    CommentText,
     SortAscending,
     SortDescending } from 'mdi-material-ui';
 
@@ -16,9 +23,16 @@ import CommentsList from './comments/CommentsList'
 
 @withNamespaces()
 @inject('AuthenticationStore')
+@inject('ConfigurationStore')
 @inject('CommentsStore')
 @observer
 class Messages extends React.Component {
+
+    state = {
+        showCommentInput: false,
+        inputText: '',
+        inputRef: null,
+    }
 
     componentDidMount = () => {
         // console.debug(`${this.constructor.name}.componentDidMount() => Load items`);
@@ -45,9 +59,48 @@ class Messages extends React.Component {
         this.props.CommentsStore.loadComments();
     }
 
+    handleCommentSubmit = () => {
+        console.debug(`${this.constructor.name}.handleCommentSubmit()`);
+        this.props.CommentsStore.addComment('null', this.state.inputText, '');
+        this.setState({
+            inputText: '',
+            showCommentInput: false,
+        });
+    }
+
+    handleInputChange = (value) => {
+        this.setState({
+            inputText: value,
+        });
+    }
+
     handleFilterMenuOpen = event => {
         this.setState({ filterMenuAnchor: event.currentTarget });
     };
+
+    setInputRef = ref => {
+        this.setState({
+            inputRef: ref,
+        });
+        if(ref) {
+            ref.focus();
+        }
+    }
+
+    handleOpenCommentDialog = () => {
+        console.debug(`${this.constructor.name}.handleOpenCommentDialog()`);
+        this.setState({
+            showCommentInput: true,
+        });
+    }
+
+    handleCloseCommentDialog = () => {
+        console.debug(`${this.constructor.name}.handleCloseCommentDialog()`);
+        this.setState({
+            inputText: '',
+            showCommentInput: false,
+        });
+    }
 
     handleScroll = debounce(() => {
         if (this.props.CommentsStore.loading) {
@@ -70,6 +123,7 @@ class Messages extends React.Component {
         const t = this.props.t;
         const mobile = isWidthDown('xs', this.props.width);
         const desktop = isWidthUp('md', this.props.width);
+        const allowCommentsSorting = this.props.ConfigurationStore.configuration.allowCommentsSorting;
 
         return (
             <div className={classes.root}>
@@ -79,12 +133,51 @@ class Messages extends React.Component {
                             <span>{t('common.messages')}</span>
                         </Typography>
                         <div className={classes.controls}>
-                            { this.props.CommentsStore.sortAscending ?
+                            { !this.state.showCommentInput &&
+                                <CommentPlusOutline className={classes.control} onClick={this.handleOpenCommentDialog}/>
+                            }
+                            { allowCommentsSorting && this.props.CommentsStore.sortAscending ?
                                 <SortAscending className={classes.control} onClick={this.toggleSortDirection}/>
-                            :
+                            : allowCommentsSorting &&
                                 <SortDescending className={classes.control} onClick={this.toggleSortDirection}/>
                             }
                         </div>
+                        <Grow in={this.state.showCommentInput} mountOnEnter={true} unmountOnExit={true}>
+                            <div className={classes.inputContainer}>
+                                <TextField
+                                    className={classes.input}
+                                    value={this.state.inputText}
+                                    label={t('common.comment')}
+                                    placeholder='…'
+                                    fullWidth
+                                    multiline
+                                    margin='normal'
+                                    variant='outlined'
+                                    inputRef={(input) => { this.setInputRef(input) }}
+                                    onChange={({ target: { value } }) => this.handleInputChange(value)}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    />
+                                <Button
+                                    className={classes.submit}
+                                    color='primary'
+                                    variant='text'
+                                    onClick={() => this.handleCloseCommentDialog()}>
+                                    <CloseCircle className={classes.buttonIcon}/>
+                                    {t('details.actions.cancel')}
+                                </Button>
+                                <Button
+                                    className={classes.submit}
+                                    disabled={!this.state.inputText}
+                                    color='primary'
+                                    variant='text'
+                                    onClick={() => this.handleCommentSubmit()}>
+                                    <CommentText className={classes.buttonIcon}/>
+                                    {t('details.actions.submit')}
+                                </Button>
+                            </div>
+                        </Grow>
                     </div>
                     <div className={mobile ? classes.listMobile : classes.list}>
                         <CommentsList desktop={desktop} mobile={mobile}/>
@@ -139,7 +232,27 @@ const styles = theme => ({
         '&:hover': {
             color: theme.palette.primary.main,
         }
-    }
+    },
+    inputContainer: {
+        marginTop: theme.spacing.unit * 2,
+        marginRight: 0,
+        marginBottom: 0,
+        marginLeft: 0,
+        textAlign: 'right',
+    },
+    input: {
+        marginTop: 0,
+        marginRight: 0,
+        marginBottom: 0,
+        marginLeft: 0,
+    },
+    submit: {
+        marginLeft: theme.spacing.unit * 2,
+    },
+    buttonIcon: {
+        marginRight: theme.spacing.unit,
+        marginLeft: 0,
+    },
 });
 
 Messages.propTypes = {

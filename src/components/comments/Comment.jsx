@@ -64,7 +64,7 @@ class Comment extends React.Component {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails className={classes.details}>
                     <Grid container>
-                        { !itemComments &&
+                        { !itemComments && title &&
                             <Grid item xs={12}>
                                 <Typography
                                     className={classes.titleActive + ' ' + (mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title)}
