@@ -41,12 +41,11 @@ class CommentsStore {
             .orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc')
 
         if (this.lastItem) {
-            // console.debug('DownloadHistoryStore.loadHistory() : loading', this.lastItem);
+            // console.debug('CommentsStore.loadComments() : loading', this.lastItem);
             query = query.startAfter(this.lastItem.timestamp.toDate());
         }
 
         query = query.limit(this.pageSize);
-
         query.onSnapshot((snapshot) => {
             runInAction(() => {
                 snapshot.forEach(doc => {
