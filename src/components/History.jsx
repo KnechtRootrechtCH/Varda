@@ -25,6 +25,7 @@ import constants from '../config/constants';
 
 @withNamespaces()
 @inject('AuthenticationStore')
+@inject('ConfigurationStore')
 @inject('DownloadHistoryStore')
 @observer
 class History extends React.Component {
