@@ -17,6 +17,8 @@ class ConfigurationStore {
         showDiscovery: false,
         showHistoryInNavbar: true,
         allowCommentsSorting: false,
+        historyAutoMarkAsReadSeconds: 0,
+        commentsAutoMarkAsReadSeconds: 0,
     };
 
     @action async init() {

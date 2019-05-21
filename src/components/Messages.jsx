@@ -39,11 +39,15 @@ class Messages extends React.Component {
         this.props.CommentsStore.setSorting('timestamp', false);
         this.props.CommentsStore.resetComments();
         this.props.CommentsStore.loadComments();
-        setTimeout(() => {
-            this.props.CommentsStore.updateTimestamp();
-        }, 5000);
 
-        window.addEventListener('scroll', this.handleScroll)
+        let timeout = this.props.ConfigurationStore.configuration.commentsAutoMarkAsReadSeconds;
+        if (timeout && timeout > 0) {
+            setTimeout(() => {
+                this.props.CommentsStore.updateTimestamp();
+            }, timeout * 1000);
+        }
+
+        window.addEventListener('scroll', this.handleScroll);
     }
 
     componentWillUnmount = () => {

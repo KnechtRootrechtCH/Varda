@@ -94,10 +94,15 @@ class History extends React.Component {
         this.props.DownloadHistoryStore.resetHistory();
         this.props.DownloadHistoryStore.setFilter(this.filters[i]);
         this.props.DownloadHistoryStore.loadHistory();
-        setTimeout(() => {
-            this.props.DownloadHistoryStore.updateTimestamp();
-        }, 5000);
-        window.addEventListener('scroll', this.handleScroll)
+
+        let timeout = this.props.ConfigurationStore.configuration.historyAutoMarkAsReadSeconds;
+        if (timeout && timeout > 0) {
+            setTimeout(() => {
+                this.props.DownloadHistoryStore.updateTimestamp();
+            }, timeout * 1000);
+        }
+
+        window.addEventListener('scroll', this.handleScroll);
     }
 
     componentWillUnmount = () => {
