@@ -16,7 +16,7 @@ class DataExportStore {
         this.exportStatus = status;
 
         let date = Moment().format('YYYYMMDD_HHmm');
-        let fileName = `export_${date}.csv`;
+        let fileName = `VardaExport_${date}.csv`;
 
         let content = this.textHeader;
         content += this.textContent;
@@ -41,7 +41,7 @@ class DataExportStore {
         this.exportStatus = status;
 
         let date = Moment().format('YYYYMMDD_HHmm');
-        let fileName = `export_${date}.txt`;
+        let fileName = `VardaExport_${date}.txt`;
 
         let content = this.textHeader;
         content += this.textContent;
