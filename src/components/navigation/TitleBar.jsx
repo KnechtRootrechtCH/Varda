@@ -216,7 +216,7 @@ class TitleBar extends React.Component {
                         <ListItemIcon>
                             <DatabaseExport/>
                         </ListItemIcon>
-                        {t('settings.export')}
+                        {t('settings.export.title')}
                     </MenuItem>
                     <MenuItem onClick={this.handleDarkThemeToggle}>
                         <ListItemIcon>

@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Divider } from '@material-ui/core';
-
-import AccountInformationSettings from './settings/AccountInformationSettings';
 import ExportSettings from './settings/ExportSettings';
 
 class Export extends React.Component {
@@ -16,9 +13,6 @@ class Export extends React.Component {
         return (
             <div className={classes.root}>
                 <ExportSettings/>
-                <Divider className={classes.divider}/>
-                <AccountInformationSettings/>
-                <Divider className={classes.divider}/>
             </div>
         );
      }

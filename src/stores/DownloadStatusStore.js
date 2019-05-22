@@ -71,7 +71,7 @@ class DownloadStatusStore {
         }
     }
 
-    @action async resetStatusList () {
+    @action async resetStatusList() {
         this.list = new Map();
         this.lastItem = null;
         this.hasMoreItems = true;

@@ -4,6 +4,7 @@ import AuthenticationStore from '../stores/AuthenticationStore';
 import CloudFunctionsStore from '../stores/CloudFunctionsStore';
 import CommentsStore from '../stores/CommentsStore';
 import ConfigurationStore from '../stores/ConfigurationStore';
+import DataExportStore from '../stores/DataExportStore';
 import DownloadHistoryStore from '../stores/DownloadHistoryStore';
 import DownloadStatusStore from '../stores/DownloadStatusStore';
 import ErrorHandlingStore from '../stores/ErrorHandlingStore';
@@ -19,6 +20,7 @@ export default {
     CloudFunctionsStore,
     CommentsStore,
     ConfigurationStore,
+    DataExportStore,
     DownloadHistoryStore,
     DownloadStatusStore,
     ErrorHandlingStore,

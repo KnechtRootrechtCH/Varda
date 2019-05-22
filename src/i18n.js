@@ -20,6 +20,7 @@ i18n.init({
 
                 common: {
                     initializing: 'Initializing',
+                    date: 'Date',
                     loading: 'Loading',
                     discover: 'Discover',
                     movies: 'Movies',
@@ -38,6 +39,11 @@ i18n.init({
                     less: 'less',
                     unknown: 'unknown',
                     total: 'Total',
+                    ok: 'Ok',
+                    next: 'Next',
+                    back: 'Back',
+                    previous: 'Previous',
+                    count: 'Count',
                     priority: {
                         1: 'High',
                         2: 'Medium',
@@ -230,7 +236,20 @@ i18n.init({
                     statusUpdate: 'Status update',
                     lastUpdate: 'Last execution',
                     neverRun: 'Cloud function never executed!',
-                    export: 'Export',
+                    export: {
+                        title: 'Data Export',
+                        type: 'MediaType',
+                        load: 'Load export data',
+                        loadDescription: 'This might take several seconds to complete.',
+                        loadButton: 'Start',
+                        loading: 'Loading data…',
+                        save: 'Save export data',
+                        saveDescription: 'Successfully loaded datasets',
+                        saveTxtButton: 'Save',
+                        saveCsvButton: 'Save',
+                        fileHeader: 'Data Export',
+                        resetButton: 'Reset',
+                    },
                 },
 
                 error: {
@@ -302,6 +321,7 @@ i18n.init({
 
                 common: {
                     initializing: 'Initialisierung',
+                    date: 'Datum',
                     loading: 'Lade',
                     discover: 'Entdecken',
                     movies: 'Filme',
@@ -320,6 +340,11 @@ i18n.init({
                     less: 'weniger',
                     unknown: 'unbekannt',
                     total: 'Total',
+                    ok: 'Ok',
+                    next: 'Nächste',
+                    back: 'Zurück',
+                    previous: 'Verherige',
+                    count: 'Anzahl',
                     priority: {
                         1: 'Hoch',
                         2: 'Mittel',
@@ -512,7 +537,20 @@ i18n.init({
                     statusUpdate: 'Status Update',
                     lastUpdate: 'Letzte Ausführung',
                     neverRun: 'Cloud Function nie ausgeführt!',
-                    export: 'Export',
+                    export: {
+                        title: 'Datenexport',
+                        type: 'Medien-Typ',
+                        load: 'Export-Daten laden',
+                        loadDescription: 'Diese Operation kann einige Sekunden dauern.',
+                        loadButton: 'Start',
+                        loading: 'Daten werden geladen…',
+                        save: 'Export-Daten speichern',
+                        saveDescription: 'Datensätze erfolgreich geladen: ',
+                        saveTxtButton: 'Speichern',
+                        saveCsvButton: 'Speichern',
+                        fileHeader: 'Datenexport',
+                        resetButton: 'Neustarten',
+                    },
                 },
 
                 error: {

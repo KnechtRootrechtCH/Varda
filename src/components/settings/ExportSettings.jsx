@@ -6,29 +6,40 @@ import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 
 import {
+    FileExcel,
+    FileDocument,
+    UndoVariant }  from 'mdi-material-ui';
+
+import {
+    Button,
+    CircularProgress,
+    FormControl,
+    FormControlLabel,
+    Radio,
+    RadioGroup,
     Step,
     StepLabel,
     StepContent,
     Stepper,
     Typography } from '@material-ui/core';
 
-import {
-    Calendar,
-    CalendarSearch,
-    Check,
-    ClockOutline,
-    Download,
-    EyeOff,
-    Sigma,
-    Sync }  from 'mdi-material-ui';
-
 @withNamespaces()
 @inject('AuthenticationStore')
+@inject('DataExportStore')
+@inject('DownloadStatusStore')
 @observer
 class AccountInformationSettings extends React.Component {
 
     state = {
         activeStep: 0,
+        type: 'none',
+        status: 'none',
+    }
+
+    selectStep = (step) => {
+        this.setState({
+            activeStep: step,
+        });
     }
 
     handleNext = () => {
@@ -49,38 +60,170 @@ class AccountInformationSettings extends React.Component {
         });
     };
 
+    handleTypeChange = (value) => {
+        this.setState({
+            type: value,
+        });
+    }
+
+    handleStatusChange = (value) => {
+        this.setState({
+            status: value,
+        });
+    }
+
+    handleDataLoad = () => {
+        this.props.DownloadStatusStore.resetStatusList();
+        this.props.DownloadStatusStore.setSortField('title');
+        this.props.DownloadStatusStore.setMediaTypeFilter(this.state.type);
+        this.props.DownloadStatusStore.setStatusFilter(this.state.status);
+        this.props.DownloadStatusStore.loadStatusList(true);
+        this.handleNext();
+    }
+
+    handleCsvSave = () => {
+        let data = this.props.DownloadStatusStore.list;
+        this.props.DataExportStore.registerI18nFunction(this.props.t);
+        this.props.DataExportStore.runCsvExport(data, this.state.type, this.state.status);
+    }
+
+    handleTxtSave = () => {
+        let data = this.props.DownloadStatusStore.list;
+        this.props.DataExportStore.registerI18nFunction(this.props.t);
+        this.props.DataExportStore.runTxtExport(data, this.state.type, this.state.status);
+    }
+
     render () {
         const classes = this.props.classes;
         const t = this.props.t;
 
+        const mediaType = ['none', 'movie', 'tv'];
+        const status = ['none', 'queued', 'notReleased', 'notAvailable', 'notFound', 'redownload', 'downloading', 'downloaded'];
+
         return (
             <div className={classes.root}>
                 <Typography className={classes.title} variant='subtitle1' component='h2'>
-                    <span>{t('settings.export')}</span>
+                    <span>{t('settings.export.title')}</span>
                 </Typography>
-                <Stepper activeStep={this.state.activeStep} orientation="vertical">
+                <Stepper activeStep={this.state.activeStep} orientation='vertical'>
                     <Step key='type'>
-                        <StepLabel>{t('settings.export.type')}</StepLabel>
+                        <StepLabel className={classes.stepLabel} onClick={() => this.selectStep(0)}>
+                            {t('settings.export.type')}: {t(`list.filter.mediaType.${this.state.type}`)}
+                        </StepLabel>
                         <StepContent>
-                            <Typography>{t('settings.export.typeDescription')}</Typography>
+                            <FormControl>
+                                <RadioGroup>
+                                { mediaType.map((value) => {
+                                    return (
+                                        <FormControlLabel
+                                            key={value}
+                                            value={value}
+                                            label={t(`list.filter.mediaType.${value}`)}
+                                            onClick={() => this.handleTypeChange(value)}
+                                            control={
+                                                <Radio checked={value === this.state.type} />
+                                        }/>
+                                    )
+                                })}
+                                </RadioGroup>
+                                <div>
+                                    <Button
+                                        variant='outlined'
+                                        color='primary'
+                                        onClick={this.handleNext}
+                                        className={classes.button}>
+                                        {t('common.ok')}
+                                    </Button>
+                                </div>
+                            </FormControl>
                         </StepContent>
                     </Step>
                     <Step key='status'>
-                        <StepLabel>{t('settings.export.status')}</StepLabel>
+                        <StepLabel className={classes.stepLabel} onClick={() => this.selectStep(1)}>
+                            {t(`list.filter.status.${this.state.status}`)}
+                        </StepLabel>
                         <StepContent>
-                            <Typography>{t('settings.export.statusDescription')}</Typography>
+                        <FormControl>
+                            <RadioGroup>
+                                { status.map((value) => {
+                                    return (
+                                        <FormControlLabel
+                                            key={value}
+                                            value={value}
+                                            label={t(`list.filter.status.${value}`)}
+                                            onClick={() => this.handleStatusChange(value)}
+                                            control={
+                                                <Radio checked={value === this.state.status} />
+                                        }/>
+                                    )
+                                })}
+                                </RadioGroup>
+                            </FormControl>
+                            <div>
+                                <Button
+                                    variant='outlined'
+                                    color='primary'
+                                    onClick={this.handleNext}
+                                    className={classes.button}>
+                                    {t('common.ok')}
+                                </Button>
+                            </div>
                         </StepContent>
                     </Step>
-                    <Step key='status'>
-                        <StepLabel>{t('settings.export.priority')}</StepLabel>
+                    <Step key='release'>
+                        <StepLabel className={classes.stepLabel} onClick={() => this.selectStep(2)}>
+                            {t('settings.export.load')}
+                        </StepLabel>
                         <StepContent>
-                            <Typography>{t('settings.export.priorityDescription')}</Typography>
+                            <Typography>{t('settings.export.loadDescription')}</Typography>
+                            <Button
+                                variant='outlined'
+                                color='primary'
+                                onClick={this.handleDataLoad}
+                                className={classes.button}>
+                                {t('settings.export.loadButton')}
+                            </Button>
                         </StepContent>
                     </Step>
-                    <Step key='status'>
-                        <StepLabel>{t('settings.export.releaseDate')}</StepLabel>
+                    <Step key='release'>
+                        <StepLabel>
+                            {t('settings.export.save')}
+                        </StepLabel>
                         <StepContent>
-                            <Typography>{t('settings.export.releaseDateDescription')}</Typography>
+                            { this.props.DownloadStatusStore.loading ?
+                                <React.Fragment>
+                                    <Typography>{t('settings.export.loading')}</Typography>
+                                    <CircularProgress color='secondary'/>
+                                </React.Fragment>
+                            :
+                                <React.Fragment>
+                                    <Typography>{t('settings.export.saveDescription')}: {this.props.DownloadStatusStore.list.size}</Typography>
+                                    <Button
+                                        variant='outlined'
+                                        color='primary'
+                                        onClick={this.handleTxtSave}
+                                        className={classes.button}>
+                                        <FileDocument className={classes.buttonIcon}/>
+                                        {t('settings.export.saveTxtButton')}
+                                    </Button>
+                                    <Button
+                                        variant='outlined'
+                                        color='primary'
+                                        onClick={this.handleCsvSave}
+                                        className={classes.button}>
+                                        <FileExcel className={classes.buttonIcon}/>
+                                        {t('settings.export.saveCsvButton')}
+                                    </Button>
+                                    <Button
+                                        variant='outlined'
+                                        color='primary'
+                                        onClick={this.handleReset}
+                                        className={classes.button}>
+                                        <UndoVariant className={classes.buttonIcon}/>
+                                        {t('settings.export.resetButton')}
+                                    </Button>
+                                </React.Fragment>
+                            }
                         </StepContent>
                     </Step>
                 </Stepper>
@@ -90,18 +233,16 @@ class AccountInformationSettings extends React.Component {
 }
 
 const styles = theme => ({
-    root: {
+    button: {
         marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-    },
-    icon: {
         marginRight: theme.spacing.unit,
-        verticalAlign: 'middle',
-        marginBottom: 3,
     },
-    text: {
-        marginBottom: theme.spacing.unit / 2,
-        color: theme.palette.text.disabled,
+    stepLabel: {
+        cursor: 'pointer',
+    },
+    buttonIcon: {
+        marginRight: 2 * theme.spacing.unit,
+        marginLeft: 0,
     },
 });
 
