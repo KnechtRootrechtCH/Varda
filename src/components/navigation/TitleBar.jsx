@@ -26,6 +26,7 @@ import {
     AccountCircle,
     ArrowLeft,
     Brightness4,
+    DatabaseExport,
     ExitToApp,
     Settings,
     Menu as MenuIcon }  from 'mdi-material-ui';
@@ -210,6 +211,12 @@ class TitleBar extends React.Component {
                             <Settings/>
                         </ListItemIcon>
                         {t('common.settings')}
+                    </MenuItem>
+                    <MenuItem component={Link} to='/settings/export' onClick={this.handleMenuClose}>
+                        <ListItemIcon>
+                            <DatabaseExport/>
+                        </ListItemIcon>
+                        {t('settings.export')}
                     </MenuItem>
                     <MenuItem onClick={this.handleDarkThemeToggle}>
                         <ListItemIcon>

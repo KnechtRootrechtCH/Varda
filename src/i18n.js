@@ -230,6 +230,7 @@ i18n.init({
                     statusUpdate: 'Status update',
                     lastUpdate: 'Last execution',
                     neverRun: 'Cloud function never executed!',
+                    export: 'Export',
                 },
 
                 error: {
@@ -511,6 +512,7 @@ i18n.init({
                     statusUpdate: 'Status Update',
                     lastUpdate: 'Letzte Ausführung',
                     neverRun: 'Cloud Function nie ausgeführt!',
+                    export: 'Export',
                 },
 
                 error: {
@@ -573,9 +575,9 @@ i18n.init({
                         },
                     },
                 },
-            }
-        }
-    }
+            },
+        },
+    },
 });
 
 export default i18n;

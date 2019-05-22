@@ -10,6 +10,7 @@ import { CircularProgress } from '@material-ui/core';
 
 
 import Browse from './Browse';
+import Export from './Export';
 import History from './History';
 import ItemDetails from './ItemDetails';
 import DownloadList from './DownloadList';
@@ -61,6 +62,10 @@ class PrivateRouter extends React.Component {
                                     exact
                                     path='/settings'
                                     component={Settings}/>
+                                <Route
+                                    exact
+                                    path='/settings/export'
+                                    component={Export}/>
                                 <Route
                                     exact
                                     path='/browse'
