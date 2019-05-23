@@ -239,10 +239,7 @@ class DownloadHistoryStore {
         this.lastCountQuery = query;
     }
 
-    @action updateTimestamp(force) {
-        if (!force && this.newTransactionsCount <= 0) {
-            return;
-        }
+    @action updateTimestamp() {
 
         const timestamp = new Date();
         firestore

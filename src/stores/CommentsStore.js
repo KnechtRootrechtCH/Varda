@@ -187,10 +187,7 @@ class CommentsStore {
             });
     }
 
-    @action updateTimestamp(force) {
-        if (!force && this.newCommentsCount <= 0) {
-            return;
-        }
+    @action updateTimestamp() {
 
         const timestamp = new Date();
         firestore
