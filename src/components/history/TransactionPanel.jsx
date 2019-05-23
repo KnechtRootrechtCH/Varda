@@ -14,9 +14,8 @@ import {
     Tooltip,
     Typography } from '@material-ui/core';
 
-import {
-    ExpandMore,
-    NewReleases } from '@material-ui/icons';
+import { ExpandMore } from '@material-ui/icons';
+import { BellRing, BellOutline } from 'mdi-material-ui';
 
 import TransactionDetails from './TransactionDetails';
 
@@ -51,18 +50,32 @@ class TransactionPanel extends React.Component {
             <ExpansionPanel className={classes.root} defaultExpanded={false}>
                 <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
                     { itemHistory ?
-                        <Typography className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title} noWrap>
-                            {timestampString}
-                            <Fade in={isNew} timeout={{enter: 100, exit: 2000}}>
-                                <NewReleases color='secondary' className={classes.newTransactionBadge}/>
+                        <Typography
+                            className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title}
+                            color={isNew ? 'textPrimary' : 'textSecondary'}
+                            noWrap>
+                            <Fade in={isNew} timeout={{enter: 100, exit: 2000}} mountOnEnter={true} unmountOnExit={true}>
+                                <BellRing color={transactionColor} className={classes.newTransactionBadge}/>
                             </Fade>
+                            <Fade in={!isNew} timeout={{enter: 100, exit: 2000}} mountOnEnter={true} unmountOnExit={true}>
+                                <BellOutline color='disabled' className={classes.newTransactionBadge}/>
+                            </Fade>
+                            {timestampString}
                         </Typography>
                     :
-                        <Typography className={classes.titleActive + ' ' + (mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title)} component={Link} to={address} noWrap>
-                            {title}
-                            <Fade in={isNew} timeout={{enter: 100, exit: 2000}}>
-                                <NewReleases color='secondary' className={classes.newTransactionBadge}/>
+                        <Typography
+                            className={classes.titleActive + ' ' + (mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title)}
+                            color={isNew ? 'textPrimary' : 'textSecondary'}
+                            component={Link}
+                            to={address}
+                            noWrap>
+                            <Fade in={isNew} timeout={{enter: 100, exit: 2000}} mountOnEnter={true} unmountOnExit={true}>
+                                <BellRing color={transactionColor} className={classes.newTransactionBadge}/>
                             </Fade>
+                            <Fade in={!isNew} timeout={{enter: 100, exit: 2000}} mountOnEnter={true} unmountOnExit={true}>
+                                <BellOutline color='disabled' className={classes.newTransactionBadge}/>
+                            </Fade>
+                            {title}
                         </Typography>
                     }
                     <Tooltip title={transactionLong} aria-label={transactionLong}>
@@ -110,8 +123,8 @@ const styles = theme => ({
     newTransactionBadge: {
         verticalAlign: 'middle',
         marginBottom: 3,
-        marginLeft: theme.spacing.unit / 2,
-        marginRight: theme.spacing.unit / 2,
+        marginLeft: 0,
+        marginRight: theme.spacing.unit,
         fontSize: 18,
     },
 });

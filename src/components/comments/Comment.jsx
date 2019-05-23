@@ -13,9 +13,8 @@ import {
     Grid,
     Typography } from '@material-ui/core';
 
-import {
-    ExpandMore,
-    NewReleases } from '@material-ui/icons';
+import { ExpandMore } from '@material-ui/icons';
+import { BellRing, BellOutline } from 'mdi-material-ui';
 
 @withNamespaces()
 class Comment extends React.Component {
@@ -50,10 +49,13 @@ class Comment extends React.Component {
                     <Typography
                         className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title}
                         noWrap>
-                        {timestampString}
-                        <Fade in={isNew} timeout={{enter: 100, exit: 2000}}>
-                            <NewReleases color='secondary' className={classes.newCommentBadge}/>
+                        <Fade in={isNew} timeout={{enter: 100, exit: 2000}} mountOnEnter={true} unmountOnExit={true}>
+                            <BellRing color={color} className={classes.newCommentBadge}/>
+                            </Fade>
+                        <Fade in={!isNew} timeout={{enter: 100, exit: 2000}} mountOnEnter={true} unmountOnExit={true}>
+                            <BellOutline color='disabled' className={classes.newCommentBadge}/>
                         </Fade>
+                        {timestampString}
                     </Typography>
                     <Typography
                         className={classes.userName}
@@ -125,8 +127,8 @@ const styles = theme => ({
     newCommentBadge: {
         verticalAlign: 'middle',
         marginBottom: 3,
-        marginLeft: theme.spacing.unit / 2,
-        marginRight: theme.spacing.unit / 2,
+        marginLeft: 0,
+        marginRight: theme.spacing.unit,
         fontSize: 18,
     },
 });
