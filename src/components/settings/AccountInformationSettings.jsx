@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
+import * as Moment from 'moment';
 
 import {
     Typography } from '@material-ui/core';
@@ -41,6 +42,8 @@ class AccountInformationSettings extends React.Component {
         const uidString = `${t('settings.id')}: ${this.props.AuthenticationStore.uid}`;
         const dataUidString = `${t('settings.id')}: ${this.props.AuthenticationStore.dataUid}`
         const crossAccountAdmin = this.props.AuthenticationStore.isAdmin && this.props.AuthenticationStore.dataUid !== this.props.AuthenticationStore.uid;
+        const lastAccess = this.props.AuthenticationStore.lastAccess ? Moment(this.props.AuthenticationStore.lastAccess).format('dddd DD.MM.YYYY HH:mm') : '-';
+        const lastAccessString = `${t('settings.lastAccess')}: ${lastAccess}`;
 
         return (
             <div className={classes.root}>
@@ -63,6 +66,9 @@ class AccountInformationSettings extends React.Component {
                             </Typography>
                             <Typography className={classes.text} variant='body2' component='h2'>
                                 <span>{dataUidString}</span>
+                            </Typography>
+                            <Typography className={classes.text} variant='body2' component='h2'>
+                                <span>{lastAccessString}</span>
                             </Typography>
                         </React.Fragment>
                     }

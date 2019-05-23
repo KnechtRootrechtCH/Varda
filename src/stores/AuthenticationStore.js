@@ -22,6 +22,7 @@ class AuthenticationStore {
     @observable dataUserDisplayName = null;
     @observable commentsTimestamp = null;
     @observable transactionsTimestamp = null;
+    @observable lastAccess = null;
     @observable itemCounts = {};
 
     constructor() {
@@ -196,6 +197,7 @@ class AuthenticationStore {
                         itemCounts = {}
                     }
                     this.itemCounts = itemCounts;
+                    this.lastAccess = doc.data().access && doc.data().access.timestamp  ? doc.data().access.timestamp.toDate() : null;
 
                     this.userDataLoaded = true;
 
