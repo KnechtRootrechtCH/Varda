@@ -94,7 +94,7 @@ class DownloadListFilterMenu extends React.Component {
                                     }
                                 </ListItemIcon>
                                 <ListItemText>
-                                    {t(`list.filter.mediaType.${value}`)}
+                                    {t(`common.mediaType.${value}`)}
                                 </ListItemText>
                             </MenuItem>
                         )
@@ -111,7 +111,7 @@ class DownloadListFilterMenu extends React.Component {
                                     }
                                 </ListItemIcon>
                                 <ListItemText>
-                                    {t(`list.filter.status.${value}`)}
+                                {t('common.status.label')}:&nbsp;{t(`common.status.${value}`)}
                                 </ListItemText>
                             </MenuItem>
                         )

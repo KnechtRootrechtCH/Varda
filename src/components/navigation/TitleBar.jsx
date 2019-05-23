@@ -222,7 +222,7 @@ class TitleBar extends React.Component {
                         <ListItemIcon>
                             <Brightness4/>
                         </ListItemIcon>
-                        {t('settings.darkTheme') + ': ' + t(darkThemeStateKey)}
+                        {`${t('settings.darkTheme')}: ${t(darkThemeStateKey)}`}
                     </MenuItem>
                     <Divider/>
                     <MenuItem onClick={this.handleSignOut}>

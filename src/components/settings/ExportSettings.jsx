@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 
 import {
+    DatabaseExport,
     FileExcel,
     FileDocument,
     UndoVariant }  from 'mdi-material-ui';
@@ -84,7 +85,13 @@ class AccountInformationSettings extends React.Component {
     handleCsvSave = () => {
         let data = this.props.DownloadStatusStore.list;
         this.props.DataExportStore.registerI18nFunction(this.props.t);
-        this.props.DataExportStore.runCsvExport(data, this.state.type, this.state.status);
+        this.props.DataExportStore.runCsvExport(data, this.state.type, this.state.status, false);
+    }
+
+    handleDbExport = () => {
+        let data = this.props.DownloadStatusStore.list;
+        this.props.DataExportStore.registerI18nFunction(this.props.t);
+        this.props.DataExportStore.runCsvExport(data, this.state.type, this.state.status, true);
     }
 
     handleTxtSave = () => {
@@ -108,7 +115,7 @@ class AccountInformationSettings extends React.Component {
                 <Stepper activeStep={this.state.activeStep} orientation='vertical'>
                     <Step key='type'>
                         <StepLabel className={classes.stepLabel} onClick={() => this.selectStep(0)}>
-                            {t('settings.export.type')}: {t(`list.filter.mediaType.${this.state.type}`)}
+                        {t('settings.export.typeFilter')}:&nbsp;{t(`common.mediaType.plural.${this.state.type}`)}
                         </StepLabel>
                         <StepContent>
                             <FormControl>
@@ -118,7 +125,7 @@ class AccountInformationSettings extends React.Component {
                                         <FormControlLabel
                                             key={value}
                                             value={value}
-                                            label={t(`list.filter.mediaType.${value}`)}
+                                            label={t(`common.mediaType.plural.${value}`)}
                                             onClick={() => this.handleTypeChange(value)}
                                             control={
                                                 <Radio checked={value === this.state.type} />
@@ -140,7 +147,7 @@ class AccountInformationSettings extends React.Component {
                     </Step>
                     <Step key='status'>
                         <StepLabel className={classes.stepLabel} onClick={() => this.selectStep(1)}>
-                            {t(`list.filter.status.${this.state.status}`)}
+                        {t('settings.export.statusFilter')}:&nbsp;{t(`common.status.${this.state.status}`)}
                         </StepLabel>
                         <StepContent>
                         <FormControl>
@@ -150,7 +157,7 @@ class AccountInformationSettings extends React.Component {
                                         <FormControlLabel
                                             key={value}
                                             value={value}
-                                            label={t(`list.filter.status.${value}`)}
+                                            label={t(`common.status.${value}`)}
                                             onClick={() => this.handleStatusChange(value)}
                                             control={
                                                 <Radio checked={value === this.state.status} />
@@ -213,6 +220,14 @@ class AccountInformationSettings extends React.Component {
                                         className={classes.button}>
                                         <FileExcel className={classes.buttonIcon}/>
                                         {t('settings.export.saveCsvButton')}
+                                    </Button>
+                                    <Button
+                                        variant='outlined'
+                                        color='primary'
+                                        onClick={this.handleDbExport}
+                                        className={classes.button}>
+                                        <DatabaseExport className={classes.buttonIcon}/>
+                                        {t('settings.export.saveDbExportButton')}
                                     </Button>
                                     <Button
                                         variant='outlined'

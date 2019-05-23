@@ -95,13 +95,14 @@ class DownloadStatusStore {
             .doc(this.dataUid)
             .collection('items')
 
+        if (this.sortField === 'priority') {
+            query = query.orderBy(this.sortField, !this.sortAscending ? 'asc' : 'desc');
+            query = query.orderBy('timestamp', this.sortAscending ? 'asc' : 'desc');
+        } else {
+            query = query.orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc');
+        }
+
         if (!noPaging) {
-            if (this.sortField === 'priority') {
-                query = query.orderBy(this.sortField, !this.sortAscending ? 'asc' : 'desc');
-                query = query.orderBy('timestamp', this.sortAscending ? 'asc' : 'desc');
-            } else {
-                query = query.orderBy(this.sortField, this.sortAscending ? 'asc' : 'desc');
-            }
             query = query.limit(this.pageSize);
         }
 

@@ -70,9 +70,9 @@ class Browse extends React.Component {
         let titleKey = 'common.discover'
 
         if (mediaType === constants.MEDIA_TYPE.MOVIE) {
-            titleKey = 'common.movies'
+            titleKey = 'common.mediaType.plural.movie'
         } else if (mediaType === constants.MEDIA_TYPE.TV) {
-            titleKey = 'common.seriesPlural'
+            titleKey = 'common.mediaType.plural.tv'
         }
 
         return (

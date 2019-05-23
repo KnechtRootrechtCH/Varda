@@ -112,7 +112,7 @@ class Navigation extends React.Component {
                         <ListItemIcon>
                             <Movie className={loc === 'movies' ? classes.drawerIconActive : null}/>
                         </ListItemIcon>
-                        <ListItemText primary={t('common.movies')}/>
+                        <ListItemText primary={t('common.mediaType.plural.tv')}/>
                     </ListItem>
                     <ListItem
                         button
@@ -123,7 +123,7 @@ class Navigation extends React.Component {
                         <ListItemIcon>
                             <Tv className={loc === 'tv' ? classes.drawerIconActive : null}/>
                         </ListItemIcon>
-                        <ListItemText primary={t('common.seriesPlural')}/>
+                        <ListItemText primary={t('common.mediaType.plural.tv')}/>
                     </ListItem>
                     <Divider/>
                     <ListItem

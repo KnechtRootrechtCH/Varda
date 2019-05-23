@@ -7,21 +7,24 @@ class DataExportStore {
     @observable exportType = null;
     @observable exportStatus = null;
     @observable exportRunning = false;
+    @observable exportFullData = false;
     t = null;
+    csvDelimeter = ',';
 
-    @action async runCsvExport(data, type, status) {
+    @action async runCsvExport(data, type, status, dbExport) {
         this.exportRunning = true;
         this.exportData = data;
         this.exportType = type;
         this.exportStatus = status;
+        this.exportFullData = dbExport;
 
         let date = Moment().format('YYYYMMDD_HHmm');
-        let fileName = `VardaExport_${date}.csv`;
+        let fileName = dbExport ? `VardaDbExport_${date}.csv` : `VardaExport_${date}.csv`;
 
-        let content = this.textHeader;
-        content += this.textContent;
+        let content = this.csvHeader;
+        content += this.csvContent;
 
-        let blob = new Blob([content], {type: 'text/plain;charset=utf-8'});
+        let blob = new Blob([content], {type: 'text/csv;charset=utf-8'});
         if (window.navigator.msSaveOrOpenBlob) {
             window.navigator.msSaveBlob(blob, fileName);
         } else {
@@ -39,6 +42,7 @@ class DataExportStore {
         this.exportData = data;
         this.exportType = type;
         this.exportStatus = status;
+        this.exportFullData = false;
 
         let date = Moment().format('YYYYMMDD_HHmm');
         let fileName = `VardaExport_${date}.txt`;
@@ -64,15 +68,51 @@ class DataExportStore {
     }
 
     @computed get csvHeader() {
-        return '';
+        let cols = [];
+
+        if (this.exportFullData) {
+            cols.push(this.wrap('id'));
+            cols.push(this.wrap('title'));
+            cols.push(this.wrap('release'));
+            cols.push(this.wrap('status'));
+            cols.push(this.wrap('priority'));
+            cols.push(this.wrap('timestamp'));
+            cols.push(this.wrap('backdrop'));
+        } else {
+            cols.push(this.wrap(this.t('settings.export.fields.title')));
+            cols.push(this.wrap(this.t('settings.export.fields.release')));
+            cols.push(this.wrap(this.t('settings.export.fields.status')));
+            cols.push(this.wrap(this.t('settings.export.fields.priority')));
+        }
+
+        return cols.join(this.csvDelimeter);
     }
 
     @computed get csvContent() {
+        let content = '';
         this.exportData.forEach((item) => {
-            console.debug('item', item);
-            // backdrop, id, mediaType, priority, release, status, timestamp, title
+            let cols = [];
+            let release = item.release ? Moment(item.release.toDate()) : null;
+            let timestamp = item.timestamp ? Moment(item.timestamp.toDate()) : null;
+
+            if (this.exportFullData) {
+                cols.push(this.wrap(`${item.mediaType}:${item.id}`));
+                cols.push(this.wrap(item.title));
+                cols.push(this.wrap(release ? release.format('DD.MM.YYYY') : ''));
+                cols.push(this.wrap(item.status));
+                cols.push(this.wrap(item.priority ? item.priority : ''));
+                cols.push(this.wrap(timestamp ? timestamp.format('DD.MM.YYYY HH:mm') : ''));
+                cols.push(this.wrap(item.backdrop));
+            } else {
+                cols.push(this.wrap(item.title));
+                cols.push(this.wrap(release ? release.format('DD.MM.YYYY') : ''));
+                cols.push(this.wrap(this.t(`common.status.${item.status}`)));
+                cols.push(this.wrap(item.priority ? item.priority : ''));
+            }
+
+            content += `\n${cols.join(this.csvDelimeter)}`;
         })
-        return '';
+        return content;
     }
 
     @computed get textHeader() {
@@ -80,8 +120,8 @@ class DataExportStore {
         let type = this.exportType;
         let status = this.exportStatus;
         let header = `${this.t('settings.export.fileHeader').toUpperCase()} ${date}`;
-        header += `\n${this.t('settings.export.type')}: ${this.t(`list.filter.mediaType.${type}`)}`;
-        header += `\n${this.t(`list.filter.status.${status}`)}`;
+        header += `\n${this.t('common.mediaType.label')}: ${this.t(`common.mediaType.${type}`)}`;
+        header += `\n${this.t('common.status.label')}: ${this.t(`common.status.${status}`)}`;
         header += `\n${this.t('common.count')}: ${this.exportData.size}`;
         header += '\n\n'
         console.log(header, type, status);
@@ -89,13 +129,17 @@ class DataExportStore {
     }
 
     @computed get textContent() {
-        let data = '';
+        let content = '';
         this.exportData.forEach((item) => {
             let releaseDate = item.release ? Moment(item.release.toDate()) : null;
             const releaseDateString = releaseDate ? releaseDate.format('YYYY') : '-';
-            data += `${item.title} (${releaseDateString})\n`;
+            content += `${item.title} (${releaseDateString})\n`;
         })
-        return data;
+        return content;
+    }
+
+    wrap(text) {
+        return `"${text}"`;
     }
 }
 

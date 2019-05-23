@@ -80,13 +80,13 @@ class NavigationBar extends React.Component {
                 }
                 <BottomNavigationAction
                     value='movies'
-                    label={t('common.movies')}
+                    label={t('common.mediaType.plural.movie')}
                     icon={<Movie />}
                     component={Link}
                     to='/browse/movie'/>
                 <BottomNavigationAction
                     value='tv'
-                    label={t('common.seriesPlural')}
+                    label={t('common.mediaType.plural.tv')}
                     icon={<Tv />}
                     component={Link}
                     to='/browse/tv'/>

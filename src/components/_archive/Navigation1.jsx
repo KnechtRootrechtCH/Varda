@@ -196,11 +196,11 @@ class Navigation extends React.Component {
                         </ListItem>
                         <ListItem button key='movies' component={Link} to='/browse/movie' onClick={this.toggleDrawer(false)}>
                             <ListItemIcon><Movie/></ListItemIcon>
-                            <ListItemText primary={t('common.movies')}/>
+                            <ListItemText primary={t('common.mediaType.plural.movie')}/>
                         </ListItem>
                         <ListItem button key='series' component={Link} to='/browse/tv' onClick={this.toggleDrawer(false)}>
                             <ListItemIcon><Tv/></ListItemIcon>
-                            <ListItemText primary={t('common.seriesPlural')}/>
+                            <ListItemText primary={t('common.mediaType.plural.tv')}/>
                         </ListItem>
                         <ListItem button key='list' component={Link} to='/list' onClick={this.toggleDrawer(false)}>
                             <ListItemIcon><ViewList/></ListItemIcon>
