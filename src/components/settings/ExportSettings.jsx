@@ -75,7 +75,7 @@ class AccountInformationSettings extends React.Component {
 
     handleDataLoad = () => {
         this.props.DownloadStatusStore.resetStatusList();
-        this.props.DownloadStatusStore.setSortField('title');
+        this.props.DownloadStatusStore.setSorting('title', true);
         this.props.DownloadStatusStore.setMediaTypeFilter(this.state.type);
         this.props.DownloadStatusStore.setStatusFilter(this.state.status);
         this.props.DownloadStatusStore.loadStatusList(true);
