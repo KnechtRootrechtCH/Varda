@@ -42,8 +42,15 @@ class AccountInformationSettings extends React.Component {
         const uidString = `${t('settings.id')}: ${this.props.AuthenticationStore.uid}`;
         const dataUidString = `${t('settings.id')}: ${this.props.AuthenticationStore.dataUid}`
         const crossAccountAdmin = this.props.AuthenticationStore.isAdmin && this.props.AuthenticationStore.dataUid !== this.props.AuthenticationStore.uid;
+
         const lastAccess = this.props.AuthenticationStore.lastAccess ? Moment(this.props.AuthenticationStore.lastAccess).format('dddd DD.MM.YYYY HH:mm') : '-';
         const lastAccessString = `${t('settings.lastAccess')}: ${lastAccess}`;
+        
+        const commentsTimestamp = this.props.AuthenticationStore.dataUserCommentsTimestamp ? Moment(this.props.AuthenticationStore.dataUserCommentsTimestamp).format('dddd DD.MM.YYYY HH:mm') : '-';
+        const commentsTimestampString = `${t('settings.commentsTimestamp')}: ${commentsTimestamp}`;
+
+        const transactionTimestamp = this.props.AuthenticationStore.dataUserTransactionsTimestamp ? Moment(this.props.AuthenticationStore.dataUserTransactionsTimestamp).format('dddd DD.MM.YYYY HH:mm') : '-';
+        const transactionTimestampString = `${t('settings.transactionTimestamp')}: ${transactionTimestamp}`;
 
         return (
             <div className={classes.root}>
@@ -69,6 +76,12 @@ class AccountInformationSettings extends React.Component {
                             </Typography>
                             <Typography className={classes.text} variant='body2' component='h2'>
                                 <span>{lastAccessString}</span>
+                            </Typography>
+                            <Typography className={classes.text} variant='body2' component='h2'>
+                                <span>{commentsTimestampString}</span>
+                            </Typography>
+                            <Typography className={classes.text} variant='body2' component='h2'>
+                                <span>{transactionTimestampString}</span>
                             </Typography>
                         </React.Fragment>
                     }
