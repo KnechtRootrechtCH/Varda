@@ -45,6 +45,9 @@ class AccountInformationSettings extends React.Component {
 
         const lastAccess = this.props.AuthenticationStore.lastAccess ? Moment(this.props.AuthenticationStore.lastAccess).format('dddd DD.MM.YYYY HH:mm') : '-';
         const lastAccessString = `${t('settings.lastAccess')}: ${lastAccess}`;
+
+        const lastTransaction = this.props.AuthenticationStore.lastTransactionTimestamp ? Moment(this.props.AuthenticationStore.lastTransactionTimestamp).format('dddd DD.MM.YYYY HH:mm') : '-';
+        const lastTransactionString = `${t('settings.lastTransaction')}: ${lastTransaction}`;
         
         const commentsTimestamp = this.props.AuthenticationStore.dataUserCommentsTimestamp ? Moment(this.props.AuthenticationStore.dataUserCommentsTimestamp).format('dddd DD.MM.YYYY HH:mm') : '-';
         const commentsTimestampString = `${t('settings.commentsTimestamp')}: ${commentsTimestamp}`;
@@ -76,6 +79,9 @@ class AccountInformationSettings extends React.Component {
                             </Typography>
                             <Typography className={classes.text} variant='body2' component='h2'>
                                 <span>{lastAccessString}</span>
+                            </Typography>
+                            <Typography className={classes.text} variant='body2' component='h2'>
+                                <span>{lastTransactionString}</span>
                             </Typography>
                             <Typography className={classes.text} variant='body2' component='h2'>
                                 <span>{commentsTimestampString}</span>
