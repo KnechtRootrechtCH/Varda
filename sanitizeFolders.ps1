@@ -1,4 +1,4 @@
-$extensions = @('.xml', '.html', '.htm', '.txt', '.nfo')
+$extensions = @('.xml', '.html', '.htm', '.txt', '.nfo', '.url')
 $folders = @('proof', 'sample')
 
 $items = Get-ChildItem . -r
