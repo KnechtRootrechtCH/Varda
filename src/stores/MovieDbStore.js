@@ -21,6 +21,8 @@ class MovieDbStore {
     @observable queryType = null;
     @observable searchString = '';
 
+    @observable seasons = new Map();
+
     constructor() {
         const locale = navigator.language.trim();
         runInAction(() => {
@@ -123,7 +125,7 @@ class MovieDbStore {
         this.loading = true;
         // console.debug('MovieDbStore.loadItem() :', mediaType, id);
 
-        const query = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${movieDbApiKey}&language=${this.locale}&&append_to_response=credits,recommendations,release_dates`;
+        const query = `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${movieDbApiKey}&language=${this.locale}&append_to_response=credits,recommendations,release_dates`;
 
         try {
             console.debug('MovieDbStore.loadItem() :', query);
@@ -144,6 +146,33 @@ class MovieDbStore {
                 this.item = null;
                 this.loading = false;
                 ErrorHandlingStore.handleError('moviedb.item.load', error);
+            });
+
+        }
+    }
+
+    @action async loadSeason(itemId, seasonNumber) {
+        // console.debug('MovieDbStore.loadItem() :', mediaType, id);
+        const query = `https://api.themoviedb.org/3/tv/${itemId}/season/${seasonNumber}?api_key=${movieDbApiKey}&language=${this.locale}`;
+
+        try {
+            console.debug('MovieDbStore.loadSeason() :', query);
+            const response = await axios.get(`${query}&cachebuster=${Math.random()}`);
+            runInAction(() => {
+                if (response.status === 200) {
+                    const seasonNumber = response.data.season_number;
+                    if (this.item.seasons && this.item.seasons[seasonNumber]) {
+                        const key = `${itemId}:${response.data.season_number}`;
+                        this.seasons.set(key, response.data);
+                        console.debug('MovieDbStore.loadSeason() : season loaded', response.data);
+                    }
+                } else {
+                    ErrorHandlingStore.handleError('moviedb.season.load', response);
+                }
+            });
+        } catch (error) {
+            runInAction(() => {
+                ErrorHandlingStore.handleError('moviedb.season.load', error);
             });
 
         }

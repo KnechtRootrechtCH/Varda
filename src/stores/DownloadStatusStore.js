@@ -9,7 +9,6 @@ import MetadataService from '../service/MetadataService';
 import constants from '../config/constants';
 
 class DownloadStatusStore {
-    @observable item = null;
     @observable items = new Map();
 
     @observable list = new Map();
@@ -258,6 +257,65 @@ class DownloadStatusStore {
             // this.updateItemData(key, item);
             DownloadHistoryStore.logTransaction(key, 'updateStatus', title, status, previousStatus, comment);
         }
+    }
+
+    @action async updateSeasonStatus(item, seasonNumber, episodeList, downloaded) {
+        const key = `${item.mediaType}:${item.id}`;
+        const timestamp = new Date();
+
+        var episodes = {};
+
+        episodeList.forEach((episode) => episodes[`${seasonNumber}:${episode.episode_number}`] = downloaded);
+
+        const data = {
+            episodes: episodes,
+            timestamp: timestamp,
+        };
+
+        console.debug('DownloadStatusStore.updateSeasonStatus()', item, key, data);
+        /*
+        const userDoc = firestore.collection('users').doc(this.dataUid);
+        const statusCollection = userDoc.collection('items');
+        statusCollection.doc(`${key}`).set(data,{
+            merge: true
+        })
+        .then(() => {
+            console.debug('DownloadStatusStore.updateEpisodeStatus() : successfull');
+        })
+        .catch((error) => {
+            ErrorHandlingStore.handleError('firebase.status.item.update', error);
+        });
+        */
+
+        // DownloadHistoryStore.logTransaction(key, 'updateSeasonStatus', item.title, downloaded, !downloaded);
+    }
+
+    @action async updateEpisodeStatus(item, seasonNumber, episodeNumber, downloaded) {
+        const key = `${item.mediaType}:${item.id}`;
+        const timestamp = new Date();
+
+        var episodes = {};
+        episodes[`${seasonNumber}:${episodeNumber}`] = downloaded;
+
+        const data = {
+            episodes: episodes,
+            timestamp: timestamp,
+        };
+
+        console.debug('DownloadStatusStore.updateEpisodeStatus()', item, key, data);
+        const userDoc = firestore.collection('users').doc(this.dataUid);
+        const statusCollection = userDoc.collection('items');
+        statusCollection.doc(`${key}`).set(data,{
+            merge: true
+        })
+        .then(() => {
+            console.debug('DownloadStatusStore.updateEpisodeStatus() : successfull');
+        })
+        .catch((error) => {
+            ErrorHandlingStore.handleError('firebase.status.item.update', error);
+        });
+
+        // DownloadHistoryStore.logTransaction(key, 'updateEpisodeStatus', item.title, downloaded, !downloaded);
     }
 
     @action async updatePriority(item, priority, previousPrority, comment, isImport) {

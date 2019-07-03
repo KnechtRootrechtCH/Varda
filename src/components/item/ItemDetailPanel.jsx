@@ -11,11 +11,12 @@ import ItemCast from './ItemCast';
 import ItemComments from './ItemComments';
 import ItemDownloadActions from './ItemDownloadActions';
 import ItemHistory from './ItemHistory';
-import ItemHeader from './ItemHeader'
-import ItemMetadata from './ItemMetadata'
-import ItemPriority from './ItemPriority'
+import ItemHeader from './ItemHeader';
+import ItemMetadata from './ItemMetadata';
+import ItemPriority from './ItemPriority';
 import ItemRecommendations from './ItemRecommendations';
-import ItemStatus from './ItemStatus'
+import ItemStatus from './ItemStatus';
+import ItemEpisodeList from './ItemEpisodeList';
 
 import MetadataService from '../../service/MetadataService';
 
@@ -35,6 +36,7 @@ class ItemDetailPanel extends React.Component {
         const item = this.props.item;
         const statusItem = this.props.statusItem
         const key = MetadataService.getKey(item);
+        const isTv =MetadataService.isTv(item);
 
         // const status = statusItem ? statusItem.status : null;
         // const active = status && status.length > 0 && status !== constants.STATUS.REMOVED
@@ -63,6 +65,13 @@ class ItemDetailPanel extends React.Component {
                                 <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                             </React.Fragment>
                         }
+                    </React.Fragment>
+                }
+
+                { isTv && item.seasons &&
+                    <React.Fragment>
+                        <Divider className={classes.divider}/>
+                        <ItemEpisodeList itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                     </React.Fragment>
                 }
 
