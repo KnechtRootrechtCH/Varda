@@ -131,7 +131,7 @@ i18n.init({
                     cast: 'Cast',
                     recommendations: 'Recommendations',
                     downloadLinks: 'Download search',
-                    episodeListNotAvailable: 'Episode list not available.',
+                    episodeListNotAvailable: 'Episode list not yet available.',
                     lastEpisode: 'Last episode',
                     nextEpisode: 'Next episode',
                     release: {
@@ -446,7 +446,7 @@ i18n.init({
                     cast: 'Besetzung',
                     recommendations: 'Empfehlungen',
                     downloadLinks: 'Download Suche',
-                    episodeListNotAvailable: 'Episodenliste nicht verfügbar.',
+                    episodeListNotAvailable: 'Episodenliste noch nicht verfügbar.',
                     lastEpisode: 'Letzte Episode',
                     nextEpisode: 'Nächste Episode',
                     release: {

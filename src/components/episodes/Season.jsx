@@ -10,7 +10,8 @@ import {
     ExpansionPanelActions,
     ExpansionPanelDetails,
     ExpansionPanelSummary,
-    List,
+    Table,
+    TableBody,
     Typography } from '@material-ui/core';
 
 import { ExpandMore } from '@material-ui/icons';
@@ -78,7 +79,7 @@ class Season extends React.Component {
         const countLabel = `${downloadedCount}/${episodeCount}`;
 
         const seasonComplete = downloadedCount >= episodeCount;
-        const color = seasonComplete ? 'primary' : 'textSecondary'
+        const color = seasonComplete ? 'primary' : downloadedCount > 0 ? 'secondary' : 'textPrimary';
         // console.debug(`${this.constructor.name}.render()`, season);
 
         return (
@@ -86,7 +87,7 @@ class Season extends React.Component {
                 <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
                     <Typography
                         className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title}
-                        color='textSecondary'
+                        color='textPrimary'
                         noWrap>
                         {title}
                     </Typography>
@@ -101,13 +102,15 @@ class Season extends React.Component {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails className={classes.details}>
                     { seasonDetails ?
-                        <List className={classes.list} dense={true}>
+                        <Table size='small' padding='dense' className={classes.episodeTable}>
+                            <TableBody>
                             { seasonDetails.episodes.map((episode, index) => {
                                 return (
                                     <Episode key={index} episode={episode} index={index} showStatus={showStatus} seasonNumber={seasonNumber} statusItem={statusItem} mobile={mobile} desktop={desktop} />
                                 )
                             })}
-                        </List>
+                            </TableBody>
+                        </Table>
                     :
                         <Typography color='textSecondary' variant='body2'>
                             {t('details.episodeListNotAvailable')}
@@ -159,14 +162,9 @@ const styles = theme => ({
     },
     details: {
         paddingTop: 0,
-        paddingLeft: theme.spacing.unit * 2,
     },
-    list: {
-        width: '100%',
-    },
-    statusIconPrimary: {
-        cursor: 'pointer',
-        color: theme.palette.primary.main,
+    episodeTable: {
+        padding: 0,
     },
 
 });
