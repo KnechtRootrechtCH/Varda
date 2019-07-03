@@ -111,20 +111,20 @@ class ItemCardStatusIcon extends React.Component {
                             </ListItemIcon>
                             {t('browse.card.remove')}
                         </MenuItem>
+                        { status !== constants.STATUS.REDOWNLOAD && status !== constants.STATUS.QUEUED &&
+                            <MenuItem onClick={() => this.handleStatusChange(constants.STATUS.REDOWNLOAD)}>
+                                <ListItemIcon>
+                                    <Sync/>
+                                </ListItemIcon>
+                                {t('browse.card.markForRedownload')}
+                            </MenuItem>
+                        }
                         { status !== constants.STATUS.DOWNLOADED &&
                             <MenuItem onClick={() => this.handleStatusChange(constants.STATUS.DOWNLOADED)}>
                                 <ListItemIcon>
                                     <Check/>
                                 </ListItemIcon>
                                 {t('browse.card.markDownloaded')}
-                            </MenuItem>
-                        }
-                        { status === constants.STATUS.DOWNLOADED &&
-                            <MenuItem onClick={() => this.handleStatusChange(constants.STATUS.REDOWNLOAD)}>
-                                <ListItemIcon>
-                                    <Sync/>
-                                </ListItemIcon>
-                                {t('browse.card.markForRedownload')}
                             </MenuItem>
                         }
                     </Menu>
