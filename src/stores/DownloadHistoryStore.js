@@ -109,10 +109,11 @@ class DownloadHistoryStore {
         this.lastQuery = query;
     }
 
-    @action async logTransaction(key, transaction, title, newValue, previousValue, comment){
+    @action async logTransaction(key, transaction, title, newValue, previousValue, comment, subTarget){
         const date = new Date();
         const timestamp = Moment(date).format('YYYY-MM-DD HH-mm-ss-SSSS ZZ');
         comment = comment ? comment : '';
+        subTarget = subTarget ? subTarget : '';
         previousValue = previousValue ? previousValue : '';
         // console.debug('DownloadHistoryStore.logTransaction()', timestamp, transaction, newValue, comment);
 
@@ -131,6 +132,7 @@ class DownloadHistoryStore {
                 user: this.uid,
                 userName: this.displayName,
                 comment: comment,
+                subTarget: subTarget,
             })
             .then(() => {
                 // console.debug('DownloadHistoryStore.logTransaction() : item => successfull');
@@ -154,6 +156,7 @@ class DownloadHistoryStore {
                 key: key,
                 title: title,
                 comment: comment,
+                subTarget: subTarget,
             })
             .then(() => {
                 // console.debug('DownloadHistoryStore.logTransaction() : user => successfull');
@@ -171,6 +174,7 @@ class DownloadHistoryStore {
                 key: key,
                 title: title,
                 comment: comment,
+                subTarget: subTarget,
             };
 
             if (this.dataUid !== this.uid) {

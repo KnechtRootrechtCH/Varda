@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 import {
     Button,
-    CircularProgress,
     ExpansionPanel,
     ExpansionPanelActions,
     ExpansionPanelDetails,
@@ -16,17 +15,12 @@ import {
 
 import { ExpandMore } from '@material-ui/icons';
 
-import {
-    Check,
-    ClockOutline }  from 'mdi-material-ui';
-
 import Episode from './Episode';
 
 import constants from '../../config/constants';
 // import MetadataService from '../../service/MetadataService';
 
 @withNamespaces()
-@inject('AuthenticationStore')
 @inject('DownloadStatusStore')
 @inject('MovieDbStore')
 @observer
@@ -40,14 +34,11 @@ class Season extends React.Component {
     }
 
     handleStatusToggle = (downloaded) => {
-        console.debug(`${this.constructor.name}.handleStatusToggle()`, this.props.AuthenticationStore.isAdmin, downloaded);
-        if (!this.props.AuthenticationStore.isAdmin) {
-            return;
-        }
+        console.debug(`${this.constructor.name}.handleStatusToggle()`, downloaded);
         // console.debug(`${this.constructor.name}.handleStatusToggle()`, downloaded);
 
         const item = this.props.statusItem;
-        const seasonNumber = this.props.seasonNumber;
+        const seasonNumber = this.props.season.season_number;
 
         const key = `${this.props.itemId}:${this.props.season.season_number}`;
         const seasonDetails = this.props.MovieDbStore.seasons.get(key);
@@ -59,22 +50,21 @@ class Season extends React.Component {
 
     render () {
         const classes = this.props.classes;
-        // const t = this.props.t;
+        const t = this.props.t;
 
         const mobile = this.props.mobile;
         const desktop = this.props.desktop;
-        const isAdmin = this.props.AuthenticationStore.isAdmin;
 
         const season = this.props.season;
         const episodeCount = season.episode_count;
         const seasonNumber = this.props.season.season_number;
-        
+
         const key = `${this.props.itemId}:${seasonNumber}`;
         const seasonDetails = this.props.MovieDbStore.seasons.get(key);
-        
+
         const statusItem = this.props.statusItem;
         const showStatus = statusItem && statusItem.status && statusItem.status !== constants.STATUS.REMOVED;
-        
+
         const title = season.name;
         // const releaseDate = MetadataService.getReleaseDateFormated(season, 'YYYY');
 
@@ -119,18 +109,25 @@ class Season extends React.Component {
                             })}
                         </List>
                     :
-                        <CircularProgress color='primary'/>
+                        <Typography color='textSecondary' variant='body2'>
+                            {t('details.episodeListNotAvailable')}
+                        </Typography>
                     }
                 </ExpansionPanelDetails>
-                { isAdmin &&
+                { seasonDetails &&
                     <ExpansionPanelActions>
-                        <Button size="small">Cancel</Button>
-                        <Button size="small" color="primary">
-                        Save
-                        </Button>
+                        { seasonComplete ?
+                            <Button size='small' onClick={() => this.handleStatusToggle(false)}>
+                                {t('details.actions.markSeasonNotDownloaded')}
+                            </Button>
+                        :
+                            <Button size='small' onClick={() => this.handleStatusToggle(true)}>
+                                {t('details.actions.markSeasonDownloaded')}
+                            </Button>
+                        }
+
                     </ExpansionPanelActions>
                 }
-                
             </ExpansionPanel>
         );
     }

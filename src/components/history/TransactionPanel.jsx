@@ -36,12 +36,13 @@ class TransactionPanel extends React.Component {
         const isNew = data.external && (!this.props.transactionsTimestamp || timestamp.isAfter(this.props.transactionsTimestamp));
         const itemHistory = this.props.itemHistory;
         const title = data.title ? data.title : '-';
+        const newValue = data.transaction.indexOf('Status') > 0  ? t(`history.transaction.${data.newValue}`) : data.newValue;
 
-        const transactionKey = data.transaction === 'updateStatus' ? `history.transaction.${data.newValue}` : `history.transaction.${data.transaction}`;
-        const newValue = data.transaction === 'updateStatus' ? t(`history.transaction.${data.newValue}`) : data.newValue;
-        const transactionLong = data.transaction === 'comment' ? t( `history.transaction.${data.transaction}`) : `${t( `history.transaction.${data.transaction}`)}: ${newValue}`;
+        const subTargetString = data.subTarget ? ` (${data.subTarget})` : '';
+        const transactionShort = data.transaction === 'updateStatus' ? `${t(`history.transaction.${data.newValue}`)}${subTargetString}` : t(`history.transaction.${data.transaction}`);
+        const transactionLong = data.subTarget ? `${data.subTarget}: ${newValue}` : `${t( `history.transaction.${data.transaction}`)}: ${newValue}`;
+
         const transactionColor = data.isAdminAction ? 'secondary' : 'primary';
-
         // const expand = !itemHistory && this.props.index === 0;
 
         const address = data.key ? `/browse/${data.key.replace(':', '/')}` : null;
@@ -80,7 +81,7 @@ class TransactionPanel extends React.Component {
                     }
                     <Tooltip title={transactionLong} aria-label={transactionLong}>
                         <Typography className={classes.transaction} align='right' color={transactionColor}>
-                            {t(transactionKey)}
+                            {transactionShort}
                         </Typography>
                     </Tooltip>
                 </ExpansionPanelSummary>

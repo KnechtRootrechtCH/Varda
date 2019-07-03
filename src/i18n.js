@@ -131,6 +131,7 @@ i18n.init({
                     cast: 'Cast',
                     recommendations: 'Recommendations',
                     downloadLinks: 'Download search',
+                    episodeListNotAvailable: 'Episode list not available.',
                     release: {
                         ch: {
                             type1: 'CH Premiere',
@@ -162,6 +163,8 @@ i18n.init({
                         addComment: 'Add comment',
                         submit: 'Submit',
                         cancel: 'Cancel',
+                        markSeasonDownloaded: 'Mark season done',
+                        markSeasonNotDownloaded: 'Requeue season',
                     }
                 },
 
@@ -190,6 +193,8 @@ i18n.init({
                         redownload: 'Retry',
                         downloading: 'Downloading',
                         downloaded: 'Done',
+                        updateSeasonStatus: 'Season',
+                        updateEpisodeStatus: 'Episode',
                     },
                     label: {
                         title: 'Title',
@@ -199,6 +204,7 @@ i18n.init({
                         previousValue: 'Old value',
                         newValue: 'New value',
                         comment: 'Comment',
+                        subTarget: 'Season/Episode',
                     },
                 },
 
@@ -438,6 +444,7 @@ i18n.init({
                     cast: 'Besetzung',
                     recommendations: 'Empfehlungen',
                     downloadLinks: 'Download Suche',
+                    episodeListNotAvailable: 'Episodenliste nicht verfügbar.',
                     release: {
                         ch: {
                             type1: 'CH Premiere',
@@ -469,6 +476,8 @@ i18n.init({
                         addComment: 'Kommentar hinzufügen',
                         submit: 'Speichern',
                         cancel: 'Abbrechen',
+                        markSeasonDownloaded: 'Staffel erledigt',
+                        markSeasonNotDownloaded: 'Staffel zurücksetzen',
                     }
                 },
 
@@ -497,6 +506,8 @@ i18n.init({
                         redownload: 'Nochmals suchen',
                         downloading: 'Wird heruntergeladen',
                         downloaded: 'Erledigt',
+                        updateSeasonStatus: 'Staffel',
+                        updateEpisodeStatus: 'Episode',
                     },
                     label: {
                         title: 'Titel',
@@ -506,6 +517,7 @@ i18n.init({
                         previousValue: 'Vorheriger Wert',
                         newValue: 'Neuer Wert',
                         comment: 'Kommentar',
+                        subTarget: 'Staffel/Episode',
                     },
                 },
 

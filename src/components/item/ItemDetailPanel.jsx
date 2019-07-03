@@ -55,6 +55,13 @@ class ItemDetailPanel extends React.Component {
                 <Divider className={classes.divider}/>
                 <ItemComments itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
 
+                { isTv && item.seasons &&
+                    <React.Fragment>
+                        <Divider className={classes.divider}/>
+                        <ItemEpisodeList itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
+                    </React.Fragment>
+                }
+
                 { this.props.AuthenticationStore.isAdmin &&
                     <React.Fragment>
                         <Divider className={classes.divider}/>
@@ -65,13 +72,6 @@ class ItemDetailPanel extends React.Component {
                                 <ItemHistory itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                             </React.Fragment>
                         }
-                    </React.Fragment>
-                }
-
-                { isTv && item.seasons &&
-                    <React.Fragment>
-                        <Divider className={classes.divider}/>
-                        <ItemEpisodeList itemKey={key} item={item} statusItem={statusItem} mobile={mobile} desktop={desktop}/>
                     </React.Fragment>
                 }
 

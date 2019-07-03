@@ -273,7 +273,6 @@ class DownloadStatusStore {
         };
 
         console.debug('DownloadStatusStore.updateSeasonStatus()', item, key, data);
-        /*
         const userDoc = firestore.collection('users').doc(this.dataUid);
         const statusCollection = userDoc.collection('items');
         statusCollection.doc(`${key}`).set(data,{
@@ -285,9 +284,12 @@ class DownloadStatusStore {
         .catch((error) => {
             ErrorHandlingStore.handleError('firebase.status.item.update', error);
         });
-        */
 
-        // DownloadHistoryStore.logTransaction(key, 'updateSeasonStatus', item.title, downloaded, !downloaded);
+        const seasonNumberString = `${seasonNumber}`.padStart(2, '0');
+        const subTarget = `S${seasonNumberString}`;
+        const newStatus = downloaded ? constants.STATUS.DOWNLOADED : constants.STATUS.REDOWNLOAD;
+        const previousStatus = downloaded ? constants.STATUS.QUEUED : constants.STATUS.DOWNLOADED;
+        DownloadHistoryStore.logTransaction(key, 'updateStatus', item.title, newStatus, previousStatus, null, subTarget);
     }
 
     @action async updateEpisodeStatus(item, seasonNumber, episodeNumber, downloaded) {
@@ -315,7 +317,12 @@ class DownloadStatusStore {
             ErrorHandlingStore.handleError('firebase.status.item.update', error);
         });
 
-        // DownloadHistoryStore.logTransaction(key, 'updateEpisodeStatus', item.title, downloaded, !downloaded);
+        // const seasonNumberString = `${seasonNumber}`.padStart(2, '0');
+        const episodeNumberString = `${episodeNumber}`.padStart(2, '0');
+        const subTarget = `${seasonNumber}x${episodeNumberString}`;
+        const newStatus = downloaded ? constants.STATUS.DOWNLOADED : constants.STATUS.REDOWNLOAD;
+        const previousStatus = downloaded ? constants.STATUS.QUEUED : constants.STATUS.DOWNLOADED;
+        DownloadHistoryStore.logTransaction(key, 'updateStatus', item.title, newStatus, previousStatus, null, subTarget);
     }
 
     @action async updatePriority(item, priority, previousPrority, comment, isImport) {
