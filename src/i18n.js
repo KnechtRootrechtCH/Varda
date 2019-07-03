@@ -132,6 +132,8 @@ i18n.init({
                     recommendations: 'Recommendations',
                     downloadLinks: 'Download search',
                     episodeListNotAvailable: 'Episode list not available.',
+                    lastEpisode: 'Last episode',
+                    nextEpisode: 'Next episode',
                     release: {
                         ch: {
                             type1: 'CH Premiere',
@@ -445,6 +447,8 @@ i18n.init({
                     recommendations: 'Empfehlungen',
                     downloadLinks: 'Download Suche',
                     episodeListNotAvailable: 'Episodenliste nicht verfügbar.',
+                    lastEpisode: 'Letzte Episode',
+                    nextEpisode: 'Nächste Episode',
                     release: {
                         ch: {
                             type1: 'CH Premiere',

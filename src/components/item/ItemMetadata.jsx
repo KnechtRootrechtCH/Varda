@@ -184,6 +184,28 @@ class ItemMetadata extends React.Component {
             display: rating,
         });
 
+        const lastEpisode = item.last_episode_to_air;
+        const lastAirDate = lastEpisode ? MetadataService.getReleaseDateFormated(lastEpisode, 'DD.MM.YYYY') : null;
+        const lastSeasonNumber = lastEpisode ? lastEpisode.season_number : null;
+        const lastEpisodeNumber = lastEpisode ? `${lastEpisode.episode_number}`.padStart(2, '0') : null;
+        const lastEpisodeString = `${lastSeasonNumber}x${lastEpisodeNumber}`;
+        rows.push({
+            key: 'lastEpisode',
+            value: `${lastAirDate} - ${lastEpisodeString}`,
+            display: lastAirDate && lastSeasonNumber && lastEpisodeNumber,
+        });
+
+        const nextEpisode = item.next_episode_to_air;
+        const nextAirDate = nextEpisode ? MetadataService.getReleaseDateFormated(nextEpisode, 'DD.MM.YYYY') : null;
+        const nextSeasonNumber = nextEpisode ? nextEpisode.season_number : null;
+        const nextEpisodeNumber = nextEpisode ? `${nextEpisode.episode_number}`.padStart(2, '0') : null;
+        const nextEpisodeString = `${nextSeasonNumber}x${nextEpisodeNumber}`;
+        rows.push({
+            key: 'nextEpisode',
+            value: `${nextAirDate} - ${nextEpisodeString}`,
+            display: nextAirDate && nextSeasonNumber && nextEpisodeNumber,
+        });;
+
         // overview
         const overview = item.overview;
 
