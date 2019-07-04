@@ -32,9 +32,7 @@ class TransactionDetails extends React.Component {
             <ExpansionPanelDetails className={classes.root}>
                 <table className={classes.releaseDateTable}>
                     <tbody>
-                        { data.subTarget &&
-                            this.renderRow(t('history.label.subTarget'), data.subTarget)
-                        }
+                        { data.subTarget ? this.renderRow(t('history.label.subTarget'), data.subTarget) : null}
                         { this.renderRow(t('history.label.user'), data.userName)}
                         { this.renderRow(t('history.label.timestamp'), timestampString, timestampLong)}
                         { this.renderRow(t('history.label.transaction'), transaction)}

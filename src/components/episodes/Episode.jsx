@@ -29,9 +29,6 @@ class Episode extends React.Component {
         const classes = this.props.classes;
         // const t = this.props.t;
 
-        // const mobile = this.props.mobile;
-        // const desktop = this.props.desktop;
-
         const showStatus = this.props.showStatus;
         const seasonNumber = this.props.seasonNumber;
         const episode = this.props.episode;
@@ -40,18 +37,18 @@ class Episode extends React.Component {
         const airDate = MetadataService.getReleaseDateFormated(episode, 'DD.MM.YYYY');
 
         const statusItem = this.props.statusItem;
-        const downloaded = statusItem.episodes && statusItem.episodes[`${seasonNumber}:${episode.episode_number}`];
+        const status = statusItem.episodes && statusItem.episodes[`${seasonNumber}:${episode.episode_number}`] ? true : false;  // to ensure the value is not undefined
 
-        // console.debug(`${this.constructor.name}.render()`, title, episodeStatus);
+        console.debug(`${this.constructor.name}.render()`, title, status);
 
         return (
             <TableRow className={classes.root}>
                 { showStatus &&
                     <TableCell className={classes.checkboxCell} padding='checkbox' align='left'>
                         <Checkbox
-                            checked={downloaded}
+                            checked={status}
                             color='primary'
-                            onChange={() => this.handleStatusToggle(!downloaded)}/>
+                            onChange={() => this.handleStatusToggle(!status)}/>
                     </TableCell>
                 }
                 <TableCell align='left'>

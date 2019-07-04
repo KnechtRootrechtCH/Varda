@@ -80,7 +80,7 @@ class Season extends React.Component {
 
         const seasonComplete = downloadedCount >= episodeCount;
         const color = seasonComplete ? 'primary' : downloadedCount > 0 ? 'secondary' : 'textPrimary';
-        // console.debug(`${this.constructor.name}.render()`, season);
+        console.debug(`${this.constructor.name}.render()`, season, statusItem);
 
         return (
             <ExpansionPanel key={season.id} className={classes.root} defaultExpanded={false}>
@@ -106,7 +106,7 @@ class Season extends React.Component {
                             <TableBody>
                             { seasonDetails.episodes.map((episode, index) => {
                                 return (
-                                    <Episode key={index} episode={episode} index={index} showStatus={showStatus} seasonNumber={seasonNumber} statusItem={statusItem} mobile={mobile} desktop={desktop} />
+                                    <Episode key={index} episode={episode} index={index} showStatus={showStatus} statusItem={statusItem} seasonNumber={seasonNumber} />
                                 )
                             })}
                             </TableBody>
