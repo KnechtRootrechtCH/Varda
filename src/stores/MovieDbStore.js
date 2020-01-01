@@ -160,12 +160,9 @@ class MovieDbStore {
             const response = await axios.get(`${query}&cachebuster=${Math.random()}`);
             runInAction(() => {
                 if (response.status === 200) {
-                    const seasonNumber = response.data.season_number;
-                    if (this.item.seasons && this.item.seasons[seasonNumber]) {
-                        const key = `${itemId}:${response.data.season_number}`;
-                        this.seasons.set(key, response.data);
-                        console.debug('MovieDbStore.loadSeason() : season loaded', response.data);
-                    }
+                    const key = `${itemId}:${response.data.season_number}`;
+                    this.seasons.set(key, response.data);
+                    console.debug('MovieDbStore.loadSeason() : season loaded', response.data);
                 } else {
                     ErrorHandlingStore.handleError('moviedb.season.load', response);
                 }
