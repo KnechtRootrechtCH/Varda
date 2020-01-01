@@ -7,6 +7,7 @@ import { Divider } from '@material-ui/core';
 
 import AccountInformation from './dashboard/AccountInformation';
 import AccessTimestamps from './dashboard/AccessTimestamps';
+import ItemCountSettings from './settings/ItemCountSettings';
 
 @inject('AuthenticationStore')
 @observer
@@ -21,6 +22,8 @@ class AdminDashboard extends React.Component {
                 <AccountInformation/>
                 <Divider className={classes.divider}/>
                 <AccessTimestamps/>
+                <Divider className={classes.divider}/>
+                <ItemCountSettings/>
             </div>
         );
      }
