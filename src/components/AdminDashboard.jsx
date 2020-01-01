@@ -5,10 +5,8 @@ import { inject, observer } from 'mobx-react';
 
 import { Divider } from '@material-ui/core';
 
-import AccountInformationSettings from './settings/AccountInformationSettings';
-import CloudFunctionSettings from './settings/CloudFunctionSettings';
-import ImportSettings from './settings/ImportSettings';
-import ThemeSettings from './settings/ThemeSettings';
+import AccountInformation from './dashboard/AccountInformation';
+import AccessTimestamps from './dashboard/AccessTimestamps';
 
 @inject('AuthenticationStore')
 @observer
@@ -20,21 +18,9 @@ class AdminDashboard extends React.Component {
 
         return (
             <div className={classes.root}>
-                <AccountInformationSettings/>
+                <AccountInformation/>
                 <Divider className={classes.divider}/>
-
-                <ThemeSettings/>
-                <Divider className={classes.divider}/>
-
-                <CloudFunctionSettings/>
-                <Divider className={classes.divider}/>
-
-                { this.props.AuthenticationStore.isAdmin &&
-                    <React.Fragment>
-                        <ImportSettings/>
-                        <Divider className={classes.divider}/>
-                    </React.Fragment>
-                }
+                <AccessTimestamps/>
             </div>
         );
      }

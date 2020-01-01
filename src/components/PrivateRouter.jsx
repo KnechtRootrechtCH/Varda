@@ -9,6 +9,7 @@ import withWidth, { isWidthUp, isWidthDown } from '@material-ui/core/withWidth';
 import { CircularProgress } from '@material-ui/core';
 
 
+import AdminDashboard from './AdminDashboard';
 import Browse from './Browse';
 import Export from './Export';
 import History from './History';
@@ -62,6 +63,10 @@ class PrivateRouter extends React.Component {
                                     exact
                                     path='/settings'
                                     component={Settings}/>
+                                <Route
+                                    exact
+                                    path='/admin'
+                                    component={AdminDashboard}/>
                                 <Route
                                     exact
                                     path='/settings/export'

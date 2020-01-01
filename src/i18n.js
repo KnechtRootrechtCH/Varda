@@ -211,6 +211,8 @@ i18n.init({
                 },
 
                 settings: {
+                    adminDashboard: 'Admin Dashboard',
+                    accessTimestamp: 'Access',
                     accountInformation: 'User Information',
                     dataAccountInformation: 'User Information (Data)',
                     userName: 'Username',
@@ -219,8 +221,8 @@ i18n.init({
                     dataId: 'Data User ID',
                     lastAccess: 'Last access',
                     lastTransaction: 'Last transaction',
-                    commentsTimestamp: 'Comments timestamp',
-                    transactionTimestamp: 'Transactions timestamp',
+                    commentsTimestamp: 'Comments check',
+                    transactionTimestamp: 'Transactions check',
                     themeSettings: 'Theme settings',
                     darkTheme: 'Dark theme',
                     on: 'On',
@@ -526,6 +528,8 @@ i18n.init({
                 },
 
                 settings: {
+                    adminDashboard: 'Admin Dashboard',
+                    accessTimestamp: 'Zugriffe',
                     accountInformation: 'User Informationen',
                     dataAccountInformation: 'User Informationen (Daten)',
                     userName: 'Benutzername',

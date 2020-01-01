@@ -11,7 +11,7 @@ import {
 @withNamespaces()
 @inject('AuthenticationStore')
 @observer
-class AccountInformationSettings extends React.Component {
+class AccountInformation extends React.Component {
 
     render () {
         const classes = this.props.classes;
@@ -57,19 +57,14 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         marginBottom: theme.spacing.unit,
     },
-    icon: {
-        marginRight: theme.spacing.unit,
-        verticalAlign: 'middle',
-        marginBottom: 3,
-    },
     text: {
         marginBottom: theme.spacing.unit / 2,
-        color: theme.palette.text.disabled,
+        color: theme.palette.text.secondary,
     },
 });
 
-AccountInformationSettings.propTypes = {
+AccountInformation.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withWidth()(AccountInformationSettings));
+export default withStyles(styles)(withWidth()(AccountInformation));

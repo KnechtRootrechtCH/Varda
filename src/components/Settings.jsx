@@ -8,6 +8,7 @@ import { Divider } from '@material-ui/core';
 import AccountInformationSettings from './settings/AccountInformationSettings';
 import CloudFunctionSettings from './settings/CloudFunctionSettings';
 import ImportSettings from './settings/ImportSettings';
+import ItemCountSettings from './settings/ItemCountSettings';
 import ThemeSettings from './settings/ThemeSettings';
 
 @inject('AuthenticationStore')
@@ -21,6 +22,9 @@ class Settings extends React.Component {
         return (
             <div className={classes.root}>
                 <AccountInformationSettings/>
+                <Divider className={classes.divider}/>
+                
+                <ItemCountSettings/>
                 <Divider className={classes.divider}/>
 
                 <ThemeSettings/>

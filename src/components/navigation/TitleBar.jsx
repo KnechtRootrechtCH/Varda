@@ -29,6 +29,7 @@ import {
     DatabaseExport,
     ExitToApp,
     Settings,
+    ViewDashboard,
     Menu as MenuIcon }  from 'mdi-material-ui';
 
 import SearchDrawer from '../search/SearchDrawer';
@@ -121,7 +122,8 @@ class TitleBar extends React.Component {
         const photoUrl = this.props.AuthenticationStore.photoUrl;
         const darkThemeStateKey = this.props.ThemeStore.type === 'dark' ? 'settings.on' : 'settings.off'
 
-        const crossAccountAdmin = this.props.AuthenticationStore.isAdmin && this.props.AuthenticationStore.uid !== this.props.AuthenticationStore.dataUid;
+        const isAdmin = this.props.AuthenticationStore.isAdmin;
+        const crossAccountAdmin = isAdmin && this.props.AuthenticationStore.uid !== this.props.AuthenticationStore.dataUid;
         const barColor = crossAccountAdmin ? 'secondary' : 'default';
         const loading = false; //this.props.MovieDbStore.loading;
 
@@ -206,11 +208,19 @@ class TitleBar extends React.Component {
                     anchorEl={this.state.menuAnchor}
                     open={Boolean(this.state.menuAnchor)}
                     onClose={this.handleMenuClose}>
-                    <MenuItem component={Link} to='/settings' onClick={this.handleMenuClose}>
+                    { isAdmin &&
+                        <MenuItem component={Link} to='/admin' onClick={this.handleMenuClose}>
+                            <ListItemIcon>
+                                <ViewDashboard/>
+                            </ListItemIcon>
+                            {t('settings.adminDashboard')}
+                        </MenuItem>
+                    }
+                    <MenuItem onClick={this.handleDarkThemeToggle}>
                         <ListItemIcon>
-                            <Settings/>
+                            <Brightness4/>
                         </ListItemIcon>
-                        {t('common.settings')}
+                        {`${t('settings.darkTheme')}: ${t(darkThemeStateKey)}`}
                     </MenuItem>
                     <MenuItem component={Link} to='/settings/export' onClick={this.handleMenuClose}>
                         <ListItemIcon>
@@ -218,11 +228,11 @@ class TitleBar extends React.Component {
                         </ListItemIcon>
                         {t('settings.export.title')}
                     </MenuItem>
-                    <MenuItem onClick={this.handleDarkThemeToggle}>
+                    <MenuItem component={Link} to='/settings' onClick={this.handleMenuClose}>
                         <ListItemIcon>
-                            <Brightness4/>
+                            <Settings/>
                         </ListItemIcon>
-                        {`${t('settings.darkTheme')}: ${t(darkThemeStateKey)}`}
+                        {t('common.settings')}
                     </MenuItem>
                     <Divider/>
                     <MenuItem onClick={this.handleSignOut}>
