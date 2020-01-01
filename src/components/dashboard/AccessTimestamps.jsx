@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import { withNamespaces } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,6 +13,8 @@ import {
 
 @withNamespaces()
 @inject('AuthenticationStore')
+@inject('CommentsStore')
+@inject('DownloadHistoryStore')
 @observer
 class AccessTimestamps extends React.Component {
 
@@ -41,6 +44,13 @@ class AccessTimestamps extends React.Component {
         const transactionTimestampYesterday = !transactionTimestampToday && yesterday.isBefore(Moment(this.props.AuthenticationStore.dataUserTransactionsTimestamp));
         const transactionTimestampColor = transactionTimestampToday ? 'secondary' : transactionTimestampYesterday ? 'primary' : 'textSecondary';
 
+        const newTransactionsCount = this.props.DownloadHistoryStore.newTransactionsCount;
+        const newTransactions = newTransactionsCount > 0;
+        const newTransactionsColor = newTransactions ? 'primary' : 'textSecondary';
+
+        const newCommentsCount = this.props.CommentsStore.newCommentsCount;
+        const newComments = newCommentsCount > 0;
+        const newCommentsColor = newComments ? 'primary' : 'textSecondary';
 
         return (
             <div className={classes.root}>
@@ -91,6 +101,37 @@ class AccessTimestamps extends React.Component {
                         <Typography variant='body2' color={transactionTimestampColor}>
                             {transactionTimestamp}
                         </Typography>
+                    </Grid>
+
+                    <Grid item xs={12} sm={4} md={2}>
+                        <Typography variant='body2' color='textPrimary'>
+                            {t('settings.newTransactions')}:&nbsp;
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={10}>
+                        { newTransactions ? 
+                            <Typography variant='body2' color={newTransactionsColor} component={Link} to='/history'>
+                                {newTransactionsCount}
+                            </Typography>
+                        :
+                            <Typography variant='body2' color={newCommentsColor}>-</Typography>
+                        }
+
+                    </Grid>
+
+                    <Grid item xs={12} sm={4} md={2}>
+                        <Typography variant='body2' color='textPrimary'>
+                            {t('settings.newComments')}:&nbsp;
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={10}>
+                        { newComments ? 
+                            <Typography variant='body2' color={newCommentsColor} component={Link} to='/messages'>
+                                {newCommentsCount}
+                            </Typography>
+                        :
+                            <Typography variant='body2' color={newCommentsColor}>-</Typography>
+                        }
                     </Grid>
                 </Grid>
             </div>
