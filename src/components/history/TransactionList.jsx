@@ -16,6 +16,12 @@ import TransactionPanel from './TransactionPanel';
 @observer
 class TransactionList extends React.Component {
 
+    sort(a, b) {
+        let aMoment = Moment(a[1].timestamp.toDate());
+        let bMoment = Moment(b[1].timestamp.toDate());
+        return aMoment.diff(bMoment);
+    }
+
     render () {
         const classes = this.props.classes;
         // const t = this.props.t;
@@ -23,7 +29,7 @@ class TransactionList extends React.Component {
         const desktop = this.props.desktop;
         const itemHistory = this.props.itemHistory;
 
-        let transactions = itemHistory ? [...this.props.DownloadHistoryStore.itemHistory].sort() : [...this.props.DownloadHistoryStore.history].sort();
+        let transactions = itemHistory ? [...this.props.DownloadHistoryStore.itemHistory].sort(this.sort) : [...this.props.DownloadHistoryStore.history].sort(this.sort);
         if (!this.props.DownloadHistoryStore.sortAscending) {
             transactions = transactions.reverse();
         }

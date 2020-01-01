@@ -12,6 +12,12 @@ import Comment from './Comment';
 @observer
 class CommentsList extends React.Component {
 
+    sort(a, b) {
+        let aMoment = Moment(a[1].timestamp.toDate());
+        let bMoment = Moment(b[1].timestamp.toDate());
+        return aMoment.diff(bMoment);
+    }
+
     render () {
         const classes = this.props.classes;
         // const t = this.props.t;
@@ -23,7 +29,7 @@ class CommentsList extends React.Component {
         const commentsTimestamp = this.props.CommentsStore.commentsTimestamp;
         const commentsTimestampMoment = commentsTimestamp ? Moment(commentsTimestamp) : null;
 
-        let comments = itemComments ? [...this.props.CommentsStore.itemComments].sort() : [...this.props.CommentsStore.comments].sort();
+        let comments = itemComments ? [...this.props.CommentsStore.itemComments].sort(this.sort) : [...this.props.CommentsStore.comments].sort(this.sort);
         if (!this.props.CommentsStore.sortAscending) {
             comments = comments.reverse();
         }
