@@ -181,16 +181,15 @@ class CommentsStore {
             });
     }
 
-    @action subscribeNotifications(subscribe) {
-        console.debug('CommentsStore.subscribeNotifications() => ', subscribe);
+    @action subscribeNotifications() {
+        console.debug('CommentsStore.subscribeNotifications()');
+
         if (this.notificationSubscription) {
             this.notificationSubscription.onSnapshot(function (){
                 // Unsubscribe
               });
         }
-        if (!subscribe) {
-            return;
-        }
+
         this.notificationSubscription = firestore
             .collection('users')
             .doc(this.dataUid)
@@ -217,8 +216,9 @@ class CommentsStore {
             console.debug('CommentsStore.handleNotification() => ', notification);
             const newComment = i18n.translator.translate('notifications.newComment');
             const header = `${newComment} ${notification.userName}`;
-            const message = notification.itemTitle ? `${notification.itemTitle}: ${notification.text}` : notification.text
-            NotificationStore.showNotification(header, message, '/messages');
+            const message = notification.itemTitle ? `${notification.text} (${notification.itemTitle})` : notification.text
+            NotificationStore.pushSnackbarNotification(header, message, 'info', false, false, '/messages');
+            NotificationStore.pushBrowserNotification(header, message, 'info', '/messages');
         }
     }
 

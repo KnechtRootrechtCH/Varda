@@ -243,8 +243,8 @@ i18n.init({
                     lastUpdate: 'Last execution',
                     neverRun: 'Cloud function never executed!',
                     notificationSettings: 'Notifications',
-                    transactionNotifications: 'Show notification for transactions',
-                    commentNotifications: 'Show notification for comments',
+                    transactionNotifications: 'Show push notification for transactions',
+                    commentNotifications: 'Show push notification for comments',
                     export: {
                         title: 'Data Export',
                         statusFilter: 'Select status filter',
@@ -272,7 +272,7 @@ i18n.init({
 
                 notifications: {
                     newComment: 'New message from',
-                    newTransaction: 'New transaction by'
+                    newTransaction: 'New transaction by',
                 },
 
                 error: {
@@ -570,8 +570,8 @@ i18n.init({
                     lastUpdate: 'Letzte Ausführung',
                     neverRun: 'Cloud Function nie ausgeführt!',
                     notificationSettings: 'Benachrichtigungen',
-                    transactionNotifications: 'Benachrichtigung bei neuer Transaktionen',
-                    commentNotifications: 'Benachrichtigung bei neuem Kommentar',
+                    transactionNotifications: 'Push-Benachrichtigung bei neuer Transaktionen',
+                    commentNotifications: 'Push-Benachrichtigung bei neuem Kommentar',
                     export: {
                         title: 'Datenexport',
                         statusFilter: 'Status Filter auswählen',

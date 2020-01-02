@@ -151,6 +151,8 @@ class AuthenticationStore {
                     this.adminSettingsLoaded = true;
                     this.loadUserInfo();
                     this.loadUserData();
+                    CommentsStore.subscribeNotifications();
+                    DownloadHistoryStore.subscribeNotifications();
                     // console.debug('AuthenticationStore.loadAdminSettings() : successfull');
                 });
             })
@@ -184,8 +186,6 @@ class AuthenticationStore {
 
                     console.debug('AuthenticationStore.loadUserInfo() : updated successfully');
                     this.updateNotificationCounts();
-                    CommentsStore.subscribeNotifications(this.commentNotificationsEnabled);
-                    DownloadHistoryStore.subscribeNotifications(this.transactionNotificationsEnabled);
                 });
             }, (error) => {
                 ErrorHandlingStore.handleError('firebase.auth.settings.user', error);

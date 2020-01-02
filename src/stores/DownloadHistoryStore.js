@@ -268,14 +268,12 @@ class DownloadHistoryStore {
     }
 
     @action subscribeNotifications(subscribe) {
-        console.debug('DownloadHistoryStore.subscribeNotifications() => ', subscribe);
+        console.debug('DownloadHistoryStore.subscribeNotifications()');
+
         if (this.notificationSubscription) {
             this.notificationSubscription.onSnapshot(function (){
                 // Unsubscribe
               });
-        }
-        if (!subscribe) {
-            return;
         }
 
         this.notificationSubscription = firestore
@@ -287,9 +285,11 @@ class DownloadHistoryStore {
 
         this.notificationSubscription.onSnapshot((snapshot) => {
             runInAction(() => {
-                snapshot.forEach(doc => {
-                    let data = doc.data();
-                    this.handleNotification(data);
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'added') {
+                        let data = change.doc.data();
+                        this.handleNotification(data);
+                    }
                 });
             });
         }, (error) => {
@@ -302,9 +302,10 @@ class DownloadHistoryStore {
             console.debug('DownloadHistoryStore.handleNotification() => ', notification, i18n.translator.translate('title'));
             const newTransaction = i18n.translator.translate('notifications.newTransaction');
             const header = `${newTransaction} ${notification.userName}`;
-            const newValue = i18n.translator.translate(`common.status.${notification.newValue}`);
-            const message = notification.title ? `${notification.title}: ${newValue}` : newValue
-            NotificationStore.showNotification(header, message, '/history');
+            const transactionType = i18n.translator.translate(`history.transaction.${notification.transaction}`);
+            const message = notification.title ? `${transactionType} (${notification.title})` : transactionType;
+            NotificationStore.pushSnackbarNotification(header, message, 'info', false, false, '/history');
+            NotificationStore.pushBrowserNotification(header, message, 'info', '/history');
         }
     }
 
