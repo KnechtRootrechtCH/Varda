@@ -15,14 +15,25 @@ import {
 @inject('AuthenticationStore')
 @inject('CommentsStore')
 @inject('DownloadHistoryStore')
+@inject('NotificationStore')
 @observer
 class NotificationSettings extends React.Component {
 
     handleTransactionNotificationsToggle = () => {
+        let current = this.props.DownloadHistoryStore.notificationsEnabled;
+        if (!current) {
+            const t = this.props.t;
+            this.props.NotificationStore.pushBrowserNotification(t('title'), t('settings.transactionNotificationsEnabled'), true, true, null);
+        }
         this.props.DownloadHistoryStore.toggleNotifactions();
     }
 
     handleCommentNotificationsToggle = () => {
+        let current = this.props.CommentsStore.notificationsEnabled;
+        if (!current) {
+            const t = this.props.t;
+            this.props.NotificationStore.pushBrowserNotification(t('title'), t('settings.commentNotificationsEnabled'), true, true, null);
+        }
         this.props.CommentsStore.toggleNotifactions();
     }
 

@@ -249,13 +249,11 @@ class DownloadHistoryStore {
 
     @action toggleNotifactions = () => {
         let enabled = !AuthenticationStore.transactionNotificationsEnabled;
-        const timestamp = new Date();
         firestore
             .collection('users')
             .doc(this.uid)
             .set({
                 transactionNotifications: enabled,
-                transactionNotificationsTimestamp: timestamp
             }, {
                 merge: true
             })
@@ -300,12 +298,14 @@ class DownloadHistoryStore {
     @action handleNotification(notification) {
         if (notification.userName !== this.displayName) {
             console.debug('DownloadHistoryStore.handleNotification() => ', notification, i18n.translator.translate('title'));
-            const newTransaction = i18n.translator.translate('notifications.newTransaction');
-            const header = `${newTransaction} ${notification.userName}`;
-            const transactionType = i18n.translator.translate(`history.transaction.${notification.transaction}`);
-            const message = notification.title ? `${transactionType} (${notification.title})` : transactionType;
-            NotificationStore.pushSnackbarNotification(header, message, 'info', false, false, '/history');
-            NotificationStore.pushBrowserNotification(header, message, 'info', '/history');
+
+            const newValue = notification.transaction.indexOf('Status') > 0  ? i18n.translator.translate(`history.transaction.${notification.newValue}`) : notification.newValue;
+            const details = notification.subTarget ? `${notification.subTarget}: ${newValue}` : `${i18n.translator.translate( `history.transaction.${notification.transaction}`)} '${newValue}'`;
+
+            NotificationStore.pushSnackbarNotification(notification.title, details, false, false, '/history');
+            if (AuthenticationStore.transactionNotificationsEnabled) {
+                NotificationStore.pushBrowserNotification(notification.title, details, false, false, '/history');
+            }
         }
     }
 
@@ -364,6 +364,10 @@ class DownloadHistoryStore {
 
     @computed get transactionsTimestamp () {
         return AuthenticationStore.transactionsTimestamp ? AuthenticationStore.transactionsTimestamp : null;
+    }
+
+    @computed get notificationsEnabled () {
+        return AuthenticationStore.transactionNotificationsEnabled;
     }
 }
 

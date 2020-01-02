@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 @inject('NotificationStore')
 @observer
-class Notifier extends React.Component {
+class SnackbarNotifier extends React.Component {
     displayed = [];
 
     storeDisplayed = (id) => {
@@ -43,8 +43,8 @@ const styles = theme => ({
     },
 });
 
-Notifier.propTypes = {
+SnackbarNotifier.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withSnackbar(Notifier));
+export default withStyles(styles)(withSnackbar(SnackbarNotifier));

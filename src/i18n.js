@@ -245,6 +245,8 @@ i18n.init({
                     notificationSettings: 'Notifications',
                     transactionNotifications: 'Show push notification for transactions',
                     commentNotifications: 'Show push notification for comments',
+                    transactionNotificationsEnabled: 'Benachrichtigungen für Transaktionen wurden aktiviert.',
+                    commentNotificationsEnabled: 'Benachrichtigungen für Kommentare wurden aktiviert.',
                     export: {
                         title: 'Data Export',
                         statusFilter: 'Select status filter',
@@ -268,11 +270,6 @@ i18n.init({
                             priority: 'Priority',
                         },
                     },
-                },
-
-                notifications: {
-                    newComment: 'New message from',
-                    newTransaction: 'New transaction by',
                 },
 
                 error: {
@@ -572,6 +569,8 @@ i18n.init({
                     notificationSettings: 'Benachrichtigungen',
                     transactionNotifications: 'Push-Benachrichtigung bei neuer Transaktionen',
                     commentNotifications: 'Push-Benachrichtigung bei neuem Kommentar',
+                    transactionNotificationsEnabled: 'Benachrichtigungen für Transaktionen wurden aktiviert.',
+                    commentNotificationsEnabled: 'Benachrichtigungen für Kommentare wurden aktiviert.',
                     export: {
                         title: 'Datenexport',
                         statusFilter: 'Status Filter auswählen',
@@ -595,11 +594,6 @@ i18n.init({
                             priority: 'Priorität',
                         },
                     },
-                },
-
-                notifications: {
-                    newComment: 'Neuer Nachricht von',
-                    newTransaction: 'Neue Transaktion von'
                 },
 
                 error: {

@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
-import Notifier from './components/util/Notifier'
+import SnackbarNotifier from './components/util/SnackbarNotifier'
 import PrivateRouter from './components/PrivateRouter'
 
 @inject('ThemeStore')
@@ -40,7 +40,7 @@ class App extends Component {
                     <style>{`body { background-color: ${theme.palette.background.default}; }`}</style>
                 </Helmet>
                 <MuiThemeProvider theme={theme}>
-                    <Notifier />
+                    <SnackbarNotifier />
                     <PrivateRouter/>
                 </MuiThemeProvider>
             </div>

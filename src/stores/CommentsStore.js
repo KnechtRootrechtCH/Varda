@@ -7,8 +7,6 @@ import ErrorHandlingStore from './ErrorHandlingStore';
 import NotificationStore from './NotificationStore';
 import MetadataService from '../service/MetadataService';
 
-import i18n from 'i18next';
-
 class CommentsStore {
     loading = false;
     lastItem = null;
@@ -163,13 +161,11 @@ class CommentsStore {
 
     @action toggleNotifactions = () => {
         let enabled = !AuthenticationStore.commentNotificationsEnabled;
-        const timestamp = new Date();
         firestore
             .collection('users')
             .doc(this.uid)
             .set({
                 commentNotifications: enabled,
-                commentNotificationsTimestamp: timestamp
             }, {
                 merge: true
             })
@@ -214,11 +210,13 @@ class CommentsStore {
     @action handleNotification(notification) {
         if (notification.userName !== this.displayName) {
             console.debug('CommentsStore.handleNotification() => ', notification);
-            const newComment = i18n.translator.translate('notifications.newComment');
-            const header = `${newComment} ${notification.userName}`;
-            const message = notification.itemTitle ? `${notification.text} (${notification.itemTitle})` : notification.text
-            NotificationStore.pushSnackbarNotification(header, message, 'info', false, false, '/messages');
-            NotificationStore.pushBrowserNotification(header, message, 'info', '/messages');
+            const messageSnackbar = notification.itemTitle ? `${notification.text} (${notification.itemTitle})` : notification.text
+            const messageNotification  = notification.itemTitle ? `${notification.itemTitle}: ${notification.text}` : notification.text
+
+            NotificationStore.pushSnackbarNotification(notification.userName, messageSnackbar, false, false, '/messages');
+            if(AuthenticationStore.commentNotificationsEnabled) {
+                NotificationStore.pushBrowserNotification(notification.userName, messageNotification, false, false, '/messages');
+            }
         }
     }
 
@@ -299,6 +297,10 @@ class CommentsStore {
 
     @computed get isAdminAction(){
         return this.isAdmin && this.dataUid !== this.uid;
+    }
+
+    @computed get notificationsEnabled () {
+        return AuthenticationStore.commentNotificationsEnabled;
     }
 }
 

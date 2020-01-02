@@ -31,8 +31,6 @@ class AuthenticationStore {
 
     @observable transactionNotificationsEnabled = false;
     @observable commentNotificationsEnabled = false;
-    @observable transactionNotificationsTimestamp = null;
-    @observable commentNotificationsTimestamp = null;
 
     @observable itemCounts = {};
 
@@ -178,9 +176,6 @@ class AuthenticationStore {
 
                     this.commentNotificationsEnabled = doc.data().commentNotifications ? true : false;
                     this.transactionNotificationsEnabled = doc.data().transactionNotifications ? true : false;
-
-                    this.commentNotificationsTimestamp = doc.data().commentNotificationsTimestamp ? doc.data().commentNotificationsTimestamp.toDate() : this.commentNotificationsTimestamp;
-                    this.transactionNotificationsTimestamp = doc.data().transactionNotificationsTimestamp ? doc.data().transactionNotificationsTimestamp.toDate() : this.transactionNotificationsTimestamp;
 
                     this.userInfoLoaded = true;
 
