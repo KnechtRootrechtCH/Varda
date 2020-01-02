@@ -9,6 +9,7 @@ import AccountInformationSettings from './settings/AccountInformationSettings';
 import CloudFunctionSettings from './settings/CloudFunctionSettings';
 import ImportSettings from './settings/ImportSettings';
 import ItemCountSettings from './settings/ItemCountSettings';
+import NotificationSettings from './settings/NotificationSettings';
 import ThemeSettings from './settings/ThemeSettings';
 
 @inject('AuthenticationStore')
@@ -23,18 +24,21 @@ class Settings extends React.Component {
             <div className={classes.root}>
                 <AccountInformationSettings/>
                 <Divider className={classes.divider}/>
-                
+
                 <ItemCountSettings/>
                 <Divider className={classes.divider}/>
 
                 <ThemeSettings/>
                 <Divider className={classes.divider}/>
 
-                <CloudFunctionSettings/>
+                <NotificationSettings/>
                 <Divider className={classes.divider}/>
 
                 { this.props.AuthenticationStore.isAdmin &&
                     <React.Fragment>
+                        <CloudFunctionSettings/>
+                        <Divider className={classes.divider}/>
+
                         <ImportSettings/>
                         <Divider className={classes.divider}/>
                     </React.Fragment>

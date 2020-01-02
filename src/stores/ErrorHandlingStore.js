@@ -31,7 +31,7 @@ class ErrorHandlingStore {
         console.error(`ErrorHandlingStore.handlingError() : Error occured in '${source}'`, source, info);
         firestore.collection('errors').add(error);
 
-        NotificationStore.showNotification(timestamp, 'error.message', `error.${source}`, 'error', true, true);
+        NotificationStore.showPopup(timestamp, 'error.message', `error.${source}`, 'error', true, true);
     }
 }
 

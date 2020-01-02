@@ -4,7 +4,10 @@ import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
 import ErrorHandlingStore from './ErrorHandlingStore';
+import NotificationStore from './NotificationStore';
 import MetadataService from '../service/MetadataService';
+
+import i18n from 'i18next';
 
 class CommentsStore {
     loading = false;
@@ -18,6 +21,7 @@ class CommentsStore {
     newCountLimit = 5;
     lastQuery = null;
     lastCountQuery = null;
+    notificationSubscription = null;
 
     @action resetComments() {
         this.comments = new Map();
@@ -155,6 +159,67 @@ class CommentsStore {
         });
 
         this.lastCountQuery = query;
+    }
+
+    @action toggleNotifactions = () => {
+        let enabled = !AuthenticationStore.commentNotificationsEnabled;
+        const timestamp = new Date();
+        firestore
+            .collection('users')
+            .doc(this.uid)
+            .set({
+                commentNotifications: enabled,
+                commentNotificationsTimestamp: timestamp
+            }, {
+                merge: true
+            })
+            .then(() => {
+                console.debug('CommentStore.toggleNotifactions() : successfull');
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.comments.toggleNotifactions', error);
+            });
+    }
+
+    @action subscribeNotifications(subscribe) {
+        console.debug('CommentsStore.subscribeNotifications() => ', subscribe);
+        if (this.notificationSubscription) {
+            this.notificationSubscription.onSnapshot(function (){
+                // Unsubscribe
+              });
+        }
+        if (!subscribe) {
+            return;
+        }
+        this.notificationSubscription = firestore
+            .collection('users')
+            .doc(this.dataUid)
+            .collection('comments')
+            .orderBy('timestamp', 'asc')
+            .where('timestamp', '>', new Date());
+
+        this.notificationSubscription.onSnapshot((snapshot) => {
+            runInAction(() => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'added') {
+                        let data = change.doc.data();
+                        this.handleNotification(data);
+                    }
+                });
+            });
+        }, (error) => {
+            ErrorHandlingStore.handleError('firebase.comments.notification', error);
+        });
+    }
+
+    @action handleNotification(notification) {
+        if (notification.userName !== this.displayName) {
+            console.debug('CommentsStore.handleNotification() => ', notification);
+            const newComment = i18n.translator.translate('notifications.newComment');
+            const header = `${newComment} ${notification.userName}`;
+            const message = notification.itemTitle ? `${notification.itemTitle}: ${notification.text}` : notification.text
+            NotificationStore.showNotification(header, message, '/messages');
+        }
     }
 
     @action addComment(item, comment, itemTitle) {

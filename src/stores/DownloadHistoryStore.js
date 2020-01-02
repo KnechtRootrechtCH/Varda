@@ -4,6 +4,9 @@ import * as Moment from 'moment';
 
 import AuthenticationStore from './AuthenticationStore';
 import ErrorHandlingStore from './ErrorHandlingStore';
+import NotificationStore from './NotificationStore';
+
+import i18n from 'i18next';
 
 class DownloadHistoryStore {
     @observable loading = false;
@@ -23,6 +26,7 @@ class DownloadHistoryStore {
     newCountLimit = 5;
     lastQuery = null;
     lastCountQuery = null;
+    notificationSubscription = null;
 
     @action async resetHistory () {
         this.history = new Map();
@@ -243,8 +247,68 @@ class DownloadHistoryStore {
         this.lastCountQuery = query;
     }
 
-    @action updateTimestamp() {
+    @action toggleNotifactions = () => {
+        let enabled = !AuthenticationStore.transactionNotificationsEnabled;
+        const timestamp = new Date();
+        firestore
+            .collection('users')
+            .doc(this.uid)
+            .set({
+                transactionNotifications: enabled,
+                transactionNotificationsTimestamp: timestamp
+            }, {
+                merge: true
+            })
+            .then(() => {
+                console.debug('DownloadHistoryStore.toggleNotifactions() : successfull');
+            })
+            .catch((error) => {
+                ErrorHandlingStore.handleError('firebase.history.toggleNotifactions', error);
+            });
+    }
 
+    @action subscribeNotifications(subscribe) {
+        console.debug('DownloadHistoryStore.subscribeNotifications() => ', subscribe);
+        if (this.notificationSubscription) {
+            this.notificationSubscription.onSnapshot(function (){
+                // Unsubscribe
+              });
+        }
+        if (!subscribe) {
+            return;
+        }
+
+        this.notificationSubscription = firestore
+            .collection('users')
+            .doc(this.dataUid)
+            .collection('transactions')
+            .orderBy('timestamp', 'desc')
+            .where('timestamp', '>', new Date());
+
+        this.notificationSubscription.onSnapshot((snapshot) => {
+            runInAction(() => {
+                snapshot.forEach(doc => {
+                    let data = doc.data();
+                    this.handleNotification(data);
+                });
+            });
+        }, (error) => {
+            ErrorHandlingStore.handleError('firebase.history.notification', error);
+        });
+    }
+
+    @action handleNotification(notification) {
+        if (notification.userName !== this.displayName) {
+            console.debug('DownloadHistoryStore.handleNotification() => ', notification, i18n.translator.translate('title'));
+            const newTransaction = i18n.translator.translate('notifications.newTransaction');
+            const header = `${newTransaction} ${notification.userName}`;
+            const newValue = i18n.translator.translate(`common.status.${notification.newValue}`);
+            const message = notification.title ? `${notification.title}: ${newValue}` : newValue
+            NotificationStore.showNotification(header, message, '/history');
+        }
+    }
+
+    @action updateTimestamp() {
         const timestamp = new Date();
         firestore
             .collection('users')

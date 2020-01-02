@@ -4,7 +4,7 @@ class NotificationStore {
     @observable notifications = [];
     @observable index = 0;
 
-    @action showNotification(key, message, details, variant, translateMessage, translateDetails) {
+    @action showPopup(key, message, details, variant, translateMessage, translateDetails) {
         const notification = {
             key: key,
             message: message,
@@ -15,6 +15,10 @@ class NotificationStore {
         }
 
         this.notifications.push(notification);
+    }
+
+    @action showNotification(header, details, route) {
+        console.log('NotificationStore.showNotification() :=> ', header, details, route);
     }
 
     @action incrementIndex() {

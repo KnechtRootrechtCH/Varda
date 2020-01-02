@@ -20,12 +20,20 @@ class AuthenticationStore {
     @observable dataUid = null;
     @observable displayName = null;
     @observable dataUserDisplayName = null;
+
     @observable commentsTimestamp = null;
     @observable transactionsTimestamp = null;
     @observable lastAccess = null;
     @observable lastTransactionTimestamp = null;
+
     @observable dataUserCommentsTimestamp = null;
     @observable dataUserTransactionsTimestamp = null;
+
+    @observable transactionNotificationsEnabled = false;
+    @observable commentNotificationsEnabled = false;
+    @observable transactionNotificationsTimestamp = null;
+    @observable commentNotificationsTimestamp = null;
+
     @observable itemCounts = {};
 
     constructor() {
@@ -166,10 +174,18 @@ class AuthenticationStore {
                     this.commentsTimestamp = doc.data().commentsTimestamp ? doc.data().commentsTimestamp.toDate() : this.commentsTimestamp;
                     this.transactionsTimestamp = doc.data().transactionsTimestamp ? doc.data().transactionsTimestamp.toDate() : this.transactionsTimestamp;
 
+                    this.commentNotificationsEnabled = doc.data().commentNotifications ? true : false;
+                    this.transactionNotificationsEnabled = doc.data().transactionNotifications ? true : false;
+
+                    this.commentNotificationsTimestamp = doc.data().commentNotificationsTimestamp ? doc.data().commentNotificationsTimestamp.toDate() : this.commentNotificationsTimestamp;
+                    this.transactionNotificationsTimestamp = doc.data().transactionNotificationsTimestamp ? doc.data().transactionNotificationsTimestamp.toDate() : this.transactionNotificationsTimestamp;
+
                     this.userInfoLoaded = true;
 
                     console.debug('AuthenticationStore.loadUserInfo() : updated successfully');
                     this.updateNotificationCounts();
+                    CommentsStore.subscribeNotifications(this.commentNotificationsEnabled);
+                    DownloadHistoryStore.subscribeNotifications(this.transactionNotificationsEnabled);
                 });
             }, (error) => {
                 ErrorHandlingStore.handleError('firebase.auth.settings.user', error);

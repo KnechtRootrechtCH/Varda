@@ -61,7 +61,7 @@ class ThemeSettings extends React.Component {
                 <Grid item xs={12}>
                     <FormControlLabel
                         className={classes.switch}
-                        labelPlacement='start'
+                        labelPlacement='end'
                         control={
                             <Switch
                             checked={darkTheme}
@@ -69,7 +69,7 @@ class ThemeSettings extends React.Component {
                             color='primary'/>
                         }
                         label={
-                            <Typography variant='subtitle2' component='h3'>{t('settings.darkTheme')}</Typography>
+                            <Typography variant='body1' component='h3'>{t('settings.darkTheme')}</Typography>
                         }/>
                 </Grid>
             </Grid>
