@@ -245,8 +245,8 @@ i18n.init({
                     notificationSettings: 'Notifications',
                     transactionNotifications: 'Show push notification for transactions',
                     commentNotifications: 'Show push notification for comments',
-                    transactionNotificationsEnabled: 'Benachrichtigungen für Transaktionen wurden aktiviert.',
-                    commentNotificationsEnabled: 'Benachrichtigungen für Kommentare wurden aktiviert.',
+                    transactionNotificationsEnabled: 'Transaction notifications enabled.',
+                    commentNotificationsEnabled: 'Comment notifications enabled.',
                     export: {
                         title: 'Data Export',
                         statusFilter: 'Select status filter',
