@@ -302,7 +302,7 @@ class DownloadHistoryStore {
             const newValue = notification.transaction.indexOf('Status') > 0  ? i18n.translator.translate(`history.transaction.${notification.newValue}`) : notification.newValue;
             const details = notification.subTarget ? `${notification.subTarget}: ${newValue}` : `${i18n.translator.translate( `history.transaction.${notification.transaction}`)} '${newValue}'`;
 
-            NotificationStore.pushSnackbarNotification(notification.title, details, false, false, '/history');
+            NotificationStore.pushSnackbarNotification(notification.title, details, 'info', false, false, '/history');
             if (AuthenticationStore.transactionNotificationsEnabled) {
                 NotificationStore.pushBrowserNotification(notification.title, details, false, false, '/history');
             }

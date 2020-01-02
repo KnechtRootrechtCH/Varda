@@ -11,7 +11,6 @@ import { CircularProgress } from '@material-ui/core';
 
 import AdminDashboard from './AdminDashboard';
 import Browse from './Browse';
-import BrowserNotifier from './util/BrowserNotifier'
 import Export from './Export';
 import History from './History';
 import ItemDetails from './ItemDetails';
@@ -22,6 +21,7 @@ import NavigationDrawer from './navigation/NavigationDrawer';
 import Settings from './Settings';
 import SignIn from './SignIn';
 import TitleBar from './navigation/TitleBar';
+import WebNotifier from './util/WebNotifier'
 
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
@@ -38,7 +38,7 @@ class PrivateRouter extends React.Component {
         return (
             <Router>
                 <div className={classes.root}>
-                    <BrowserNotifier/>
+                    <WebNotifier/>
                     <TitleBar/>
                     <NavigationDrawer/>
                     { mobile && this.props.AuthenticationStore.initialized && this.props.ConfigurationStore.initialized ?

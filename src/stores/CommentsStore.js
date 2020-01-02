@@ -213,7 +213,7 @@ class CommentsStore {
             const messageSnackbar = notification.itemTitle ? `${notification.text} (${notification.itemTitle})` : notification.text
             const messageNotification  = notification.itemTitle ? `${notification.itemTitle}: ${notification.text}` : notification.text
 
-            NotificationStore.pushSnackbarNotification(notification.userName, messageSnackbar, false, false, '/messages');
+            NotificationStore.pushSnackbarNotification(notification.userName, messageSnackbar, 'info', false, false, '/messages');
             if(AuthenticationStore.commentNotificationsEnabled) {
                 NotificationStore.pushBrowserNotification(notification.userName, messageNotification, false, false, '/messages');
             }

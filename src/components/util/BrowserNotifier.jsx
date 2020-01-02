@@ -1,3 +1,5 @@
+// Old solutions, using react-browser-notifications
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';

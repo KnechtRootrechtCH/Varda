@@ -63,6 +63,7 @@
     "react-i18next": "^9.0.10",
     "react-meta-tags": "^0.7.4",
     "react-router-dom": "^4.3.1",
+    "react-web-notification": "^0.7.0",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.0",

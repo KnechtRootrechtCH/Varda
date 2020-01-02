@@ -18,7 +18,7 @@ class NotificationStore {
         }
 
         this.browserNotifications.push({
-            key: new Date().getTime() + Math.random(),
+            key: `varda-notification-${Math.random()}`,
             ...notification
         });
         console.debug('NotificationStore.pushBrowserNotification()', notification);
@@ -26,7 +26,7 @@ class NotificationStore {
 
     @action removeBrowserNotification(key) {
         this.browserNotifications.remove(key);
-        console.debug('NotificationStore.removeBrowserNotification()', key);
+        console.debug('NotificationStore.removeBrowserNotification()', key, this.browserNotifications);
     }
 
     @action pushSnackbarNotification(message, details, variant, translateMessage, translateDetails, route) {
