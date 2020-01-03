@@ -37,7 +37,6 @@ class NotificationStore {
     }
 
     @action pushSnackbarNotification(message, details, variant, translateMessage, translateDetails, route) {
-        // Compose message
         message = translateMessage ? i18n.translator.translate(message) : message;
         if (details) {
             details = translateDetails ? i18n.translator.translate(details) : details;
@@ -84,12 +83,22 @@ class NotificationStore {
         this.commentNotifications = false;
     }
 
+    @action saveSettings() {
+        const settings = {
+            transactions: this.transactionNotifications,
+            comments: this.commentNotifications,
+        }
+        localStorage.setItem('varda.pushNotifications', JSON.stringify(settings));
+    }
+
     @action toggleCommentNotifications() {
         this.commentNotifications = !this.commentNotifications;
+        this.saveSettings();
     }
 
     @action toggleTransactionNotifications() {
         this.transactionNotifications = !this.transactionNotifications;
+        this.saveSettings();
     }
 }
 
