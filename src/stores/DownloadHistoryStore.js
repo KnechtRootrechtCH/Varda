@@ -247,24 +247,6 @@ class DownloadHistoryStore {
         this.lastCountQuery = query;
     }
 
-    @action toggleNotifactions = () => {
-        let enabled = !AuthenticationStore.transactionNotificationsEnabled;
-        firestore
-            .collection('users')
-            .doc(this.uid)
-            .set({
-                transactionNotifications: enabled,
-            }, {
-                merge: true
-            })
-            .then(() => {
-                console.debug('DownloadHistoryStore.toggleNotifactions() : successfull');
-            })
-            .catch((error) => {
-                ErrorHandlingStore.handleError('firebase.history.toggleNotifactions', error);
-            });
-    }
-
     @action subscribeNotifications(subscribe) {
         console.debug('DownloadHistoryStore.subscribeNotifications()');
 
@@ -303,7 +285,7 @@ class DownloadHistoryStore {
             const details = notification.subTarget ? `${notification.subTarget}: ${newValue}` : `${i18n.translator.translate( `history.transaction.${notification.transaction}`)} '${newValue}'`;
 
             NotificationStore.pushSnackbarNotification(notification.title, details, 'info', false, false, '/history');
-            if (AuthenticationStore.transactionNotificationsEnabled) {
+            if (NotificationStore.transactionNotifications) {
                 NotificationStore.pushBrowserNotification(notification.title, details, false, false, '/history');
             }
         }
@@ -367,7 +349,7 @@ class DownloadHistoryStore {
     }
 
     @computed get notificationsEnabled () {
-        return AuthenticationStore.transactionNotificationsEnabled;
+        return NotificationStore.transactionNotifications;
     }
 }
 

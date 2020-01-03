@@ -9,7 +9,6 @@ import Notification from 'react-web-notification';
 @observer
 class WebNotifier extends React.Component {
     state = {
-        displayed: new Map(),
         ignore: false
     }
     displayed = new Map();

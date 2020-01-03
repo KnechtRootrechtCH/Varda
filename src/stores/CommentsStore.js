@@ -159,24 +159,6 @@ class CommentsStore {
         this.lastCountQuery = query;
     }
 
-    @action toggleNotifactions = () => {
-        let enabled = !AuthenticationStore.commentNotificationsEnabled;
-        firestore
-            .collection('users')
-            .doc(this.uid)
-            .set({
-                commentNotifications: enabled,
-            }, {
-                merge: true
-            })
-            .then(() => {
-                console.debug('CommentStore.toggleNotifactions() : successfull');
-            })
-            .catch((error) => {
-                ErrorHandlingStore.handleError('firebase.comments.toggleNotifactions', error);
-            });
-    }
-
     @action subscribeNotifications() {
         console.debug('CommentsStore.subscribeNotifications()');
 
@@ -214,7 +196,7 @@ class CommentsStore {
             const messageNotification  = notification.itemTitle ? `${notification.itemTitle}: ${notification.text}` : notification.text
 
             NotificationStore.pushSnackbarNotification(notification.userName, messageSnackbar, 'info', false, false, '/messages');
-            if(AuthenticationStore.commentNotificationsEnabled) {
+            if(NotificationStore.commentNotifications) {
                 NotificationStore.pushBrowserNotification(notification.userName, messageNotification, false, false, '/messages');
             }
         }
@@ -300,7 +282,7 @@ class CommentsStore {
     }
 
     @computed get notificationsEnabled () {
-        return AuthenticationStore.commentNotificationsEnabled;
+        return NotificationStore.commentNotifications;
     }
 }
 

@@ -4,6 +4,13 @@ import i18n from 'i18next';
 class NotificationStore {
     @observable browserNotifications = [];
     @observable snackbarNotifications = [];
+    @observable commentNotifications = false;
+    @observable transactionNotifications = false;
+
+    constructor () {
+        this.loadSettings();
+        console.debug('NotificationStore.constructor()', this.commentNotifications, this.transactionNotifications);
+    }
 
     @action pushBrowserNotification(message, details, translateMessage, translateDetails, route) {
         message = translateMessage ? i18n.translator.translate(message) : message;
@@ -64,6 +71,25 @@ class NotificationStore {
 
     @action setIndex(value) {
         this.index = value;
+    }
+
+    @action loadSettings() {
+        const settings = JSON.parse(localStorage.getItem('varda.pushNotifications'));
+        if (settings) {
+            this.transactionNotifications = settings.transactions;
+            this.commentNotifications = settings.comments;
+            return;
+        }
+        this.transactionNotifications = false;
+        this.commentNotifications = false;
+    }
+
+    @action toggleCommentNotifications() {
+        this.commentNotifications = !this.commentNotifications;
+    }
+
+    @action toggleTransactionNotifications() {
+        this.transactionNotifications = !this.transactionNotifications;
     }
 }
 

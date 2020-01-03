@@ -12,7 +12,6 @@ import {
     Typography } from '@material-ui/core';
 
 @withNamespaces()
-@inject('AuthenticationStore')
 @inject('CommentsStore')
 @inject('DownloadHistoryStore')
 @inject('NotificationStore')
@@ -20,29 +19,29 @@ import {
 class NotificationSettings extends React.Component {
 
     handleTransactionNotificationsToggle = () => {
-        let current = this.props.DownloadHistoryStore.notificationsEnabled;
+        let current = this.props.NotificationStore.transactionNotifications;
         if (!current) {
             const t = this.props.t;
             this.props.NotificationStore.pushBrowserNotification(t('title'), t('settings.transactionNotificationsEnabled'), true, true, null);
         }
-        this.props.DownloadHistoryStore.toggleNotifactions();
+        this.props.NotificationStore.toggleTransactionNotifications();
     }
 
     handleCommentNotificationsToggle = () => {
-        let current = this.props.CommentsStore.notificationsEnabled;
+        let current = this.props.NotificationStore.commentNotifications;
         if (!current) {
             const t = this.props.t;
             this.props.NotificationStore.pushBrowserNotification(t('title'), t('settings.commentNotificationsEnabled'), true, true, null);
         }
-        this.props.CommentsStore.toggleNotifactions();
+        this.props.NotificationStore.toggleCommentNotifications();
     }
 
     render () {
         const classes = this.props.classes;
         const t = this.props.t;
 
-        const transactionNotifications = this.props.AuthenticationStore.transactionNotificationsEnabled;
-        const commentNotifications = this.props.AuthenticationStore.commentNotificationsEnabled;
+        const transactionNotifications = this.props.NotificationStore.transactionNotifications;
+        const commentNotifications = this.props.NotificationStore.commentNotifications;
 
         return (
             <Grid container className={classes.root} spacing={8}>
