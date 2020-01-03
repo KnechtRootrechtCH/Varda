@@ -21,7 +21,8 @@ import NavigationDrawer from './navigation/NavigationDrawer';
 import Settings from './Settings';
 import SignIn from './SignIn';
 import TitleBar from './navigation/TitleBar';
-import WebNotifier from './util/WebNotifier'
+import WebNotifier from './util/WebNotifier';
+import SnackbarNotifier from './util/SnackbarNotifier';
 
 @inject('AuthenticationStore')
 @inject('ConfigurationStore')
@@ -39,6 +40,7 @@ class PrivateRouter extends React.Component {
             <Router>
                 <div className={classes.root}>
                     <WebNotifier/>
+                    <SnackbarNotifier />
                     <TitleBar/>
                     <NavigationDrawer/>
                     { mobile && this.props.AuthenticationStore.initialized && this.props.ConfigurationStore.initialized ?

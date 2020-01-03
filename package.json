@@ -47,7 +47,6 @@
     "mobx": "^5.10.1",
     "mobx-react": "^5.4.4",
     "moment": "^2.24.0",
-    "notistack": "^0.4.3",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.1.0",
     "postcss-flexbugs-fixes": "4.1.0",
