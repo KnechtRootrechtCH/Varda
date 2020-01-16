@@ -98,7 +98,7 @@ class NotificationStore {
 
     @action handleTransactionNotification(notification) {
         if (notification.userName !== this.displayName && notification.transaction !== 'updatePriority') {
-            console.log('NotificationStore.handleNotification() => ', notification, i18n.translator.translate('title'));
+            console.debug('NotificationStore.handleNotification() => ', notification, i18n.translator.translate('title'));
 
             const newValue = notification.transaction.indexOf('Status') > 0  ? i18n.translator.translate(`history.transaction.${notification.newValue}`) : notification.newValue;
             const details = notification.subTarget ? `${notification.subTarget}: ${newValue}` : `${i18n.translator.translate( `history.transaction.${notification.transaction}`)} '${newValue}'`;
@@ -160,6 +160,10 @@ class NotificationStore {
     @action removeSnackbarNotification(key) {
         this.snackbarNotifications.remove(key);
         console.debug('NotificationStore.removeSnackbarNotification()', key);
+    }
+
+    @action removeAllSnackbarNotifications() {
+        this.snackbarNotifications.clear();
     }
 
     @action incrementIndex() {

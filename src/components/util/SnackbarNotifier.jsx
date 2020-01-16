@@ -37,15 +37,15 @@ class SnackbarNotifier extends React.Component {
     }
 
     handleClick = (key) => {
-        console.debug(`${this.constructor.name}.handleClick()`, key);
-        this.props.NotificationStore.removeSnackbarNotification(key);
+        console.log(`${this.constructor.name}.handleClick()`, key);
+        this.props.NotificationStore.removeAllSnackbarNotifications();;
         this.setState({
             open: true,
         });
     };
 
     handleClose = (key) => {
-        console.debug(`${this.constructor.name}.handleClose()`, key);
+        console.log(`${this.constructor.name}.handleClose()`, key);
         this.props.NotificationStore.removeSnackbarNotification(key);
         this.setState({
             open: true,
@@ -96,7 +96,7 @@ class SnackbarNotifier extends React.Component {
                         )
                     }
                     action={[
-                        <IconButton key="close" aria-label="close" color="inherit" onClick={() => this.handleClose(notification.key)}>
+                        <IconButton key="close" aria-label="close" color="inherit" onClick={() => this.handleClick(notification.key)}>
                             <CloseIcon className={classes.icon} />
                         </IconButton>,
                     ]}
