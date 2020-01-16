@@ -37,7 +37,7 @@ class SnackbarNotifier extends React.Component {
     }
 
     handleClick = (key) => {
-        console.log(`${this.constructor.name}.handleClick()`, key);
+        console.debug(`${this.constructor.name}.handleClick()`, key);
         this.props.NotificationStore.removeAllSnackbarNotifications();;
         this.setState({
             open: true,
@@ -45,7 +45,7 @@ class SnackbarNotifier extends React.Component {
     };
 
     handleClose = (key) => {
-        console.log(`${this.constructor.name}.handleClose()`, key);
+        console.debug(`${this.constructor.name}.handleClose()`, key);
         this.props.NotificationStore.removeSnackbarNotification(key);
         this.setState({
             open: true,
