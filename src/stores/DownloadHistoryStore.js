@@ -6,8 +6,6 @@ import AuthenticationStore from './AuthenticationStore';
 import ErrorHandlingStore from './ErrorHandlingStore';
 import NotificationStore from './NotificationStore';
 
-import i18n from 'i18next';
-
 class DownloadHistoryStore {
     @observable loading = false;
     @observable history = new Map();
@@ -26,7 +24,6 @@ class DownloadHistoryStore {
     newCountLimit = 5;
     lastQuery = null;
     lastCountQuery = null;
-    notificationSubscription = null;
 
     @action async resetHistory () {
         this.history = new Map();
@@ -245,50 +242,6 @@ class DownloadHistoryStore {
         });
 
         this.lastCountQuery = query;
-    }
-
-    @action subscribeNotifications(subscribe) {
-        console.debug('DownloadHistoryStore.subscribeNotifications()');
-
-        if (this.notificationSubscription) {
-            this.notificationSubscription.onSnapshot(function (){
-                // Unsubscribe
-              });
-        }
-
-        this.notificationSubscription = firestore
-            .collection('users')
-            .doc(this.dataUid)
-            .collection('transactions')
-            .orderBy('timestamp', 'desc')
-            .where('timestamp', '>', new Date());
-
-        this.notificationSubscription.onSnapshot((snapshot) => {
-            runInAction(() => {
-                snapshot.docChanges().forEach((change) => {
-                    if (change.type === 'added') {
-                        let data = change.doc.data();
-                        this.handleNotification(data);
-                    }
-                });
-            });
-        }, (error) => {
-            ErrorHandlingStore.handleError('firebase.history.notification', error);
-        });
-    }
-
-    @action handleNotification(notification) {
-        if (notification.userName !== this.displayName) {
-            console.debug('DownloadHistoryStore.handleNotification() => ', notification, i18n.translator.translate('title'));
-
-            const newValue = notification.transaction.indexOf('Status') > 0  ? i18n.translator.translate(`history.transaction.${notification.newValue}`) : notification.newValue;
-            const details = notification.subTarget ? `${notification.subTarget}: ${newValue}` : `${i18n.translator.translate( `history.transaction.${notification.transaction}`)} '${newValue}'`;
-
-            NotificationStore.pushSnackbarNotification(notification.title, details, 'info', false, false, '/history');
-            if (NotificationStore.transactionNotifications) {
-                NotificationStore.pushBrowserNotification(notification.title, details, false, false, '/history');
-            }
-        }
     }
 
     @action updateTimestamp() {

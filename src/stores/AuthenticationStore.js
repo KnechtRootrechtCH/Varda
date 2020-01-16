@@ -7,6 +7,7 @@ import CommentsStore from './CommentsStore';
 import ConfigurationStore from './ConfigurationStore';
 import DownloadHistoryStore from './DownloadHistoryStore';
 import ErrorHandlingStore from './ErrorHandlingStore';
+import NotificationStore from './NotificationStore';
 
 class AuthenticationStore {
     @observable user = null;
@@ -149,8 +150,7 @@ class AuthenticationStore {
                     this.adminSettingsLoaded = true;
                     this.loadUserInfo();
                     this.loadUserData();
-                    CommentsStore.subscribeNotifications();
-                    DownloadHistoryStore.subscribeNotifications();
+                    NotificationStore.subscribeNotifications();
                     // console.debug('AuthenticationStore.loadAdminSettings() : successfull');
                 });
             })

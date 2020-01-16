@@ -19,7 +19,6 @@ class CommentsStore {
     newCountLimit = 5;
     lastQuery = null;
     lastCountQuery = null;
-    notificationSubscription = null;
 
     @action resetComments() {
         this.comments = new Map();
@@ -157,49 +156,6 @@ class CommentsStore {
         });
 
         this.lastCountQuery = query;
-    }
-
-    @action subscribeNotifications() {
-        console.debug('CommentsStore.subscribeNotifications()');
-
-        if (this.notificationSubscription) {
-            this.notificationSubscription.onSnapshot(function (){
-                // Unsubscribe
-              });
-        }
-
-        this.notificationSubscription = firestore
-            .collection('users')
-            .doc(this.dataUid)
-            .collection('comments')
-            .orderBy('timestamp', 'asc')
-            .where('timestamp', '>', new Date());
-
-        this.notificationSubscription.onSnapshot((snapshot) => {
-            runInAction(() => {
-                snapshot.docChanges().forEach((change) => {
-                    if (change.type === 'added') {
-                        let data = change.doc.data();
-                        this.handleNotification(data);
-                    }
-                });
-            });
-        }, (error) => {
-            ErrorHandlingStore.handleError('firebase.comments.notification', error);
-        });
-    }
-
-    @action handleNotification(notification) {
-        if (notification.userName !== this.displayName) {
-            console.debug('CommentsStore.handleNotification() => ', notification);
-            const messageSnackbar = notification.itemTitle ? `${notification.text} (${notification.itemTitle})` : notification.text
-            const messageNotification  = notification.itemTitle ? `${notification.itemTitle}: ${notification.text}` : notification.text
-
-            NotificationStore.pushSnackbarNotification(notification.userName, messageSnackbar, 'info', false, false, '/messages');
-            if(NotificationStore.commentNotifications) {
-                NotificationStore.pushBrowserNotification(notification.userName, messageNotification, false, false, '/messages');
-            }
-        }
     }
 
     @action addComment(item, comment, itemTitle) {
