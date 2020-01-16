@@ -68,8 +68,8 @@ class SnackbarNotifier extends React.Component {
             <Snackbar
                 className={classes.margin}
                 anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                    vertical: 'top',
+                    horizontal: 'center',
                 }}
                 open={this.state.open && notification != null}
                 autoHideDuration={5000}
