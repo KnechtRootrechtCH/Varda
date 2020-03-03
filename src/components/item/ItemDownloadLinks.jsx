@@ -35,6 +35,7 @@ class ItemDownloadLinks extends React.Component {
 
         const title = MetadataService.getTitle(item);
         const originalTitle = MetadataService.getOriginalTitle(item);
+        const imdbId = item.imdb_id;
 
         let links = [];
         for (let key in downloadLinks) {
@@ -57,7 +58,7 @@ class ItemDownloadLinks extends React.Component {
                 <table className={classes.table}>
                     <tbody>
                         { links.map((link, index) => {
-                            return this.renderRow(link, index, title, originalTitle);
+                            return this.renderRow(link, index, title, originalTitle, imdbId);
                         })}
                     </tbody>
                 </table>
@@ -66,7 +67,7 @@ class ItemDownloadLinks extends React.Component {
     }
 
 
-    renderRow (row, index, title, originalTitle) {
+    renderRow (row, index, title, originalTitle, imdbId) {
         const classes = this.props.classes;
         // const t = this.props.t;
 
@@ -103,6 +104,11 @@ class ItemDownloadLinks extends React.Component {
                 })
             }
         }
+
+        links.push({
+            label: `IMDB-ID (${imdbId})`,
+            url: row.urlPattern.replace(this.placeholder, imdbId),
+        })
 
         return (
             <tr key={index}>
