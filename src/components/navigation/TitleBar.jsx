@@ -266,7 +266,7 @@ const styles = theme => ({
     },
     menuButton: {
         cursor: 'pointer',
-        marginRight: theme.spacing.unit * 2,
+        marginRight: theme.spacing(2),
     },
     header: {
         cursor: 'pointer',
@@ -275,7 +275,7 @@ const styles = theme => ({
         verticalAlign: 'middle',
         marginRight: 0,
         marginBottom: 3,
-        marginLeft: theme.spacing.unit / 4,
+        marginLeft: theme.spacing(0.25),
     },
     controls: {
         marginLeft: 'auto',
@@ -287,14 +287,14 @@ const styles = theme => ({
     avatar: {
         cursor: 'pointer',
         color: theme.palette.primary.main,
-        marginLeft: theme.spacing.unit * 2,
+        marginLeft: theme.spacing(2),
         '&:hover': {
             backgroundColor: fade(theme.palette.common.white, 0.25),
         },
     },
     avatarSmall: {
-        height: theme.spacing.unit * 3,
-        width: theme.spacing.unit * 3,
+        height: theme.spacing(3),
+        width: theme.spacing(3),
     },
     progress: {
         height: 2,

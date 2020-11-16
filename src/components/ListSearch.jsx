@@ -100,33 +100,33 @@ class ListsSearch extends React.Component {
 
 const styles = theme => ({
     root: {
-        marginTop: theme.spacing.unit * 2,
-        marginRight: theme.spacing.unit * 3,
-        marginBottom: theme.spacing.unit * 2,
-        marginLeft: theme.spacing.unit * 3,
+        marginTop: theme.spacing(2),
+        marginRight: theme.spacing(3),
+        marginBottom: theme.spacing(2),
+        marginLeft: theme.spacing(3),
     },
     container: {
-        marginRight: theme.spacing.unit * 3,
-        marginBottom: theme.spacing.unit,
-        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing(3),
+        marginBottom: theme.spacing(1),
+        marginLeft: theme.spacing(3),
     },
     header: {
-        paddingTop: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(2),
         marginRight: 0,
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
         marginLeft: 0,
     },
     content: {
-        paddingTop: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(2),
         marginRight: 0,
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
         marginLeft: 0,
     },
     title: {
         display: 'inline-block',
     },
     inputContainer: {
-        marginTop: theme.spacing.unit * 2,
+        marginTop: theme.spacing(2),
         marginRight: 0,
         marginBottom: 0,
         marginLeft: 0,
@@ -139,11 +139,11 @@ const styles = theme => ({
         marginLeft: 0,
     },
     buttonIcon: {
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
         marginLeft: 0,
     },
     search: {
-        marginLeft: theme.spacing.unit * 2,
+        marginLeft: theme.spacing(2),
     },
 });
 

@@ -65,9 +65,9 @@ const styles = theme => ({
         float: 'right',
     },
     rootMobile: {
-        paddingTop: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
+        paddingTop: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        marginBottom: theme.spacing(1),
         marginLeft: -3,
         display: 'inline',
     },

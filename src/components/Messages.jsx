@@ -200,45 +200,45 @@ const styles = theme => ({
         marginRight: 'auto',
     },
     container: {
-        marginRight: theme.spacing.unit * 3,
-        marginBottom: theme.spacing.unit,
-        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing(3),
+        marginBottom: theme.spacing(1),
+        marginLeft: theme.spacing(3),
     },
     containerMobile: {
         marginRight: 0,
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
         marginLeft: 0,
     },
     header: {
-        paddingTop: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(2),
         marginRight: 0,
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
         marginLeft: 0,
     },
     headerMobile: {
-        paddingTop: theme.spacing.unit * 2,
-        paddingRight: theme.spacing.unit * 2,
-        marginBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        marginBottom: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
     },
     title: {
         display: 'inline-block',
     },
     controls: {
         float: 'right',
-        paddingTop: theme.spacing.unit / 2,
+        paddingTop: theme.spacing(0.5),
     },
     control: {
         cursor: 'pointer',
         color: theme.palette.action.active,
-        marginLeft: theme.spacing.unit,
+        marginLeft: theme.spacing(1),
         marginRight: 0,
         '&:hover': {
             color: theme.palette.primary.main,
         }
     },
     inputContainer: {
-        marginTop: theme.spacing.unit * 2,
+        marginTop: theme.spacing(2),
         marginRight: 0,
         marginBottom: 0,
         marginLeft: 0,
@@ -251,10 +251,10 @@ const styles = theme => ({
         marginLeft: 0,
     },
     submit: {
-        marginLeft: theme.spacing.unit * 2,
+        marginLeft: theme.spacing(2),
     },
     buttonIcon: {
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
         marginLeft: 0,
     },
 });

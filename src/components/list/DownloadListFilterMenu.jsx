@@ -129,7 +129,7 @@ const styles = theme => ({
     control: {
         cursor: 'pointer',
         color: theme.palette.action.active,
-        marginLeft: theme.spacing.unit,
+        marginLeft: theme.spacing(1),
         marginRight: 0,
         '&:hover': {
             color: theme.palette.primary.main,

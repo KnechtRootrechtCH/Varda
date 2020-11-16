@@ -79,7 +79,7 @@ class TransactionDetails extends React.Component {
 const styles = theme => ({
     root: {
         paddingTop: 0,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingLeft: theme.spacing(2),
     },
     label: {
         textTransform: 'uppercase',

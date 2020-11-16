@@ -114,14 +114,14 @@ const styles = theme => ({
     },
     header: {
         textTransform: 'uppercase',
-        marginBottom: theme.spacing.unit / 2,
+        marginBottom: theme.spacing(0.5),
     },
     actionContainer: {
         width: '100%',
         textAlign: 'right',
     },
     more: {
-        margin: theme.spacing.unit / 2,
+        margin: theme.spacing(0.5),
     },
     icon: {
         color: 'rgba(255, 255, 255, 0.54)',

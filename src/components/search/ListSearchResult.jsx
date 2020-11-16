@@ -61,7 +61,7 @@ class ListSearchResult extends React.Component {
 
 const styles = theme => ({
     root: {
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
     },
     title: {
 

@@ -95,8 +95,8 @@ const styles = theme => ({
 
     },
     summary: {
-        paddingRight: theme.spacing.unit * 2,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingRight: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
     },
     titleActive: {
         textDecoration: 'underline',
@@ -122,13 +122,13 @@ const styles = theme => ({
     },
     details: {
         paddingTop: 0,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingLeft: theme.spacing(2),
     },
     newCommentBadge: {
         verticalAlign: 'middle',
         marginBottom: 3,
         marginLeft: 0,
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
         fontSize: 18,
     },
 });

@@ -95,7 +95,7 @@ const styles = theme => ({
         width: '100%',
     },
     searchIcon: {
-        paddingLeft: theme.spacing.unit * 2,
+        paddingLeft: theme.spacing(2),
         paddingRight: 0,
         height: '100%',
         position: 'absolute',
@@ -106,7 +106,7 @@ const styles = theme => ({
     },
     clearIcon: {
         cursor: 'pointer',
-        paddingRight: theme.spacing.unit,
+        paddingRight: theme.spacing(1),
     },
     inputRoot: {
         color: 'inherit',
@@ -114,10 +114,10 @@ const styles = theme => ({
         height: '100%',
     },
       inputInput: {
-        paddingTop: theme.spacing.unit,
-        paddingRight: theme.spacing.unit,
-        paddingBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 7,
+        paddingTop: theme.spacing(1),
+        paddingRight: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
+        paddingLeft: theme.spacing(7),
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('sm')]: {

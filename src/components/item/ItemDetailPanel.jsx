@@ -102,19 +102,19 @@ class ItemDetailPanel extends React.Component {
 
 const styles = theme => ({
     root: {
-        paddingRight: theme.spacing.unit * 3,
-        paddingBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 3,
+        paddingRight: theme.spacing(3),
+        paddingBottom: theme.spacing(1),
+        paddingLeft: theme.spacing(3),
     },
     divider: {
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
         marginRight: 0,
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
         marginLeft: 0,
     },
     statusMobile: {
-        paddingTop: theme.spacing.unit / 2,
-        marginBottom: theme.spacing.unit / 2,
+        paddingTop: theme.spacing(0.5),
+        marginBottom: theme.spacing(0.5),
     },
 });
 

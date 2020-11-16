@@ -141,8 +141,8 @@ const styles = theme => ({
 
     },
     summary: {
-        paddingRight: theme.spacing.unit * 2,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingRight: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
     },
     titleMobile: {
         display: 'inline-block',

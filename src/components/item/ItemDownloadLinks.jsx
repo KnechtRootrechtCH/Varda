@@ -151,14 +151,14 @@ const styles = theme => ({
     },
     header: {
         textTransform: 'uppercase',
-        marginBottom: theme.spacing.unit / 2,
+        marginBottom: theme.spacing(0.5),
     },
     table: {
         borderSpacing: 0,
     },
     labelCell: {
         minWidth: 140,
-        paddingRight: theme.spacing.unit,
+        paddingRight: theme.spacing(1),
         paddingLeft: 0,
         verticalAlign: 'text-top',
     },
@@ -183,7 +183,7 @@ const styles = theme => ({
         width: 16,
         height: 16,
         marginBottom: 3,
-        marginLeft: theme.spacing.unit / 2,
+        marginLeft: theme.spacing(0.5),
     },
 });
 

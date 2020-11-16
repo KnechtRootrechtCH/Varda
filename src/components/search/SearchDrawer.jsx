@@ -131,11 +131,11 @@ const styles = theme => ({
     },
     backIcon: {
         cursor: 'pointer',
-        marginRight: theme.spacing.unit * 2,
+        marginRight: theme.spacing(2),
     },
     clearIcon: {
         cursor: 'pointer',
-        marginLeft: theme.spacing.unit * 2,
+        marginLeft: theme.spacing(2),
     },
     input: {
         width: '100%',

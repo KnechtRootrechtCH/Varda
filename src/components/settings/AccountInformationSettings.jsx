@@ -54,16 +54,16 @@ class AccountInformationSettings extends React.Component {
 
 const styles = theme => ({
     root: {
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
     },
     icon: {
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
         verticalAlign: 'middle',
         marginBottom: 3,
     },
     text: {
-        marginBottom: theme.spacing.unit / 2,
+        marginBottom: theme.spacing(0.5),
         color: theme.palette.text.disabled,
     },
 });

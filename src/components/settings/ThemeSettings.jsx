@@ -126,7 +126,7 @@ class ThemeSettings extends React.Component {
 const styles = theme => ({
     root: {
         maxWidth: 350,
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
     },
     title: {
         margin: 0,

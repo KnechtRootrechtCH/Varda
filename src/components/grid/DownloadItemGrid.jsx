@@ -73,7 +73,7 @@ const styles = theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: theme.spacing.unit ,
+        paddingTop: theme.spacing(1),
     },
     progressContainer: {
         position: 'absolute',

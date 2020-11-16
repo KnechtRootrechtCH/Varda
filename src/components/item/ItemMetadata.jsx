@@ -361,7 +361,7 @@ const styles = theme => ({
     },
     labelCell: {
         minWidth: 140,
-        paddingRight: theme.spacing.unit,
+        paddingRight: theme.spacing(1),
         paddingLeft: 0,
         verticalAlign: 'text-top',
     },
@@ -384,7 +384,7 @@ const styles = theme => ({
         },
     },
     overview: {
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
     },
     linkIcon: {
         cursor: 'pointer',
@@ -392,7 +392,7 @@ const styles = theme => ({
         width: 16,
         height: 16,
         marginBottom: 3,
-        marginLeft: theme.spacing.unit / 2,
+        marginLeft: theme.spacing(0.5),
     },
     netflixIcon: {
         color: '#B9090B',
@@ -409,7 +409,7 @@ const styles = theme => ({
         marginBottom: 3,
     },
     releaseDateTable : {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(1),
     }
 });
 
