@@ -15,6 +15,7 @@ import Export from './Export';
 import History from './History';
 import ItemDetails from './ItemDetails';
 import DownloadList from './DownloadList';
+import ListSearch from './ListSearch';
 import Messages from './Messages';
 import NavigationBar from './navigation/NavigationBar';
 import NavigationDrawer from './navigation/NavigationDrawer';
@@ -75,6 +76,10 @@ class PrivateRouter extends React.Component {
                                     exact
                                     path='/settings/export'
                                     component={Export}/>
+                                <Route
+                                    exact
+                                    path='/settings/listsearch'
+                                    component={ListSearch}/>
                                 <Route
                                     exact
                                     path='/browse'

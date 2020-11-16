@@ -26,9 +26,10 @@ import {
     AccountCircle,
     ArrowLeft,
     Brightness4,
+    Cog,
     DatabaseExport,
     ExitToApp,
-    Settings,
+    TextBoxSearch,
     ViewDashboard,
     Menu as MenuIcon }  from 'mdi-material-ui';
 
@@ -228,9 +229,15 @@ class TitleBar extends React.Component {
                         </ListItemIcon>
                         {t('settings.export.title')}
                     </MenuItem>
+                    <MenuItem component={Link} to='/settings/listsearch' onClick={this.handleMenuClose}>
+                        <ListItemIcon>
+                            <TextBoxSearch/>
+                        </ListItemIcon>
+                        {t('settings.listSearch.title')}
+                    </MenuItem>
                     <MenuItem component={Link} to='/settings' onClick={this.handleMenuClose}>
                         <ListItemIcon>
-                            <Settings/>
+                            <Cog/>
                         </ListItemIcon>
                         {t('common.settings')}
                     </MenuItem>

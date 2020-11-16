@@ -44,6 +44,7 @@ i18n.init({
                     season: 'Season',
                     episodes: 'Episodes',
                     episode: 'Episode',
+                    searching: 'Searching…',
                     status: {
                         label: 'Status',
                         none: 'All',
@@ -270,6 +271,11 @@ i18n.init({
                             priority: 'Priority',
                         },
                     },
+                    listSearch: {
+                        title: 'List search',
+                        searchInput: 'Search',
+                        movieDbSearch: 'MovieDb search',
+                    },
                 },
 
                 error: {
@@ -368,6 +374,7 @@ i18n.init({
                     season: 'Staffel',
                     episodes: 'Episoden',
                     episode: 'Episode',
+                    searching: 'Suche…',
                     status: {
                         label: 'Status',
                         none: 'Alle',
@@ -593,6 +600,11 @@ i18n.init({
                             status: 'Status',
                             priority: 'Priorität',
                         },
+                    },
+                    listSearch: {
+                        title: 'Listensuche',
+                        searchInput: 'Suche',
+                        movieDbSearch: 'MovieDb Suche',
                     },
                 },
 
