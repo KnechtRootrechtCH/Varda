@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import {inject, observer} from 'mobx-react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
@@ -60,9 +59,7 @@ class PrivateRouter extends React.Component {
                             <CircularProgress className={classes.progress} color='secondary'/>
                         </div>
                     :
-                        <main className={classNames(classes.content, {
-                            [classes.contentShift]: drawerOpen,
-                        })}>
+                        <main className={drawerOpen ? classes.contentShift : classes.content}>
                             <Switch>
                                 <Route
                                     exact

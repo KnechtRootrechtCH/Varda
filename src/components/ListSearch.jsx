@@ -124,6 +124,7 @@ const styles = theme => ({
     },
     title: {
         display: 'inline-block',
+        color: theme.palette.text.primary,
     },
     inputContainer: {
         marginTop: theme.spacing(2),

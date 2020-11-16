@@ -95,6 +95,9 @@ const styles = theme => ({
         marginBottom: theme.spacing(0.5),
         color: theme.palette.text.disabled,
     },
+    title: {
+        color: theme.palette.text.primary,
+    },
 });
 
 CloudFunctionSettings.propTypes = {

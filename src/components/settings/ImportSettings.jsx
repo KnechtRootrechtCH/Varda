@@ -153,7 +153,7 @@ const styles = theme => ({
         marginBottom: theme.spacing(1),
     },
     title: {
-
+        color: theme.palette.text.primary,
     },
     textField: {
         width: 400,

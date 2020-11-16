@@ -55,7 +55,7 @@ class AccessTimestamps extends React.Component {
         return (
             <div className={classes.root}>
                 <Typography className={classes.title} variant='subtitle1' component='h2'>
-                    <span>{t('settings.accessTimestamp')}</span>
+                    {t('settings.accessTimestamp')}
                 </Typography>
 
                 <Grid container>
@@ -144,6 +144,9 @@ const styles = theme => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     },
+    title: {
+        color: theme.palette.text.primary,
+    }
 });
 
 AccessTimestamps.propTypes = {

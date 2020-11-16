@@ -238,6 +238,7 @@ const styles = theme => ({
     },
     title: {
         display: 'inline-block',
+        color: theme.palette.text.primary,
     },
     controls: {
         float: 'right',

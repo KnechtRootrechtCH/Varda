@@ -61,6 +61,9 @@ const styles = theme => ({
         marginBottom: theme.spacing(0.5),
         color: theme.palette.text.secondary,
     },
+    title: {
+        color: theme.palette.text.primary,
+    }
 });
 
 AccountInformation.propTypes = {

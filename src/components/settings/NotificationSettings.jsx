@@ -44,7 +44,7 @@ class NotificationSettings extends React.Component {
         const commentNotifications = this.props.NotificationStore.commentNotifications;
 
         return (
-            <Grid container className={classes.root} spacing={8}>
+            <Grid container className={classes.root} spacing={1}>
                 <Grid item xs={12}>
                     <Typography className={classes.title} variant='subtitle1' component='h2'>
                         <span>{t('settings.notificationSettings')}</span>
@@ -61,7 +61,7 @@ class NotificationSettings extends React.Component {
                             color='primary'/>
                         }
                         label={
-                            <Typography variant='body1' component='h3'>{t('settings.transactionNotifications')}</Typography>
+                            <Typography class={classes.label} variant='body1'>{t('settings.transactionNotifications')}</Typography>
                         }/>
                 </Grid>
                 <Grid item xs={12}>
@@ -75,7 +75,7 @@ class NotificationSettings extends React.Component {
                             color='primary'/>
                         }
                         label={
-                            <Typography variant='body1' component='h3'>{t('settings.commentNotifications')}</Typography>
+                            <Typography class={classes.label} variant='body1'>{t('settings.commentNotifications')}</Typography>
                         }/>
                 </Grid>
             </Grid>
@@ -90,10 +90,14 @@ const styles = theme => ({
     },
     title: {
         margin: 0,
+        color: theme.palette.text.primary,
     },
     switch: {
         margin: 0,
-    }
+    },
+    label: {
+        color: theme.palette.text.primary,
+    },
 });
 
 NotificationSettings.propTypes = {

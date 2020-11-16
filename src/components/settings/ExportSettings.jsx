@@ -259,6 +259,9 @@ const styles = theme => ({
         marginRight: 2 * theme.spacing(1),
         marginLeft: 0,
     },
+    title: {
+        color: theme.palette.text.primary,
+    },
 });
 
 AccountInformationSettings.propTypes = {
