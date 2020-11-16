@@ -29,7 +29,7 @@ class ItemDetails extends React.Component {
         this.loadHistory();
     }
 
-    componentWillUnmount = () => {
+    UNSAFE_componentWillUnmount = () => {
         this.props.MovieDbStore.clearItem();
     }
 

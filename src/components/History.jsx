@@ -106,7 +106,7 @@ class History extends React.Component {
         window.addEventListener('scroll', this.handleScroll);
     }
 
-    componentWillUnmount = () => {
+    UNSAFE_componentWillUnmount = () => {
         // console.debug(`${this.constructor.name}.componentWillUnmount()`);
         window.removeEventListener('scroll', this.handleScroll);
         this.props.DownloadHistoryStore.updateTimestamp();
