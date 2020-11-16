@@ -50,7 +50,7 @@ class Messages extends React.Component {
         window.addEventListener('scroll', this.handleScroll);
     }
 
-    UNSAFE_componentWillUnmount = () => {
+    componentWillUnmount = () => {
         // console.debug(`${this.constructor.name}.componentWillUnmount()`);
         window.removeEventListener('scroll', this.handleScroll)
         this.props.CommentsStore.updateTimestamp();
