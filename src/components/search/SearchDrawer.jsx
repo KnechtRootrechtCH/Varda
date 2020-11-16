@@ -79,9 +79,11 @@ class SearchDrawer extends React.Component {
     }
 
     setInputRef = ref => {
-        this.setState({
-            inputRef: ref,
-        });
+        if (!this.state.inputRef) {
+            this.setState({
+                inputRef: ref,
+            });
+        }
     }
 
     render () {

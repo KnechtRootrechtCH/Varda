@@ -27,7 +27,6 @@ class ItemComments extends React.Component {
     state = {
         showCommentInput: false,
         inputText: '',
-        inputRef: null,
     }
 
     handleInputChange = (value) => {
@@ -62,10 +61,7 @@ class ItemComments extends React.Component {
     }
 
     setInputRef = ref => {
-        this.setState({
-            inputRef: ref,
-        });
-        if(ref) {
+        if(ref && this.state.showCommentInput) {
             ref.focus();
         }
     }

@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { withNamespaces } from 'react-i18next';
 
 import ListSearchResult from './ListSearchResult';
-import { Typography } from '@material-ui/core';
+// import { Typography } from '@material-ui/core';
 
 
 @withNamespaces()
@@ -17,19 +17,10 @@ class ListSearchResults extends React.Component {
         
     }
 
-    setInputRef = ref => {
-        this.setState({
-            inputRef: ref,
-        });
-        if(ref) {
-            ref.focus();
-        }
-    }
-
     render () {
         // console.debug(`${this.constructor.name}.render()`, this.props);
         const classes = this.props.classes;
-        const t = this.props.t;
+        // const t = this.props.t;
 
         let items = this.props.ListSearchStore.items;
         console.debug(`${this.constructor.name}.render()`, this.props, items);

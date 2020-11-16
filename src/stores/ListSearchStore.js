@@ -1,10 +1,10 @@
 import {observable, action, runInAction} from 'mobx';
-import axios from 'axios';
+// import axios from 'axios';
 
 import ConfigurationStore from './ConfigurationStore';
-import ErrorHandlingStore from './ErrorHandlingStore';
+// import ErrorHandlingStore from './ErrorHandlingStore';
 
-const movieDbApiKey = '23703a8a857927f41414fb155404393d';
+// const movieDbApiKey = '23703a8a857927f41414fb155404393d';
 
 class MovieDbStore {
     @observable locale = 'de';

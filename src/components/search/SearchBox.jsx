@@ -17,25 +17,10 @@ import { Search } from '@material-ui/icons';
 @observer
 class SearchBox extends React.Component {
 
-    state = {
-        inputRef: null,
-    }
-
     handleChange = (value) => {
         this.props.MovieDbStore.setSearchString(value);
         this.props.DownloadStatusStore.setSearchString(value);
         this.update();
-    }
-
-    handleReset = () => {
-        if (this.props.MovieDbStore.searchString.length > 0) {
-            this.props.MovieDbStore.setSearchString('');
-        }
-        if (this.props.DownloadStatusStore.searchString.length > 0) {
-            this.props.DownloadStatusStore.setSearchString('');
-        }
-        this.state.inputRef.focus();
-        this.loadItems();
     }
 
     update = debounce(() => {
@@ -54,12 +39,6 @@ class SearchBox extends React.Component {
         }
     }
 
-    setInputRef = ref => {
-        this.setState({
-            inputRef: ref,
-        });
-    }
-
     render () {
         const classes = this.props.classes;
         const t = this.props.t;
@@ -76,7 +55,6 @@ class SearchBox extends React.Component {
                         root: classes.inputRoot,
                         input: classes.inputInput,
                     }}
-                    inputRef={(input) => { this.setInputRef(input) }}
                     onChange={({ target: { value } }) => this.handleChange(value)}/>
             </div>
         );

@@ -41,15 +41,6 @@ class ListsSearch extends React.Component {
         this.props.ListSearchStore.setSearchStrings(items);
     }
 
-    setInputRef = ref => {
-        this.setState({
-            inputRef: ref,
-        });
-        if(ref) {
-            ref.focus();
-        }
-    }
-
     render () {
         // console.debug(`${this.constructor.name}.render()`, this.props);
         const classes = this.props.classes;
@@ -74,7 +65,6 @@ class ListsSearch extends React.Component {
                             rows={this.state.searchSubmited && this.state.searchInput.length === 0 ? 1 : 10}
                             margin='normal'
                             variant='outlined'
-                            inputRef={(input) => { this.setInputRef(input) }}
                             onChange={({ target: { value } }) => this.handleInputChange(value)}
                             InputLabelProps={{
                                 shrink: true,

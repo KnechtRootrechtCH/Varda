@@ -31,7 +31,6 @@ class Messages extends React.Component {
     state = {
         showCommentInput: false,
         inputText: '',
-        inputRef: null,
     }
 
     componentDidMount = () => {
@@ -83,10 +82,7 @@ class Messages extends React.Component {
     };
 
     setInputRef = ref => {
-        this.setState({
-            inputRef: ref,
-        });
-        if(ref) {
+        if(ref && this.state.showCommentInput) {
             ref.focus();
         }
     }

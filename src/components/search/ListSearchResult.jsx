@@ -7,13 +7,9 @@ import { withNamespaces } from 'react-i18next';
 import {
     Card,
     CardContent,
-    CardHeader,
     TextField,
     Typography } from '@material-ui/core';
-
-import {
-    TextBoxSearch }  from 'mdi-material-ui';
-
+// import Autocomplete from '@material-ui/lab/Autocomplete';
 
 @withNamespaces()
 @inject('ListSearchStore')
@@ -24,16 +20,7 @@ class ListSearchResult extends React.Component {
     }
 
     handleInputChange = (value) => {
-        this.props.updateSearchString(this.props.index, value)
-    }
-
-    setInputRef = ref => {
-        this.setState({
-            inputRef: ref,
-        });
-        if(ref) {
-            ref.focus();
-        }
+        this.props.updateSearchString(this.props.index, value);
     }
 
     render () {
