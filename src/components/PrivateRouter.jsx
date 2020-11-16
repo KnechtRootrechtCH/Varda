@@ -126,6 +126,7 @@ const drawerWidth = 220;
 
 const styles = theme => ({
     root: {
+        color: theme.palette.text.primary,
     },
     content: {
         transition: theme.transitions.create('margin', {

@@ -6,10 +6,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 import {
     Button,
-    ExpansionPanel,
-    ExpansionPanelActions,
-    ExpansionPanelDetails,
-    ExpansionPanelSummary,
+    Accordion,
+    AccordionActions,
+    AccordionDetails,
+    AccordionSummary,
     Table,
     TableBody,
     Typography } from '@material-ui/core';
@@ -83,8 +83,8 @@ class Season extends React.Component {
         console.debug(`${this.constructor.name}.render()`, season, statusItem);
 
         return (
-            <ExpansionPanel key={season.id} className={classes.root} defaultExpanded={false}>
-                <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
+            <Accordion key={season.id} className={classes.root} defaultExpanded={false}>
+                <AccordionSummary className={classes.summary} expandIcon={<ExpandMore/>}>
                     <Typography
                         className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title}
                         color='textPrimary'
@@ -99,10 +99,10 @@ class Season extends React.Component {
                             {countLabel}
                         </Typography>
                     }
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails className={classes.details}>
+                </AccordionSummary>
+                <AccordionDetails className={classes.details}>
                     { seasonDetails ?
-                        <Table size='small' padding='dense' className={classes.episodeTable}>
+                        <Table size='small' padding='default' className={classes.episodeTable}>
                             <TableBody>
                             { seasonDetails.episodes.map((episode, index) => {
                                 return (
@@ -116,9 +116,9 @@ class Season extends React.Component {
                             {t('details.episodeListNotAvailable')}
                         </Typography>
                     }
-                </ExpansionPanelDetails>
+                </AccordionDetails>
                 { seasonDetails &&
-                    <ExpansionPanelActions>
+                    <AccordionActions>
                         { seasonComplete ?
                             <Button size='small' onClick={() => this.handleStatusToggle(false)}>
                                 {t('details.actions.markSeasonNotDownloaded')}
@@ -129,9 +129,9 @@ class Season extends React.Component {
                             </Button>
                         }
 
-                    </ExpansionPanelActions>
+                    </AccordionActions>
                 }
-            </ExpansionPanel>
+            </Accordion>
         );
     }
 }
