@@ -24,13 +24,17 @@ class ListSearchStore {
         this.items = [];
         runInAction(() => {
             searchStrings.forEach(s => {
-                if (s && !this.filter(s)) {
-                    const baseSearchString = this.transformOriginalString(s)
+                const baseSearchString = this.transformOriginalString(s)
+                if (baseSearchString && !this.filter(baseSearchString)) {
                     const searchString = this.transformSearchString(baseSearchString);
+                    const year = this.getReleaseYear(baseSearchString);
+                    const season = this.getSeason(baseSearchString);
                     this.items.push({
                         originalSearchString: baseSearchString,
                         initialSearchString: searchString,
                         searchString: searchString,
+                        year: year,
+                        season: season,
                         results: [],
                         result: null,
                         loading: false
@@ -118,6 +122,9 @@ class ListSearchStore {
     }
 
     transformOriginalString(text) {
+        if (!text || text.trim().length === 0) {
+            return null;
+        }
         ConfigurationStore.configuration.listSearchStringRegexps.forEach(s => {
             const regex = new RegExp(s);
             const matches = text.match(regex);
@@ -127,6 +134,31 @@ class ListSearchStore {
         });
         return text.trim();
     }
+
+    getReleaseYear(text) {
+        if (!text || text.trim().length === 0) {
+            return null;
+        }
+        const regex = new RegExp(".*\\.(\\d{4})\\..*");
+        const matches = text.match(regex);
+        if (matches && matches.length > 1) {
+            return matches[1];
+        }
+        return null;
+    }
+
+    getSeason(text) {
+        if (!text || text.trim().length === 0) {
+            return null;
+        }
+        const regex = new RegExp(".*\\.S(\\d{2}).*");
+        const matches = text.match(regex);
+        if (matches && matches.length > 1) {
+            return matches[1];
+        }
+        return null;
+    }
+
 
     transformSearchString(text) {
         // const original = text;

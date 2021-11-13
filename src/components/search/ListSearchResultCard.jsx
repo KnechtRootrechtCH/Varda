@@ -114,7 +114,7 @@ class ListSearchResultCard extends React.Component {
             title = MetadataService.getTitle(item);
             image = ImageService.getBackdropImage(item, constants.IMAGESIZE.BACKDROP.W500);
             route = `/browse/${mediaType}/${id}`;
-    
+
             statusItem = this.props.DownloadStatusStore.items.get(key);
             if (!statusItem) {
                 statusItem = {
@@ -150,7 +150,7 @@ class ListSearchResultCard extends React.Component {
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label={t('settings.listSearch.movieDbSearch')} 
+                                label={t('settings.listSearch.movieDbSearch')}
                                 variant="outlined"
                                 onChange={({ target: { value } }) => this.handleInputChange(value)}
                                 InputProps={{
@@ -181,7 +181,14 @@ class ListSearchResultCard extends React.Component {
                         </CardMedia>
                     </CardActionArea>
                     <CardContent className={mobile ? classes.footerMobile : classes.footer}>
-                        <Typography variant="caption" display="block" color="textSecondary">{this.props.item.originalSearchString}</Typography>
+                        <Typography variant="caption" display="block" color="textSecondary" noWrap>{this.props.item.originalSearchString}</Typography>
+                        { this.props.item.year ?
+                            <Typography variant="caption" display="block" color="primary" noWrap>{this.props.item.year}</Typography>
+                        : this.props.item.season ?
+                            <Typography variant="caption" display="block" color="secondary" noWrap>{t('common.season')}&nbsp;{this.props.item.season}</Typography>
+                        :
+                            <Typography variant="caption" display="block" color="textSecondary" noWrap>-</Typography>
+                        }
                     </CardContent>
                     <ItemCardContent
                     item={item}
