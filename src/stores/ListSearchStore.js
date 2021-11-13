@@ -25,9 +25,10 @@ class ListSearchStore {
         runInAction(() => {
             searchStrings.forEach(s => {
                 if (s && !this.filter(s)) {
-                    const searchString = this.transform(s);
+                    const baseSearchString = this.transformOriginalString(s)
+                    const searchString = this.transformSearchString(baseSearchString);
                     this.items.push({
-                        originalSearchString: s,
+                        originalSearchString: baseSearchString,
                         initialSearchString: searchString,
                         searchString: searchString,
                         results: [],
@@ -51,7 +52,7 @@ class ListSearchStore {
                 this.items[index].result = result;
                 this.items[index].searchString = MetadataService.getTitle(result);;
             }
-            
+
         });
     }
 
@@ -71,8 +72,8 @@ class ListSearchStore {
         try {
             // console.debug('ListSearchStore.loadMovieData()', query);
             const response = await axios.get(query);
-            runInAction(() => { 
-                if (response.status === 200) { 
+            runInAction(() => {
+                if (response.status === 200) {
                     const results = response.data.results;
                     if (results) {
                         item.results = results;
@@ -92,7 +93,7 @@ class ListSearchStore {
                 }
             });
         } catch (error) {
-            runInAction(() => { 
+            runInAction(() => {
                 item.loading = false;
             });
             console.error(`ListSearchStore.loadMovieData() => failed to load movie data for ${item.searchString}`, error);
@@ -100,11 +101,11 @@ class ListSearchStore {
     }
 
     filter(text) {
-        if (text.trim().length <= 0) { 
+        if (text.trim().length <= 0) {
             console.debug(`ListSearchStore.filter() string.empty => ignore`,);
             return true;
         }
-        
+
         let filter = false;
         ConfigurationStore.configuration.listSearchIgnore.forEach(s => {
             const regex = new RegExp(s);
@@ -116,7 +117,18 @@ class ListSearchStore {
         return filter;
     }
 
-    transform(text) {
+    transformOriginalString(text) {
+        ConfigurationStore.configuration.listSearchStringRegexps.forEach(s => {
+            const regex = new RegExp(s);
+            const matches = text.match(regex);
+            if (matches && matches.length > 1) {
+                text = matches[1];
+            }
+        });
+        return text.trim();
+    }
+
+    transformSearchString(text) {
         // const original = text;
         ConfigurationStore.configuration.listSearchStringSplitter.forEach(s => {
             text = text.split(s)[0];

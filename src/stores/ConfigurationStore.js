@@ -21,7 +21,8 @@ class ConfigurationStore {
         commentsAutoMarkAsReadSeconds: 0,
         listSearchIgnore: [],
         listSearchStringPrefixes: [],
-        listSearchStringSplitter: []
+        listSearchStringSplitter: [],
+        listSearchStringTransformators: []
     };
 
     @action async init() {
