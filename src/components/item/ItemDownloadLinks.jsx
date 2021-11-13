@@ -51,6 +51,7 @@ class ItemDownloadLinks extends React.Component {
                 links.push(value);
             }
         }
+        links = links.sort((a, b) => a.title > b.title ? 1 : -1)
 
         // console.debug(`${this.constructor.name}.render()`, links);
         return (
