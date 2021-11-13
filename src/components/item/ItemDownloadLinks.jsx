@@ -85,11 +85,15 @@ class ItemDownloadLinks extends React.Component {
         links.push({
             label: title,
             url: row.urlPattern.replace(this.placeholder, titleSanitized),
+            paramName: row.formParam,
+            paramValue: title,
         })
         if (titleSanitizedAndDeUmlauted !== titleSanitized) {
             links.push({
                 label: titleDeUmlauted,
                 url: row.urlPattern.replace(this.placeholder, titleSanitizedAndDeUmlauted),
+                paramName: row.formParam,
+                paramValue: titleDeUmlauted,
             })
         }
 
@@ -97,19 +101,27 @@ class ItemDownloadLinks extends React.Component {
             links.push({
                 label: originalTitle,
                 url: row.urlPattern.replace(this.placeholder, originalTitleSanitized),
+                paramName: row.formParam,
+                paramValue: originalTitle,
             })
             if (originalTitleSanitizedAndDeUmlauted !== originalTitleSanitized) {
                 links.push({
                     label: originalTitleDeUmlauted,
                     url: row.urlPattern.replace(this.placeholder, originalTitleSanitizedAndDeUmlauted),
+                    paramName: row.formParam,
+                    paramValue: originalTitleDeUmlauted,
                 })
             }
         }
 
-        links.push({
-            label: `IMDB-ID (${imdbId})`,
-            url: row.urlPattern.replace(this.placeholder, imdbId),
-        })
+        if (imdbId !== null) {
+            links.push({
+                label: `IMDB-ID (${imdbId})`,
+                url: row.urlPattern.replace(this.placeholder, imdbId),
+                paramName: row.formParam,
+                paramValue: imdbId,
+            })
+        }
 
         return (
             <tr key={index}>
@@ -120,29 +132,39 @@ class ItemDownloadLinks extends React.Component {
                         </span>
                     </Typography>
                 </td>
-                <td className={classes.dataCell}>
-                    <Typography  variant='body2'>
-                        {links.map((link, index) => {
-                            return this.renderLinks(link, index, links.length === (index + 1))
-                        })}
-                    </Typography>
-                </td>
+                {links.map((link, index) => {
+                    return this.renderLinks(link, index)
+                })}
             </tr>
         )
     }
 
-    renderLinks (link, index, last) {
+    renderLinks (link, index) {
         const classes = this.props.classes;
         return (
-            <span key={index}>
-            <Link className={classes.link} href={link.url} target='_blank' color='textPrimary'>
-                {link.label}
-                <LinkVariant className={classes.linkIcon} color='primary'/>
-            </Link>
-            { !last &&
-                <span>,&nbsp;</span>
-            }
-            </span>
+            <td className={classes.dataCell} key={index}>
+                <Typography  variant='body2' component={'span'} >
+                    { link.paramName ?
+                        <form id={index} method="POST" action={link.url}>
+                            <input type="hidden" id={link.paramName} name={link.paramName} value={link.paramValue} />
+                            <Link type="submit" className={classes.link} formTarget="_blank" color='textPrimary' component="button">
+                                <Typography variant='body2'>
+                                    {link.label}
+                                    <LinkVariant className={classes.linkIcon} color='primary'/>
+                                </Typography>
+                            </Link>
+                        </form>
+                    :
+                        <Link className={classes.link} href={link.url} target='_blank' color='textPrimary'>
+                            <Typography variant='body2'>
+                                {link.label}
+                                <LinkVariant className={classes.linkIcon} color='primary'/>
+                            </Typography>
+                        </Link>
+                    }
+                </Typography>
+            </td>
+
         )
     }
 }
@@ -165,7 +187,7 @@ const styles = theme => ({
     },
     dataCell: {
         overflow: 'hidden',
-        width: 10000, // fill full width, overflow is hidden
+        paddingRight: theme.spacing(2),
     },
     label: {
         textTransform: 'uppercase',
