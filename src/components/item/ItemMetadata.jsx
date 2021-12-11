@@ -14,7 +14,7 @@ import {
     Typography } from '@material-ui/core';
 
 import {
-    Amazon,
+    Filmstrip,
     InformationOutline,
     Netflix }  from 'mdi-material-ui';
 
@@ -295,7 +295,7 @@ class ItemMetadata extends React.Component {
                 : links.isAmazon ?
                     <Link className={classes.infoActive} href={links.homepage} target='_blank' color='textPrimary'>
                         Amazon
-                        <Amazon className={classes.amazonIcon}/>
+                        <Filmstrip className={classes.amazonIcon}/>
                     </Link>
                 :
                     <Link className={classes.infoActive} href={links.homepage} target='_blank' color='textPrimary'>
