@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import * as Moment from 'moment';
 
 import {
-    ExpansionPanelDetails,
+    AccordionDetails,
     Tooltip,
     Typography } from '@material-ui/core';
 
@@ -29,7 +29,7 @@ class TransactionDetails extends React.Component {
         transaction = data.transaction === 'updateStatus' ? `${transaction}: ${t(`history.transaction.${data.newValue}`)}` : transaction;
 
         return (
-            <ExpansionPanelDetails className={classes.root}>
+            <AccordionDetails className={classes.root}>
                 <table className={classes.releaseDateTable}>
                     <tbody>
                         { data.subTarget ? this.renderRow(t('history.label.subTarget'), data.subTarget) : null}
@@ -41,7 +41,7 @@ class TransactionDetails extends React.Component {
                         { this.renderRow(t('history.label.comment'), data.comment ? data.comment : '-')}
                     </tbody>
                 </table>
-            </ExpansionPanelDetails>
+            </AccordionDetails>
         )
     }
 
@@ -79,7 +79,7 @@ class TransactionDetails extends React.Component {
 const styles = theme => ({
     root: {
         paddingTop: 0,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingLeft: theme.spacing(2),
     },
     label: {
         textTransform: 'uppercase',

@@ -24,7 +24,7 @@ class Browse extends React.Component {
         window.addEventListener('scroll', this.handleScroll)
     }
 
-    UNSAFE_componentWillUnmount = () => {
+    componentWillUnmount = () => {
         // console.debug(`${this.constructor.name}.componentWillUnmount() => removing scroll event listener`);
         window.removeEventListener('scroll', this.handleScroll)
     }
@@ -77,8 +77,8 @@ class Browse extends React.Component {
 
         return (
             <div className={classes.root}>
-                <Typography className={mobile ? classes.titleMobile : classes.title} variant='h6' component='h2'>
-                    <span>{t(titleKey)}</span>
+                <Typography className={mobile ? classes.titleMobile : classes.title} variant='h6'>
+                    {t(titleKey)}
                 </Typography>
                 <div className={mobile ? classes.itemGridMobile : classes.itemGrid}>
                     <ItemGrid/>
@@ -96,27 +96,29 @@ const styles = theme => ({
         marginRight: 'auto',
     },
     title: {
-        marginTop: theme.spacing.unit * 2,
-        marginRight: theme.spacing.unit * 3,
+        marginTop: theme.spacing(2),
+        marginRight: theme.spacing(3),
         marginBottom: 0,
-        marginLeft: theme.spacing.unit * 3,
+        marginLeft: theme.spacing(3),
+        color: theme.palette.text.primary,
     },
     titleMobile: {
-        marginTop: theme.spacing.unit * 2,
-        marginRight: theme.spacing.unit * 2,
+        marginTop: theme.spacing(2),
+        marginRight: theme.spacing(2),
         marginBottom: 0,
-        marginLeft: theme.spacing.unit * 2,
+        marginLeft: theme.spacing(2),
+        color: theme.palette.text.primary,
     },
     itemGrid: {
-        marginTop: theme.spacing.unit,
-        marginRight: theme.spacing.unit * 3,
-        marginBottom: theme.spacing.unit,
-        marginLeft: theme.spacing.unit * 3,
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(3),
+        marginBottom: theme.spacing(1),
+        marginLeft: theme.spacing(3),
     },
     itemGridMobile: {
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
         marginRight: 0,
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
         marginLeft: 0,
     },
 });

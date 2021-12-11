@@ -19,6 +19,10 @@ class ConfigurationStore {
         allowCommentsSorting: false,
         historyAutoMarkAsReadSeconds: 0,
         commentsAutoMarkAsReadSeconds: 0,
+        listSearchIgnore: [],
+        listSearchStringPrefixes: [],
+        listSearchStringSplitter: [],
+        listSearchStringTransformators: []
     };
 
     @action async init() {

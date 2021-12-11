@@ -249,15 +249,18 @@ class AccountInformationSettings extends React.Component {
 
 const styles = theme => ({
     button: {
-        marginTop: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(1),
     },
     stepLabel: {
         cursor: 'pointer',
     },
     buttonIcon: {
-        marginRight: 2 * theme.spacing.unit,
+        marginRight: 2 * theme.spacing(1),
         marginLeft: 0,
+    },
+    title: {
+        color: theme.palette.text.primary,
     },
 });
 

@@ -127,20 +127,20 @@ class ItemCardContent extends React.Component {
 const styles = theme => ({
     root: {
         position: 'relative',
-        padding: theme.spacing.unit,
+        padding: theme.spacing(1),
     },
     rootMobile: {
         position: 'relative',
-        paddingTop: theme.spacing.unit,
-        paddingRight: theme.spacing.unit * 2,
-        paddingBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(1),
+        paddingRight: theme.spacing(2),
+        paddingBottom: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
     },
     title: {
 
     },
     titleMobile: {
-        paddingRight: theme.spacing.unit * 4,
+        paddingRight: theme.spacing(4),
     },
     statusIcon: {
 
@@ -148,8 +148,8 @@ const styles = theme => ({
     mediaTypeIcon: {
         verticalAlign: 'middle',
         marginBottom: 3,
-        marginLeft: theme.spacing.unit / 2,
-        marginRight: theme.spacing.unit / 2,
+        marginLeft: theme.spacing(0.5),
+        marginRight: theme.spacing(0.5),
         fontSize: 18,
     },
     priority: {

@@ -23,7 +23,7 @@ class ItemGrid extends React.Component {
         const mobile = isWidthDown('xs', this.props.width);
         const desktop = isWidthUp('md', this.props.width);
 
-        const spacing = mobile ? 0 : 8;
+        const spacing = mobile ? 0 : 1;
 
         return (
             <div className={classes.root}>
@@ -72,7 +72,7 @@ const styles = theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: theme.spacing.unit ,
+        paddingTop: theme.spacing(1),
     },
     progressContainer: {
         position: 'absolute',

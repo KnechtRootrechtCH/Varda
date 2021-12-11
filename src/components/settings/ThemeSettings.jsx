@@ -46,9 +46,9 @@ class ThemeSettings extends React.Component {
         const paletteGridSize = window.innerWidth > 350 ? 6 : 12;
 
         return (
-            <Grid container className={classes.root} spacing={8}>
+            <Grid container className={classes.root} spacing={1}>
                 <Grid item xs={12}>
-                    <Typography className={classes.title} variant='subtitle1' component='h2'>
+                    <Typography className={classes.title} variant='subtitle1'>
                         <span>{t('settings.themeSettings')}</span>
                     </Typography>
                 </Grid>
@@ -69,7 +69,7 @@ class ThemeSettings extends React.Component {
                             color='primary'/>
                         }
                         label={
-                            <Typography variant='body1' component='h3'>{t('settings.darkTheme')}</Typography>
+                            <Typography class={classes.label} variant='body1'>{t('settings.darkTheme')}</Typography>
                         }/>
                 </Grid>
             </Grid>
@@ -87,7 +87,7 @@ class ThemeSettings extends React.Component {
 
         return (
             <div className={classes.palette}>
-                <Typography className={classes.header} variant='subtitle2' component='h3'>{t(`settings.${type}Color`)}</Typography>
+                <Typography className={classes.header} variant='subtitle2'>{t(`settings.${type}Color`)}</Typography>
                 <Grid container>
                     {colors.map((color, index) => {
                     return this.renderColorItem(type, color, index)
@@ -130,6 +130,10 @@ const styles = theme => ({
     },
     title: {
         margin: 0,
+        color: theme.palette.text.primary,
+    },
+    header: {
+        color: theme.palette.text.primary,
     },
     paletteColumn: {
 
@@ -151,7 +155,10 @@ const styles = theme => ({
     },
     switch: {
         margin: 0,
-    }
+    },
+    label: {
+        color: theme.palette.text.primary,
+    },
 });
 
 ThemeSettings.propTypes = {

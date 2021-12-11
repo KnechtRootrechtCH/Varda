@@ -21,10 +21,10 @@ class Export extends React.Component {
 
 const styles = theme => ({
     root: {
-        marginTop: theme.spacing.unit * 2,
-        marginRight: theme.spacing.unit * 3,
-        marginBottom: theme.spacing.unit * 2,
-        marginLeft: theme.spacing.unit * 3,
+        marginTop: theme.spacing(2),
+        marginRight: theme.spacing(3),
+        marginBottom: theme.spacing(2),
+        marginLeft: theme.spacing(3),
     },
     divider: {
     }

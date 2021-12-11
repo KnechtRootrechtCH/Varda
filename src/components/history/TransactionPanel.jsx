@@ -8,8 +8,8 @@ import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 import * as Moment from 'moment';
 
 import {
-    ExpansionPanel,
-    ExpansionPanelSummary,
+    Accordion,
+    AccordionSummary,
     Fade,
     Tooltip,
     Typography } from '@material-ui/core';
@@ -48,8 +48,8 @@ class TransactionPanel extends React.Component {
         const address = data.key ? `/browse/${data.key.replace(':', '/')}` : null;
 
         return (
-            <ExpansionPanel className={classes.root} defaultExpanded={false}>
-                <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
+            <Accordion className={classes.root} defaultExpanded={false}>
+                <AccordionSummary className={classes.summary} expandIcon={<ExpandMore/>}>
                     { itemHistory ?
                         <Typography
                             className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title}
@@ -84,9 +84,9 @@ class TransactionPanel extends React.Component {
                             {transactionShort}
                         </Typography>
                     </Tooltip>
-                </ExpansionPanelSummary>
+                </AccordionSummary>
                 <TransactionDetails data={data}/>
-            </ExpansionPanel>
+            </Accordion>
         )
     }
 }
@@ -96,8 +96,8 @@ const styles = theme => ({
 
     },
     summary: {
-        paddingRight: theme.spacing.unit * 2,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingRight: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
     },
     titleActive: {
         textDecoration: 'none',
@@ -125,7 +125,7 @@ const styles = theme => ({
         verticalAlign: 'middle',
         marginBottom: 3,
         marginLeft: 0,
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
         fontSize: 18,
     },
 });

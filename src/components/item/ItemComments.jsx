@@ -27,7 +27,6 @@ class ItemComments extends React.Component {
     state = {
         showCommentInput: false,
         inputText: '',
-        inputRef: null,
     }
 
     handleInputChange = (value) => {
@@ -62,10 +61,7 @@ class ItemComments extends React.Component {
     }
 
     setInputRef = ref => {
-        this.setState({
-            inputRef: ref,
-        });
-        if(ref) {
+        if(ref && this.state.showCommentInput) {
             ref.focus();
         }
     }
@@ -154,8 +150,8 @@ const styles = theme => ({
         textAlign: 'center',
     },
     button: {
-        marginRight: theme.spacing.unit,
-        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing(1),
+        marginLeft: theme.spacing(1),
     },
     inputContainer: {
         marginTop: 0,
@@ -171,18 +167,18 @@ const styles = theme => ({
         marginLeft: 0,
     },
     submit: {
-        marginLeft: theme.spacing.unit * 2,
+        marginLeft: theme.spacing(2),
     },
     buttonIcon: {
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
         marginLeft: 0,
     },
     header: {
         textTransform: 'uppercase',
-        marginBottom: theme.spacing.unit / 2,
+        marginBottom: theme.spacing(0.5),
     },
     commentsList: {
-        marginBottom: theme.spacing.unit * 2,
+        marginBottom: theme.spacing(2),
     }
 });
 

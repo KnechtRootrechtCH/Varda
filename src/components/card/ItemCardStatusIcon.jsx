@@ -136,7 +136,7 @@ class ItemCardStatusIcon extends React.Component {
 
 const styles = theme => ({
     root: {
-        marginLeft: 'auto',
+        marginLeft: 'auto !important',
     },
     rootMobile: {
         float: 'right',

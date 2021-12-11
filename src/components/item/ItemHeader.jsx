@@ -58,16 +58,16 @@ class ItemHeader extends React.Component {
 
 const styles = theme => ({
     root: {
-        marginBottom: theme.spacing.unit * 4,
+        marginBottom: theme.spacing(4),
         zIndex: 100,
     },
     rootMobile: {
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
         zIndex: 100,
     },
     header: {
         paddingTop: 90,
-        marginLeft: 92 + theme.spacing.unit * 3,
+        marginLeft: 92 + theme.spacing(3),
     },
     title: {
         color: theme.palette.common.white,

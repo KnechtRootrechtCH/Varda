@@ -7,15 +7,12 @@ import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 
 import {
-    Card,
-    CardActionArea,
     CardMedia,
-    Fade,
     Paper,
     Typography } from '@material-ui/core';
 
-import ItemCardActions from './ItemCardActions'
-import ItemCardContent from './ItemCardContent'
+import ItemCardActions from '../card/ItemCardActions'
+import ItemCardContent from '../card/ItemCardContent'
 
 import constants from '../../config/constants';
 import ImageService from '../../service/ImageService';
@@ -26,7 +23,7 @@ import MetadataService from '../../service/MetadataService';
 @inject('DownloadStatusStore')
 @inject('MovieDbStore')
 @observer
-class ItemCard extends React.Component {
+class ListSearchResultDetails extends React.Component {
 
     state = {
         priority: 100,
@@ -72,10 +69,6 @@ class ItemCard extends React.Component {
                 ImageService.getMovieDbImage(item.backdrop, constants.IMAGESIZE.BACKDROP.W500) :
                 ImageService.getBackdropPlaceholder(constants.IMAGESIZE.BACKDROP.W500);
 
-
-        const mode = downloadList ? 'list' : 'browse';
-        const route = `/${mode}/${mediaType}/${id}`;
-
         let statusItem = downloadList ? item : this.props.DownloadStatusStore.items.get(key);
         if (!statusItem) {
             statusItem = {
@@ -86,42 +79,33 @@ class ItemCard extends React.Component {
 
         const status = statusItem ? statusItem.status : null;
 
-        const show = downloadList ? true : this.props.MovieDbStore.page > 0 || !this.props.MovieDbStore.loading;
-
         return (
-            <Fade in={show}>
-                <Card className={mobile ? classes.rootMobile : classes.root} raised={!mobile} square={mobile}>
-                    <CardActionArea component={Link} to={route}>
-                        <CardMedia
-                            className={classes.media}
-                            image={image}
-                            title={title}>
-                            { status &&
-                                <Paper className={mobile ? classes.statusMobile : classes.status}>
-                                    <Typography variant='caption'>{t(`browse.card.status.${status}`)}</Typography>
-                                </Paper>
-                            }
-                        </CardMedia>
-                    </CardActionArea>
-                    <ItemCardContent
-                        item={item}
-                        itemKey={key}
+            <React.Fragment>
+                <CardMedia
+                    className={classes.media}
+                    image={image}
+                    title={title}>
+                    { status &&
+                        <Paper className={mobile ? classes.statusMobile : classes.status}>
+                            <Typography variant='caption'>{t(`browse.card.status.${status}`)}</Typography>
+                        </Paper>
+                    }
+                </CardMedia>
+            <ItemCardContent
+                item={item}
+                itemKey={key}
+                statusItem={statusItem}
+                mobile={mobile}
+                mediaType={mediaType}/>
+            {!mobile &&
+                <ItemCardActions
+                    item={item}
+                    itemKey={key}
                         statusItem={statusItem}
                         mobile={mobile}
-                        downloadList={downloadList}
                         mediaType={mediaType}/>
-                    {!mobile &&
-                        <ItemCardActions
-                            item={item}
-                            itemKey={key}
-                            statusItem={statusItem}
-                            mobile={mobile}
-                            downloadList={downloadList}
-                            mediaType={mediaType}/>
-                    }
-
-                </Card>
-            </Fade>
+                }
+            </React.Fragment>
         );
      }
 }
@@ -156,8 +140,8 @@ const styles = theme => ({
     },
 });
 
-ItemCard.propTypes = {
+ListSearchResultDetails.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withRouter(withWidth()(ItemCard)));
+export default withStyles(styles)(withRouter(withWidth()(ListSearchResultDetails)));

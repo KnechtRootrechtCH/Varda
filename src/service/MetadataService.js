@@ -59,6 +59,13 @@ class MetadataService {
         return '';
     }
 
+    getTitleWithReleaseYear(item) {
+        const title = this.getTitle(item);
+        const releaseMoment = this.getReleaseDateMoment(item);
+        const release = releaseMoment ? releaseMoment.format('YYYY') : '????';
+        return `${title} (${release})`;
+    }
+
     getReleaseDateMoment (item) {
         let date = null
         if (item.release_date) {
