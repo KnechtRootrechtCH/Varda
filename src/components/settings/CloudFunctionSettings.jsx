@@ -16,13 +16,15 @@ import {
 class CloudFunctionSettings extends React.Component {
 
     handleStatusUpdateExecute = () => {
-        // console.debug(`${this.constructor.name}.handleExecute()`);
         this.props.CloudFunctionsStore.executeStatusUpdateCloudFunction();
     }
 
     handleCountUpdateExecute = () => {
-        // console.debug(`${this.constructor.name}.handleExecute()`);
         this.props.CloudFunctionsStore.executeUpdateItemCountsFunction();
+    }
+
+    handleRequeueItemsExecute = () => {
+        this.props.CloudFunctionsStore.executereRequeueItemsCloudFunction();
     }
 
 
@@ -37,6 +39,10 @@ class CloudFunctionSettings extends React.Component {
         const countUpdate = this.props.CloudFunctionsStore.itemCountTimestamp;
         const countUpdateTimestamp = countUpdate ? Moment(countUpdate) : null;
         const countUpdateString = countUpdateTimestamp ? `${t('settings.lastUpdate')}: ${countUpdateTimestamp.format('DD.MM.YYYY HH:mm')}` : t('settings.neverRun');
+
+        const requeueItems = this.props.CloudFunctionsStore.requeueItemsTimestamp;
+        const requeueItemsTimestamp = requeueItems ? Moment(requeueItems) : null;
+        const requeueItemsString = requeueItemsTimestamp ? `${t('settings.lastUpdate')}: ${requeueItemsTimestamp.format('DD.MM.YYYY HH:mm')}` : t('settings.neverRun');
 
         return (
             <div className={classes.root}>
@@ -67,6 +73,19 @@ class CloudFunctionSettings extends React.Component {
                     </Button>
                     <Typography className={classes.text} variant='body2' component='h2'>
                         <span>{countUpdateString}</span>
+                    </Typography>
+                </div>
+                <div className={classes.actions}>
+                    <Button
+                        className={classes.button}
+                        color='primary'
+                        variant='text'
+                        disabled={this.props.CloudFunctionsStore.actionRunning}
+                        onClick={() => this.handleRequeueItemsExecute()}>
+                        {t('settings.executeRequeueItems')}
+                    </Button>
+                    <Typography className={classes.text} variant='body2' component='h2'>
+                        <span>{requeueItemsString}</span>
                     </Typography>
                 </div>
             </div>

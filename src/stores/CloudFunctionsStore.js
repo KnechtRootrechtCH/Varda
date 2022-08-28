@@ -64,6 +64,27 @@ class CloudFunctionsStore {
             });
     }
 
+    @action executereRequeueItemsCloudFunction () {
+        console.debug('CloudFunctionsStore.executereRequeueItemsCloudFunction()');
+        const cloudFunction = functions.httpsCallable('requeueItems');
+        this.actionRunning = true;
+        cloudFunction({
+                uid: this.dataUid,
+            })
+            .then((result) => {
+                console.debug('CloudFunctionsStore.executereRequeueItemsCloudFunction() : successfull', result);
+                runInAction(() => {
+                    this.actionRunning = false;
+                });
+            })
+            .catch((error) => {
+                console.debug('CloudFunctionsStore.executereRequeueItemsCloudFunction() : failed', error);
+                runInAction(() => {
+                    this.actionRunning = false;
+                });
+            });
+    }
+
     @action setStatusUpdateTimestamp (timestamp) {
         this.statusUpdateTimestamp = timestamp;
     }
