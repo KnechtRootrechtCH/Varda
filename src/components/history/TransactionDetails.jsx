@@ -47,7 +47,9 @@ class TransactionDetails extends React.Component {
 
     renderRow (label, value, tooltipText, url) {
         const classes = this.props.classes;
-
+        if (typeof value !== 'string') {
+            value = "invalid data";
+        }
         tooltipText = tooltipText ? tooltipText : value;
         return (
             <tr>

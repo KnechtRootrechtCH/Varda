@@ -61,7 +61,7 @@ class NotificationSettings extends React.Component {
                             color='primary'/>
                         }
                         label={
-                            <Typography class={classes.label} variant='body1'>{t('settings.transactionNotifications')}</Typography>
+                            <Typography className={classes.label} variant='body1'>{t('settings.transactionNotifications')}</Typography>
                         }/>
                 </Grid>
                 <Grid item xs={12}>
@@ -75,7 +75,7 @@ class NotificationSettings extends React.Component {
                             color='primary'/>
                         }
                         label={
-                            <Typography class={classes.label} variant='body1'>{t('settings.commentNotifications')}</Typography>
+                            <Typography className={classes.label} variant='body1'>{t('settings.commentNotifications')}</Typography>
                         }/>
                 </Grid>
             </Grid>

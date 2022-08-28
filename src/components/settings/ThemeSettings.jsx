@@ -69,7 +69,7 @@ class ThemeSettings extends React.Component {
                             color='primary'/>
                         }
                         label={
-                            <Typography class={classes.label} variant='body1'>{t('settings.darkTheme')}</Typography>
+                            <Typography className={classes.label} variant='body1'>{t('settings.darkTheme')}</Typography>
                         }/>
                 </Grid>
             </Grid>
@@ -126,7 +126,7 @@ class ThemeSettings extends React.Component {
 const styles = theme => ({
     root: {
         maxWidth: 350,
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
     },
     title: {
         margin: 0,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
@@ -65,9 +65,9 @@ const styles = theme => ({
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.action.disabled, 0.15),
+        backgroundColor: alpha(theme.palette.action.disabled, 0.15),
         '&:hover': {
-            backgroundColor: fade(theme.palette.action.disabled, 0.25),
+            backgroundColor: alpha(theme.palette.action.disabled, 0.25),
         },
         marginLeft: 0,
         width: '100%',
