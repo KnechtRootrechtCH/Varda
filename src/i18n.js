@@ -269,6 +269,9 @@ i18n.init({
                             release: 'Release Date',
                             status: 'Status',
                             priority: 'Priority',
+                            url: 'URL',
+                            timestamp: 'timestamp',
+                            backdrop: 'backdrop',
                         },
                     },
                     listSearch: {
@@ -599,6 +602,9 @@ i18n.init({
                             release: 'Veröffentlichung',
                             status: 'Status',
                             priority: 'Priorität',
+                            url: 'Link',
+                            timestamp: 'Zeitstempel',
+                            backdrop: 'Hintergrund',
                         },
                     },
                     listSearch: {
