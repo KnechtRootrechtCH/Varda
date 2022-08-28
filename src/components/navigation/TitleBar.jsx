@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router';
@@ -289,7 +289,7 @@ const styles = theme => ({
         color: theme.palette.primary.main,
         marginLeft: theme.spacing(2),
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
+            backgroundColor: alpha(theme.palette.common.white, 0.25),
         },
     },
     avatarSmall: {

@@ -177,7 +177,7 @@ class AccountInformationSettings extends React.Component {
                             </div>
                         </StepContent>
                     </Step>
-                    <Step key='release'>
+                    <Step key='load'>
                         <StepLabel className={classes.stepLabel} onClick={() => this.selectStep(2)}>
                             {t('settings.export.load')}
                         </StepLabel>
@@ -192,7 +192,7 @@ class AccountInformationSettings extends React.Component {
                             </Button>
                         </StepContent>
                     </Step>
-                    <Step key='release'>
+                    <Step key='export'>
                         <StepLabel>
                             {t('settings.export.save')}
                         </StepLabel>
