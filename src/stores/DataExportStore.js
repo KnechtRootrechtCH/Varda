@@ -24,7 +24,7 @@ class DataExportStore {
         let content = this.csvHeader;
         content += this.csvContent;
 
-        let blob = new Blob([content], {type: 'text/csv;charset=utf-8'});
+        let blob = new Blob(["\uFEFF" + content], {type: 'text/csv; charset=utf-8'});
         if (window.navigator.msSaveOrOpenBlob) {
             window.navigator.msSaveBlob(blob, fileName);
         } else {
@@ -72,17 +72,21 @@ class DataExportStore {
 
         if (this.exportFullData) {
             cols.push(this.wrap('id'));
-            cols.push(this.wrap('title'));
-            cols.push(this.wrap('release'));
-            cols.push(this.wrap('status'));
-            cols.push(this.wrap('priority'));
-            cols.push(this.wrap('timestamp'));
-            cols.push(this.wrap('backdrop'));
+            cols.push(this.wrap(this.t('settings.export.fields.title')));
+            cols.push(this.wrap(this.t('settings.export.fields.release')));
+            cols.push(this.wrap(this.t('settings.export.fields.status')));
+            cols.push(this.wrap(this.t('settings.export.fields.timestamp')));
+            cols.push(this.wrap(this.t('settings.export.fields.timestamp')));
+            cols.push(this.wrap(this.t('settings.export.fields.priority')));
+            cols.push(this.wrap(this.t('settings.export.fields.url')));
+            cols.push(this.wrap(this.t('settings.export.fields.backdrop')));
         } else {
             cols.push(this.wrap(this.t('settings.export.fields.title')));
             cols.push(this.wrap(this.t('settings.export.fields.release')));
             cols.push(this.wrap(this.t('settings.export.fields.status')));
-            cols.push(this.wrap(this.t('settings.export.fields.priority')));
+            cols.push(this.wrap(this.t('settings.export.fields.timestamp')));
+            cols.push(this.wrap(this.t('settings.export.fields.timestamp')));
+            cols.push(this.wrap(this.t('settings.export.fields.url')));
         }
 
         return cols.join(this.csvDelimeter);
@@ -94,20 +98,25 @@ class DataExportStore {
             let cols = [];
             let release = item.release ? Moment(item.release.toDate()) : null;
             let timestamp = item.timestamp ? Moment(item.timestamp.toDate()) : null;
+            let url = `https://varda-80e71.firebaseapp.com/browse/${item.mediaType}/${item.id}`
 
             if (this.exportFullData) {
                 cols.push(this.wrap(`${item.mediaType}:${item.id}`));
                 cols.push(this.wrap(item.title));
                 cols.push(this.wrap(release ? release.format('DD.MM.YYYY') : ''));
                 cols.push(this.wrap(item.status));
-                cols.push(this.wrap(item.priority ? item.priority : ''));
+                cols.push(this.wrap(timestamp ? timestamp.toISOString() : ''));
                 cols.push(this.wrap(timestamp ? timestamp.format('DD.MM.YYYY HH:mm') : ''));
+                cols.push(this.wrap(item.priority ? item.priority : ''));
+                cols.push(this.wrap(url));
                 cols.push(this.wrap(item.backdrop));
             } else {
                 cols.push(this.wrap(item.title));
                 cols.push(this.wrap(release ? release.format('DD.MM.YYYY') : ''));
                 cols.push(this.wrap(this.t(`common.status.${item.status}`)));
-                cols.push(this.wrap(item.priority ? item.priority : ''));
+                cols.push(this.wrap(timestamp ? timestamp.format('DD.MM.YYYY') : ''));
+                cols.push(this.wrap(timestamp ? timestamp.toISOString() : ''));
+                cols.push(this.wrap(url));
             }
 
             content += `\n${cols.join(this.csvDelimeter)}`;

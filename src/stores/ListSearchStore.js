@@ -12,13 +12,6 @@ class ListSearchStore {
     @observable searchStrings = [];
     @observable items = [];
 
-    constructor() {
-        const locale = navigator.language.trim();
-        runInAction(() => {
-            this.locale = locale.substring(0, 2);
-        });
-    }
-
     @action setSearchStrings(searchStrings) {
         this.searchStrings = searchStrings;
         this.items = [];
