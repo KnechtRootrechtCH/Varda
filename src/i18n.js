@@ -3,7 +3,7 @@ import i18n from 'i18next';
 i18n.init({
     debug: true,
 
-    lng: navigator.language.trim(),
+    lng: localStorage.getItem('varda.locale') ? localStorage.getItem('varda.locale') : navigator.language.trim(),
 
     react: {
         wait: false,
