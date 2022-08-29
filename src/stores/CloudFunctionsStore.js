@@ -9,6 +9,7 @@ class CloudFunctionsStore {
     @observable actionRunning = false;
     @observable statusUpdateTimestamp = null;
     @observable itemCountTimestamp = null;
+    @observable requeueItemsTimestamp = null;
 
     @action executeAutomatedStatusUpdate () {
         let date = Moment();
@@ -91,6 +92,10 @@ class CloudFunctionsStore {
 
     @action setItemCountUpdateTimestamp (timestamp) {
         this.itemCountTimestamp = timestamp;
+    }
+
+    @action setRequeueItemsTimestamp (timestamp) {
+        this.requeueItemsTimestamp = timestamp;
     }
 
     @action incrementIndex () {

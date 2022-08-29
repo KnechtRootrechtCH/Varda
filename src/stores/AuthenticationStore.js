@@ -220,6 +220,7 @@ class AuthenticationStore {
                     this.userDataLoaded = true;
 
                     CloudFunctionsStore.setStatusUpdateTimestamp(doc.data().statusUpdateTimestamp);
+                    CloudFunctionsStore.setRequeueItemsTimestamp(doc.data().requeueItemsTimestamp);
                     CloudFunctionsStore.setItemCountUpdateTimestamp(itemCounts.timestamp);
                     CloudFunctionsStore.executeAutomatedStatusUpdate();
 

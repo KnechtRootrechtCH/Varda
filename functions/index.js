@@ -5,7 +5,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-exports.itemUpdateListener = functions.firestore.document('users/{userId}/items/{itemId}').onWrite((change, context) => {
+exports.itemUpdateListener = functions.firestore.document('users/{userId}/items/{itemId}').onWrite(async (change, context) => {
     // console.log(change);
     // console.log(context);
     const uid = context.params.userId;
@@ -15,54 +15,49 @@ exports.itemUpdateListener = functions.firestore.document('users/{userId}/items/
     const newStatus = after ? after.status : null;
     console.log(`Status change detected: ${previousSatus} => ${newStatus}`)
 
-    return admin.firestore()
-            .collection('users')
-            .doc(uid)
-            .get()
-            .then((doc) => {
-                const data = doc.data();
-                let counts = data.itemCounts;
-                console.log('Previous counts object', counts);
-                if (!counts) {
-                    counts = new Object();
-                }
-                if (!newStatus || newStatus === 'removed') {
-                    let total = counts['total'];
-                    total = total ? total - 1 : 0;
-                    counts['total'] = total;
-                } else {
-                    let value = counts[newStatus];
-                    value = value ? value + 1 : 1;
-                    counts[newStatus] = value;
-                }
-
-                if (!previousSatus || previousSatus === 'removed') {
-                    let total = counts['total'];
-                    total = total ? total + 1 : 1;
-                    counts['total'] = total;
-                } else {
-                    let value = counts[previousSatus];
-                    value = value ? value - 1 : 0;
-                    counts[previousSatus] = value;
-                }
-
-                //ensure plain JS object
-                const plain = JSON.parse(JSON.stringify(counts));
-                console.log('New counts object', plain);
-
-                return admin
-                    .firestore()
-                    .collection('users')
-                    .doc(uid)
-                    .set({
-                        itemCounts: plain,
-                    }, {
-                        merge: true
-                    });
-            })
+    const doc = await admin.firestore()
+        .collection('users')
+        .doc(uid)
+        .get();
+    const data = doc.data();
+    let counts = data.itemCounts;
+    console.log('Previous counts object', counts);
+    if (!counts) {
+        counts = new Object();
+    }
+    if (!newStatus || newStatus === 'removed') {
+        let total = counts['total'];
+        total = total ? total - 1 : 0;
+        counts['total'] = total;
+    } else {
+        let value_1 = counts[newStatus];
+        value_1 = value_1 ? value_1 + 1 : 1;
+        counts[newStatus] = value_1;
+    }
+    if (!previousSatus || previousSatus === 'removed') {
+        let total_1 = counts['total'];
+        total_1 = total_1 ? total_1 + 1 : 1;
+        counts['total'] = total_1;
+    } else {
+        let value_2 = counts[previousSatus];
+        value_2 = value_2 ? value_2 - 1 : 0;
+        counts[previousSatus] = value_2;
+    }
+    //ensure plain JS object
+    const plain = JSON.parse(JSON.stringify(counts));
+    console.log('New counts object', plain);
+    return await admin
+        .firestore()
+        .collection('users')
+        .doc(uid)
+        .set({
+            itemCounts: plain
+        }, {
+            merge: true
+        });
 });
 
-exports.updateItemCounts = functions.https.onCall((data, context) => {
+exports.updateItemCounts = functions.https.onCall(async (data, context) => {
     const uid = data.uid ? data.uid : context.auth.uid;
     console.log('data', data);
     console.log('context', context);
@@ -72,61 +67,59 @@ exports.updateItemCounts = functions.https.onCall((data, context) => {
         uid: uid,
     }
 
-    return admin
-        .firestore()
-        .collection('users')
-        .doc(uid)
-        .collection('items')
-        .get()
-        .then((snapshot) => {
-            console.log('items loaded', snapshot);
-            let itemCounts = new Object();
-            snapshot.forEach(doc => {
-                const item = doc.data();
-                if (item.status && item.status !== 'removed') {
-                    let total = itemCounts['total'];
-                    total = total ? total + 1 : 1;
-                    itemCounts['total'] = total;
+    try {
+        const snapshot = await admin
+            .firestore()
+            .collection('users')
+            .doc(uid)
+            .collection('items')
+            .get();
+        console.log('items loaded', snapshot);
+        let itemCounts = new Object();
+        snapshot.forEach(doc => {
+            const item = doc.data();
+            if (item.status && item.status !== 'removed') {
+                let total = itemCounts['total'];
+                total = total ? total + 1 : 1;
+                itemCounts['total'] = total;
 
-                    let value = itemCounts[item.status];
-                    value = value ? value + 1 : 1;
-                    itemCounts[item.status] = value;
-                }
-            });
+                let value_1 = itemCounts[item.status];
+                value_1 = value_1 ? value_1 + 1 : 1;
+                itemCounts[item.status] = value_1;
+            }
+        });
 
-            itemCounts['timestamp'] = new Date();
-            const plain = JSON.parse(JSON.stringify(itemCounts));
-            result.itemCounts = plain;
-            console.log('item count complete => saving', plain)
-            return admin
+        itemCounts['timestamp'] = new Date();
+        const plain = JSON.parse(JSON.stringify(itemCounts));
+        result.itemCounts = plain;
+        console.log('item count complete => saving', plain);
+        try {
+            await admin
                 .firestore()
                 .collection('users')
                 .doc(uid)
                 .set({
-                    itemCounts: plain,
+                    itemCounts: plain
                 }, {
                     merge: true
-                })
-                .then(() => {
-                    result.success = true;
-                    return result;
-                })
-                .catch((error) => {
-                    result.success = false;
-                    result.error = error;
-                    result.message = error.message;
-                    return result;
                 });
-        })
-        .catch((error) => {
+            result.success = true;
+            return result;
+        } catch (error) {
             result.success = false;
             result.error = error;
             result.message = error.message;
             return result;
-        });
+        }
+    } catch (error_1) {
+        result.success = false;
+        result.error = error_1;
+        result.message = error_1.message;
+        return result;
+    }
 });
 
-exports.updateItemStatus = functions.https.onCall((data, context) => {
+exports.updateItemStatus = functions.https.onCall(async (data, context) => {
     const uid = data.uid ? data.uid : context.auth.uid;
     console.log('data', data);
     console.log('context', context);
@@ -136,75 +129,74 @@ exports.updateItemStatus = functions.https.onCall((data, context) => {
         uid: uid,
     }
 
-    return admin.firestore()
-        .collection('users')
-        .doc(uid)
-        .collection('items')
-        .get()
-        .then((snapshot) => {
-            console.log('items loaded', snapshot);
-            const now = new Date();
-            result.timestamp = now;
-            let updates = [];
+    try {
+        const snapshot = await admin.firestore()
+            .collection('users')
+            .doc(uid)
+            .collection('items')
+            .get();
+        console.log('items loaded', snapshot);
+        const now = new Date();
+        result.timestamp = now;
+        let updates = [];
 
-            let batch = admin.firestore().batch();
+        let batch = admin.firestore().batch();
 
-            let collection = admin.firestore()
-                                .collection('users')
-                                .doc(uid)
-                                .collection('items')
+        let collection = admin.firestore()
+            .collection('users')
+            .doc(uid)
+            .collection('items');
 
-            snapshot.forEach(doc => {
-                const item = doc.data();
-                const status = item.status;
-                const release = item.release ? item.release.toDate() : now;
-                let newStatus = null;
-                if (status === 'queued' && now < release) {
-                    newStatus = 'notReleased';
-                } else if (status === 'notReleased' && now > release) {
-                    newStatus = 'queued';
-                }
+        snapshot.forEach(doc => {
+            const item = doc.data();
+            const status = item.status;
+            const release = item.release ? item.release.toDate() : null;
+            let newStatus = null;
+            if ((status === 'queued' || status === 'redownload' || status === 'notFound' || status === 'notAvailable') && (release === null || now < release)) {
+                newStatus = 'notReleased';
+            } else if (status === 'notReleased' && now > release) {
+                newStatus = 'queued';
+            }
 
-                if (newStatus) {
-                    const ref = collection.doc(doc.id);
-                    batch.update(ref, {
-                        status: newStatus
-                    });
-                    item.status = newStatus;
-                    updates.push(item);
-                }
-            });
+            if (newStatus) {
+                const ref = collection.doc(doc.id);
+                batch.update(ref, {
+                    status: newStatus
+                });
+                item.status = newStatus;
+                updates.push(item);
+            }
+        });
 
-            const ref = admin.firestore()
-                            .collection('users')
-                            .doc(uid);
-            batch.update(ref, {
-                statusUpdateTimestamp: now,
-            })
+        const ref_1 = admin.firestore()
+            .collection('users')
+            .doc(uid);
+        batch.update(ref_1, {
+            statusUpdateTimestamp: now
+        });
 
-            result.updates = updates;
+        result.updates = updates;
 
-            batch.commit().then((data) => {
-                result.success = true;
-                result.data = data;
-                return result;
-            })
+        batch.commit().then((data_1) => {
+            result.success = true;
+            result.data = data_1;
+            return result;
+        })
             .catch((error) => {
                 result.success = false;
                 result.error = error;
                 result.message = error.message;
                 return result;
             });
-        })
-        .catch((error) => {
-            result.success = false;
-            result.error = error;
-            result.message = error.message;
-            return result;
-        });
+    } catch (error_1) {
+        result.success = false;
+        result.error = error_1;
+        result.message = error_1.message;
+        return result;
+    }
 });
 
-exports.requeueItems = functions.https.onCall((data, context) => {
+exports.requeueItems = functions.https.onCall(async (data, context) => {
     const uid = data.uid ? data.uid : context.auth.uid;
     console.log('data', data);
     console.log('context', context);
@@ -214,67 +206,66 @@ exports.requeueItems = functions.https.onCall((data, context) => {
         uid: uid,
     }
 
-    return admin.firestore()
-        .collection('users')
-        .doc(uid)
-        .collection('items')
-        .get()
-        .then((snapshot) => {
-            console.log('items loaded', snapshot);
-            const now = new Date();
-            result.timestamp = now;
-            let updates = [];
+    try {
+        const snapshot = await admin.firestore()
+            .collection('users')
+            .doc(uid)
+            .collection('items')
+            .get();
+        console.log('items loaded', snapshot);
+        const now = new Date();
+        result.timestamp = now;
+        let updates = [];
 
-            let batch = admin.firestore().batch();
+        let batch = admin.firestore().batch();
 
-            let collection = admin.firestore()
-                                .collection('users')
-                                .doc(uid)
-                                .collection('items')
+        let collection = admin.firestore()
+            .collection('users')
+            .doc(uid)
+            .collection('items');
 
-            snapshot.forEach(doc => {
-                const item = doc.data();
-                const status = item.status;
-                let newStatus = null;
-                if (status === 'notFound' || status === 'redownload' || status === 'notAvailable') {
-                    newStatus = 'queued';
-                }
+        snapshot.forEach(doc => {
+            const item = doc.data();
+            const status = item.status;
+            let newStatus = null;
+            if (status === 'notFound' || status === 'redownload' || status === 'notAvailable') {
+                newStatus = 'queued';
+            }
 
-                if (newStatus) {
-                    const ref = collection.doc(doc.id);
-                    batch.update(ref, {
-                        status: newStatus
-                    });
-                    item.status = newStatus;
-                    updates.push(item);
-                }
-            });
+            if (newStatus) {
+                const ref = collection.doc(doc.id);
+                batch.update(ref, {
+                    status: newStatus
+                });
+                item.status = newStatus;
+                updates.push(item);
+            }
+        });
 
-            const ref = admin.firestore()
-                            .collection('users')
-                            .doc(uid);
-            batch.update(ref, {
-                requeueItemsTimestamp: now,
-            })
+        const ref_1 = admin.firestore()
+            .collection('users')
+            .doc(uid);
+        batch.update(ref_1, {
+            requeueItemsTimestamp: now
+        });
 
-            result.updates = updates;
+        result.updates = updates;
 
-            batch.commit().then((data) => {
-                result.success = true;
-                result.data = data;
-                return result;
-            })
+        batch.commit().then((data_1) => {
+            result.success = true;
+            result.data = data_1;
+            return result;
+        })
             .catch((error) => {
                 result.success = false;
                 result.error = error;
                 result.message = error.message;
                 return result;
             });
-        })
-        .catch((error) => {
-            result.success = false;
-            result.error = error;
-            result.message = error.message;
-            return result;
-        });
+    } catch (error_1) {
+        result.success = false;
+        result.error = error_1;
+        result.message = error_1.message;
+        return result;
+    }
 });

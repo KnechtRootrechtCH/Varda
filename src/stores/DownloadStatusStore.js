@@ -37,7 +37,7 @@ class DownloadStatusStore {
     }
 
     @action async loadStatusByKey(key) {
-        // console.debug('DownloadStatusStore.loadStatusByKey()', key);
+        console.debug('DownloadStatusStore.loadStatus()', key);
         const statusItem = this.items.get(key);
         if (!statusItem || statusItem.status === constants.STATUS.LOADING) {
             // console.debug('DownloadStatusStore.loadStatus() : loading', key, this.dataUid);
@@ -50,7 +50,7 @@ class DownloadStatusStore {
                 .onSnapshot((doc) => {
                     const data = doc.data();
                     if (data) {
-                        console.debug('DownloadStatusStore.loadStatus() : item loaded/updated', doc.id);
+                        // console.debug('DownloadStatusStore.loadStatus() : item loaded/updated', doc.id);
                         if (!data.status) {
                             data.status = '';
                         }

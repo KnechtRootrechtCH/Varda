@@ -62,7 +62,7 @@ class ListsSearch extends React.Component {
                             placeholder='…'
                             fullWidth
                             multiline
-                            rows={this.state.searchSubmited && this.state.searchInput.length === 0 ? 1 : 10}
+                            minRows={this.state.searchSubmited && this.state.searchInput.length === 0 ? 1 : 10}
                             margin='normal'
                             variant='outlined'
                             onChange={({ target: { value } }) => this.handleInputChange(value)}

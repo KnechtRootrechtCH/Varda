@@ -144,7 +144,7 @@ class Navigation extends React.Component {
                         onClick={this.handleCloseDrawer}
                         className={loc === 'messages' ? classes.drawerItemActive : null}>
                         <ListItemIcon>
-                            <Badge badgeContent={newCommentsCount} invisible={commentsBadgeInvisible} color='secondary' variant='standard' max={newCommentsCountMax} className={classes.badge}>
+                            <Badge badgeContent={newCommentsCount} invisible={commentsBadgeInvisible} color='secondary' max={newCommentsCountMax} overlap="rectangular">
                                 <Comment className={loc === 'messages' ? classes.drawerIconActive : null}/>
                             </Badge>
                         </ListItemIcon>
@@ -157,7 +157,7 @@ class Navigation extends React.Component {
                         onClick={this.handleCloseDrawer}
                         className={loc === 'history' ? classes.drawerItemActive : null}>
                         <ListItemIcon>
-                            <Badge badgeContent={newTransactionsCount} invisible={transactionsBadgeInvisible} color='secondary' variant='standard' max={newTransactionsCountMax} className={classes.badge}>
+                            <Badge badgeContent={newTransactionsCount} invisible={transactionsBadgeInvisible} color='secondary' max={newTransactionsCountMax} overlap="rectangular">
                                 <History className={loc === 'history' ? classes.drawerIconActive : null}/>
                             </Badge>
                         </ListItemIcon>

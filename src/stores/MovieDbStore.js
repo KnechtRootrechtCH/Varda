@@ -24,7 +24,7 @@ class MovieDbStore {
     @observable seasons = new Map();
 
     constructor() {
-        const locale = navigator.language.trim();
+        const locale = localStorage.getItem('varda.locale') ? localStorage.getItem('varda.locale') : navigator.language.trim();
         runInAction(() => {
             this.locale = locale.substring(0, 2);
         });

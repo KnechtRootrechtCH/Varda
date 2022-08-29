@@ -127,7 +127,7 @@ class ImportSettings extends React.Component {
                     label='Import Data'
                     multiline
                     value={this.state.import}
-                    rows={10}
+                    minRows={10}
                     onChange={({ target: { value } }) => this.handleChange(value)}
                     className={classes.textField}
                     variant='filled'/>

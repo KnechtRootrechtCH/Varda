@@ -9,6 +9,7 @@ import AccountInformationSettings from './settings/AccountInformationSettings';
 import CloudFunctionSettings from './settings/CloudFunctionSettings';
 import ImportSettings from './settings/ImportSettings';
 import ItemCountSettings from './settings/ItemCountSettings';
+import LanguageSettings from './settings/LanguageSettings';
 import NotificationSettings from './settings/NotificationSettings';
 import ThemeSettings from './settings/ThemeSettings';
 
@@ -23,6 +24,9 @@ class Settings extends React.Component {
         return (
             <div className={classes.root}>
                 <AccountInformationSettings/>
+                <Divider className={classes.divider}/>
+
+                <LanguageSettings/>
                 <Divider className={classes.divider}/>
 
                 <ItemCountSettings/>
