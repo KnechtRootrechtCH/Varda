@@ -68,6 +68,11 @@ i18n.init({
                             tv: 'TV Series',
                         }
                     },
+                    language: {
+                        enUS: 'English (US)',
+                        enGB: 'English (GB)',
+                        deCH: 'German (CH)',
+                    },
                 },
 
                 authentication: {
@@ -239,7 +244,7 @@ i18n.init({
                     cloudFunctions: 'Cloud Functions',
                     executeItemCountUpdate: 'Calculate item count',
                     executeStatusUpdate : 'Execute status update',
-                    executeRequeueItems : 'Requeue unfound movies/series',
+                    executeRequeueItems : 'Requeue not found movies/series',
                     itemCount: 'Item count',
                     statusUpdate: 'Status update',
                     lastUpdate: 'Last execution',
@@ -279,6 +284,11 @@ i18n.init({
                         title: 'List search',
                         searchInput: 'Search',
                         movieDbSearch: 'MovieDb search',
+                    },
+                    language: {
+                        title: 'Language settings',
+                        field: 'Language',
+                        current: 'Current'
                     },
                 },
 
@@ -401,6 +411,11 @@ i18n.init({
                             movie: 'Filme',
                             tv: 'Serien',
                         }
+                    },
+                    language: {
+                        enUS: 'Englisch (US)',
+                        enGB: 'Englisch (GB)',
+                        deCH: 'Deutsch (CH)',
                     },
                 },
 
@@ -613,6 +628,11 @@ i18n.init({
                         title: 'Listensuche',
                         searchInput: 'Suche',
                         movieDbSearch: 'MovieDb Suche',
+                    },
+                    language: {
+                        title: 'Spracheinstellungen',
+                        field: 'Sprache',
+                        current: 'Aktuelle Sprache'
                     },
                 },
 
