@@ -60,7 +60,6 @@ exports.itemUpdateListener = functions.firestore.document('users/{userId}/items/
 exports.updateItemCounts = functions.https.onCall(async (data, context) => {
     const uid = data.uid ? data.uid : context.auth.uid;
     console.log('data', data);
-    console.log('context', context);
     console.log('uid', uid);
     let result = {
         success: false,
@@ -74,7 +73,6 @@ exports.updateItemCounts = functions.https.onCall(async (data, context) => {
             .doc(uid)
             .collection('items')
             .get();
-        console.log('items loaded', snapshot);
         let itemCounts = new Object();
         snapshot.forEach(doc => {
             const item = doc.data();
@@ -104,14 +102,17 @@ exports.updateItemCounts = functions.https.onCall(async (data, context) => {
                     merge: true
                 });
             result.success = true;
+            console.log("successfully executed update", result);
             return result;
         } catch (error) {
+            console.log("error during update", error);
             result.success = false;
             result.error = error;
             result.message = error.message;
             return result;
         }
     } catch (error_1) {
+        console.log("unexpected error", error_1);
         result.success = false;
         result.error = error_1;
         result.message = error_1.message;
@@ -122,7 +123,6 @@ exports.updateItemCounts = functions.https.onCall(async (data, context) => {
 exports.updateItemStatus = functions.https.onCall(async (data, context) => {
     const uid = data.uid ? data.uid : context.auth.uid;
     console.log('data', data);
-    console.log('context', context);
     console.log('uid', uid);
     let result = {
         success: false,
@@ -135,7 +135,6 @@ exports.updateItemStatus = functions.https.onCall(async (data, context) => {
             .doc(uid)
             .collection('items')
             .get();
-        console.log('items loaded', snapshot);
         const now = new Date();
         result.timestamp = now;
         let updates = [];
@@ -158,16 +157,20 @@ exports.updateItemStatus = functions.https.onCall(async (data, context) => {
                 newStatus = 'queued';
             }
 
-            if (newStatus) {
+            if (newStatus && updates.length <= 490) {
+                console.log('setting status of item', doc.id, newStatus, item.title, item.status, item.release);
                 const ref = collection.doc(doc.id);
                 batch.update(ref, {
                     status: newStatus
                 });
                 item.status = newStatus;
                 updates.push(item);
+            } else if (newStatus) {
+                console.warn("skipping update for item (maximum number of updates reached)", doc.id, newStatus, item.title, item.status, item.release);
             }
         });
 
+        console.log("updating timestamp");
         const ref_1 = admin.firestore()
             .collection('users')
             .doc(uid);
@@ -175,20 +178,25 @@ exports.updateItemStatus = functions.https.onCall(async (data, context) => {
             statusUpdateTimestamp: now
         });
 
+        console.log('preparing result');
         result.updates = updates;
 
+        console.log(`executing batch update for ${updates.length} items`);
         batch.commit().then((data_1) => {
             result.success = true;
+            console.log("successfully executed batch update", result);
             result.data = data_1;
             return result;
         })
             .catch((error) => {
+                console.error("error during batch update", error);
                 result.success = false;
                 result.error = error;
                 result.message = error.message;
                 return result;
             });
     } catch (error_1) {
+        console.error("critical error", error_1);
         result.success = false;
         result.error = error_1;
         result.message = error_1.message;
@@ -199,7 +207,6 @@ exports.updateItemStatus = functions.https.onCall(async (data, context) => {
 exports.requeueItems = functions.https.onCall(async (data, context) => {
     const uid = data.uid ? data.uid : context.auth.uid;
     console.log('data', data);
-    console.log('context', context);
     console.log('uid', uid);
     let result = {
         success: false,
@@ -212,7 +219,6 @@ exports.requeueItems = functions.https.onCall(async (data, context) => {
             .doc(uid)
             .collection('items')
             .get();
-        console.log('items loaded', snapshot);
         const now = new Date();
         result.timestamp = now;
         let updates = [];
@@ -232,16 +238,20 @@ exports.requeueItems = functions.https.onCall(async (data, context) => {
                 newStatus = 'queued';
             }
 
-            if (newStatus) {
+            if (newStatus && updates.length <= 490) {
+                console.log('setting status of item', doc.id, newStatus, item.title, item.status);
                 const ref = collection.doc(doc.id);
                 batch.update(ref, {
                     status: newStatus
                 });
                 item.status = newStatus;
                 updates.push(item);
+            }  else if (newStatus) {
+                console.warn("skipping update for item (maximum number of updates reached)", doc.id, newStatus, item.title, item.status);
             }
         });
 
+        console.log("updating timestamp");
         const ref_1 = admin.firestore()
             .collection('users')
             .doc(uid);
@@ -249,20 +259,25 @@ exports.requeueItems = functions.https.onCall(async (data, context) => {
             requeueItemsTimestamp: now
         });
 
+        console.log('preparing result');
         result.updates = updates;
 
+        console.log(`executing batch update for ${updates.length} items`);
         batch.commit().then((data_1) => {
             result.success = true;
+            console.log("successfully executed batch update", result);
             result.data = data_1;
             return result;
         })
             .catch((error) => {
+                console.error("", error);
                 result.success = false;
                 result.error = error;
                 result.message = error.message;
                 return result;
             });
     } catch (error_1) {
+        console.error("critical error", error_1);
         result.success = false;
         result.error = error_1;
         result.message = error_1.message;
