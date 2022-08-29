@@ -101,7 +101,7 @@ class NavigationBar extends React.Component {
                         value='history'
                         label={t('common.history')}
                         icon={
-                            <Badge badgeContent={newTransactionsCount} invisible={transactionsBadgeInvisible} color='secondary' variant='standard' max={newTransactionsCountMax} className={classes.badge}>
+                            <Badge badgeContent={newTransactionsCount} invisible={transactionsBadgeInvisible} color='secondary' max={newTransactionsCountMax} overlap="rectangular">
                                 <History />
                             </Badge>
                         }
@@ -113,7 +113,7 @@ class NavigationBar extends React.Component {
                             value='messages'
                             label={t('common.messages')}
                             icon={
-                                <Badge badgeContent={newCommentsCount} invisible={commentsBadgeInvisible} color='secondary' variant='standard' max={newCommentsCountMax} className={classes.badge}>
+                                <Badge badgeContent={newCommentsCount} invisible={commentsBadgeInvisible} color='secondary' max={newCommentsCountMax} overlap="rectangular">
                                     <Comment/>
                                 </Badge>
                             }
@@ -132,9 +132,6 @@ const styles = theme => ({
         position: 'fixed',
         bottom: 0,
         zIndex: 100,
-    },
-    badge: {
-
     }
 });
 
