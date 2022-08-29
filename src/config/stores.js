@@ -8,6 +8,7 @@ import DataExportStore from '../stores/DataExportStore';
 import DownloadHistoryStore from '../stores/DownloadHistoryStore';
 import DownloadStatusStore from '../stores/DownloadStatusStore';
 import ErrorHandlingStore from '../stores/ErrorHandlingStore';
+import ListSearchStore from '../stores/ListSearchStore';
 import MovieDbStore from '../stores/MovieDbStore';
 import NotificationStore from '../stores/NotificationStore';
 import ThemeStore from '../stores/ThemeStore';
@@ -24,6 +25,7 @@ export default {
     DownloadHistoryStore,
     DownloadStatusStore,
     ErrorHandlingStore,
+    ListSearchStore,
     MovieDbStore,
     NotificationStore,
     ThemeStore,

@@ -54,13 +54,16 @@ class AccountInformation extends React.Component {
 
 const styles = theme => ({
     root: {
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
     },
     text: {
-        marginBottom: theme.spacing.unit / 2,
+        marginBottom: theme.spacing(0.5),
         color: theme.palette.text.secondary,
     },
+    title: {
+        color: theme.palette.text.primary,
+    }
 });
 
 AccountInformation.propTypes = {

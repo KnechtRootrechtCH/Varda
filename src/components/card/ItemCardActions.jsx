@@ -89,13 +89,13 @@ class ItemCardContent extends React.Component {
 const styles = theme => ({
     root: {
         position: 'relative',
-        paddingRight: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit,
+        paddingRight: theme.spacing(1),
+        paddingLeft: theme.spacing(1),
     },
     rootMobile: {
         position: 'relative',
-        paddingRight: theme.spacing.unit * 3,
-        paddingLeft: theme.spacing.unit * 3,
+        paddingRight: theme.spacing(3),
+        paddingLeft: theme.spacing(3),
     },
     statusIcon: {
 

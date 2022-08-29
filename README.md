@@ -77,3 +77,7 @@ Deploy to firebase
 ### `firebase deploy --only functions`
 
 Deploy Google Cloud Functions
+
+### `firebase hosting:channel:deploy preview`
+
+Deploy to preview channel

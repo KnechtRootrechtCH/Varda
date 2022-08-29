@@ -6,9 +6,9 @@ import { withStyles } from '@material-ui/core/styles';
 import * as Moment from 'moment';
 
 import {
-    ExpansionPanel,
-    ExpansionPanelDetails,
-    ExpansionPanelSummary,
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Fade,
     Grid,
     Typography } from '@material-ui/core';
@@ -44,8 +44,8 @@ class Comment extends React.Component {
         // console.debug(`${this.constructor.name}.render()`, timestamp, this.props.commentsTimestamp, isNew);
 
         return (
-            <ExpansionPanel key={key} className={classes.root} defaultExpanded={true}>
-                <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMore/>}>
+            <Accordion key={key} className={classes.root} defaultExpanded={true}>
+                <AccordionSummary className={classes.summary} expandIcon={<ExpandMore/>}>
                     <Typography
                         className={mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title}
                         noWrap>
@@ -63,14 +63,14 @@ class Comment extends React.Component {
                         color={color}>
                         {userName}
                     </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails className={classes.details}>
+                </AccordionSummary>
+                <AccordionDetails className={classes.details}>
                     <Grid container>
                         { !itemComments && title &&
                             <Grid item xs={12}>
                                 <Typography
                                     className={classes.titleActive + ' ' + (mobile ? classes.titleMobile : desktop ? classes.titleDesktop : classes.title)}
-                                    color='default'
+                                    color='inherit'
                                     component={Link}
                                     to={address}
                                     noWrap>
@@ -84,8 +84,8 @@ class Comment extends React.Component {
                             </Typography>
                         </Grid>
                     </Grid>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+                </AccordionDetails>
+            </Accordion>
         );
     }
 }
@@ -95,8 +95,8 @@ const styles = theme => ({
 
     },
     summary: {
-        paddingRight: theme.spacing.unit * 2,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingRight: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
     },
     titleActive: {
         textDecoration: 'underline',
@@ -122,13 +122,13 @@ const styles = theme => ({
     },
     details: {
         paddingTop: 0,
-        paddingLeft: theme.spacing.unit * 2,
+        paddingLeft: theme.spacing(2),
     },
     newCommentBadge: {
         verticalAlign: 'middle',
         marginBottom: 3,
         marginLeft: 0,
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
         fontSize: 18,
     },
 });

@@ -16,13 +16,15 @@ import {
 class CloudFunctionSettings extends React.Component {
 
     handleStatusUpdateExecute = () => {
-        // console.debug(`${this.constructor.name}.handleExecute()`);
         this.props.CloudFunctionsStore.executeStatusUpdateCloudFunction();
     }
 
     handleCountUpdateExecute = () => {
-        // console.debug(`${this.constructor.name}.handleExecute()`);
         this.props.CloudFunctionsStore.executeUpdateItemCountsFunction();
+    }
+
+    handleRequeueItemsExecute = () => {
+        this.props.CloudFunctionsStore.executereRequeueItemsCloudFunction();
     }
 
 
@@ -37,6 +39,10 @@ class CloudFunctionSettings extends React.Component {
         const countUpdate = this.props.CloudFunctionsStore.itemCountTimestamp;
         const countUpdateTimestamp = countUpdate ? Moment(countUpdate) : null;
         const countUpdateString = countUpdateTimestamp ? `${t('settings.lastUpdate')}: ${countUpdateTimestamp.format('DD.MM.YYYY HH:mm')}` : t('settings.neverRun');
+
+        const requeueItems = this.props.CloudFunctionsStore.requeueItemsTimestamp;
+        const requeueItemsTimestamp = requeueItems ? Moment(requeueItems) : null;
+        const requeueItemsString = requeueItemsTimestamp ? `${t('settings.lastUpdate')}: ${requeueItemsTimestamp.format('DD.MM.YYYY HH:mm')}` : t('settings.neverRun');
 
         return (
             <div className={classes.root}>
@@ -69,6 +75,19 @@ class CloudFunctionSettings extends React.Component {
                         <span>{countUpdateString}</span>
                     </Typography>
                 </div>
+                <div className={classes.actions}>
+                    <Button
+                        className={classes.button}
+                        color='primary'
+                        variant='text'
+                        disabled={this.props.CloudFunctionsStore.actionRunning}
+                        onClick={() => this.handleRequeueItemsExecute()}>
+                        {t('settings.executeRequeueItems')}
+                    </Button>
+                    <Typography className={classes.text} variant='body2' component='h2'>
+                        <span>{requeueItemsString}</span>
+                    </Typography>
+                </div>
             </div>
         );
      }
@@ -76,24 +95,27 @@ class CloudFunctionSettings extends React.Component {
 
 const styles = theme => ({
     root: {
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
     },
     actions: {
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
     },
     button: {
         paddingLeft: 0,
         paddingRight: 0,
     },
     icon: {
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
         verticalAlign: 'middle',
         marginBottom: 3,
     },
     text: {
-        marginBottom: theme.spacing.unit / 2,
+        marginBottom: theme.spacing(0.5),
         color: theme.palette.text.disabled,
+    },
+    title: {
+        color: theme.palette.text.primary,
     },
 });
 

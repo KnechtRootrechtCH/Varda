@@ -177,7 +177,7 @@ class AccountInformationSettings extends React.Component {
                             </div>
                         </StepContent>
                     </Step>
-                    <Step key='release'>
+                    <Step key='load'>
                         <StepLabel className={classes.stepLabel} onClick={() => this.selectStep(2)}>
                             {t('settings.export.load')}
                         </StepLabel>
@@ -192,7 +192,7 @@ class AccountInformationSettings extends React.Component {
                             </Button>
                         </StepContent>
                     </Step>
-                    <Step key='release'>
+                    <Step key='export'>
                         <StepLabel>
                             {t('settings.export.save')}
                         </StepLabel>
@@ -249,15 +249,18 @@ class AccountInformationSettings extends React.Component {
 
 const styles = theme => ({
     button: {
-        marginTop: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(1),
     },
     stepLabel: {
         cursor: 'pointer',
     },
     buttonIcon: {
-        marginRight: 2 * theme.spacing.unit,
+        marginRight: 2 * theme.spacing(1),
         marginLeft: 0,
+    },
+    title: {
+        color: theme.palette.text.primary,
     },
 });
 

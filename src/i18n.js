@@ -44,6 +44,7 @@ i18n.init({
                     season: 'Season',
                     episodes: 'Episodes',
                     episode: 'Episode',
+                    searching: 'Searching…',
                     status: {
                         label: 'Status',
                         none: 'All',
@@ -238,6 +239,7 @@ i18n.init({
                     cloudFunctions: 'Cloud Functions',
                     executeItemCountUpdate: 'Calculate item count',
                     executeStatusUpdate : 'Execute status update',
+                    executeRequeueItems : 'Requeue unfound movies/series',
                     itemCount: 'Item count',
                     statusUpdate: 'Status update',
                     lastUpdate: 'Last execution',
@@ -268,7 +270,15 @@ i18n.init({
                             release: 'Release Date',
                             status: 'Status',
                             priority: 'Priority',
+                            url: 'URL',
+                            timestamp: 'timestamp',
+                            backdrop: 'backdrop',
                         },
+                    },
+                    listSearch: {
+                        title: 'List search',
+                        searchInput: 'Search',
+                        movieDbSearch: 'MovieDb search',
                     },
                 },
 
@@ -368,6 +378,7 @@ i18n.init({
                     season: 'Staffel',
                     episodes: 'Episoden',
                     episode: 'Episode',
+                    searching: 'Suche…',
                     status: {
                         label: 'Status',
                         none: 'Alle',
@@ -562,6 +573,7 @@ i18n.init({
                     cloudFunctions: 'Cloud Functions',
                     executeItemCountUpdate: 'Download Anzahl berechnen',
                     executeStatusUpdate : 'Status update durchführen',
+                    executeRequeueItems : 'Status aller nicht gefundenen Filme/Serien zurücksetzen',
                     itemCount: 'Download Anzahl',
                     statusUpdate: 'Status Update',
                     lastUpdate: 'Letzte Ausführung',
@@ -592,7 +604,15 @@ i18n.init({
                             release: 'Veröffentlichung',
                             status: 'Status',
                             priority: 'Priorität',
+                            url: 'Link',
+                            timestamp: 'Zeitstempel',
+                            backdrop: 'Hintergrund',
                         },
+                    },
+                    listSearch: {
+                        title: 'Listensuche',
+                        searchInput: 'Suche',
+                        movieDbSearch: 'MovieDb Suche',
                     },
                 },
 

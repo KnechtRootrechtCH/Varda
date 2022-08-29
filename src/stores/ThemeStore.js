@@ -1,6 +1,6 @@
 import {observable, action} from 'mobx';
 
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import {red, pink, purple, deepPurple} from '@material-ui/core/colors';
 import {indigo, blue, lightBlue, cyan} from '@material-ui/core/colors';
 import {teal, green, lightGreen, lime} from '@material-ui/core/colors';
@@ -48,7 +48,7 @@ class ThemeStore {
     }
 
     @action applyTheme() {
-        const theme = createMuiTheme({
+        const theme = createTheme({
             typography: {
                 useNextVariants: true,
             },

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router';
@@ -26,9 +26,10 @@ import {
     AccountCircle,
     ArrowLeft,
     Brightness4,
+    Cog,
     DatabaseExport,
     ExitToApp,
-    Settings,
+    TextBoxSearch,
     ViewDashboard,
     Menu as MenuIcon }  from 'mdi-material-ui';
 
@@ -228,9 +229,15 @@ class TitleBar extends React.Component {
                         </ListItemIcon>
                         {t('settings.export.title')}
                     </MenuItem>
+                    <MenuItem component={Link} to='/settings/listsearch' onClick={this.handleMenuClose}>
+                        <ListItemIcon>
+                            <TextBoxSearch/>
+                        </ListItemIcon>
+                        {t('settings.listSearch.title')}
+                    </MenuItem>
                     <MenuItem component={Link} to='/settings' onClick={this.handleMenuClose}>
                         <ListItemIcon>
-                            <Settings/>
+                            <Cog/>
                         </ListItemIcon>
                         {t('common.settings')}
                     </MenuItem>
@@ -259,7 +266,7 @@ const styles = theme => ({
     },
     menuButton: {
         cursor: 'pointer',
-        marginRight: theme.spacing.unit * 2,
+        marginRight: theme.spacing(2),
     },
     header: {
         cursor: 'pointer',
@@ -268,7 +275,7 @@ const styles = theme => ({
         verticalAlign: 'middle',
         marginRight: 0,
         marginBottom: 3,
-        marginLeft: theme.spacing.unit / 4,
+        marginLeft: theme.spacing(0.25),
     },
     controls: {
         marginLeft: 'auto',
@@ -280,14 +287,14 @@ const styles = theme => ({
     avatar: {
         cursor: 'pointer',
         color: theme.palette.primary.main,
-        marginLeft: theme.spacing.unit * 2,
+        marginLeft: theme.spacing(2),
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
+            backgroundColor: alpha(theme.palette.common.white, 0.25),
         },
     },
     avatarSmall: {
-        height: theme.spacing.unit * 3,
-        width: theme.spacing.unit * 3,
+        height: theme.spacing(3),
+        width: theme.spacing(3),
     },
     progress: {
         height: 2,

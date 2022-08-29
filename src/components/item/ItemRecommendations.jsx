@@ -8,9 +8,9 @@ import { withStyles } from '@material-ui/core/styles';
 import {
     Button,
     Fade,
-    GridList,
-    GridListTile,
-    GridListTileBar,
+    ImageList,
+    ImageListItem,
+    ImageListItemBar,
     IconButton,
     Typography } from '@material-ui/core';
 
@@ -51,11 +51,11 @@ class ItemRecommendations extends React.Component {
             <div className={classes.root}>
                 <Typography className={classes.header} variant='body2'>{t('details.recommendations')}</Typography>
                 <div className={classes.content}>
-                    <GridList className={classes.list} cols={cols}>
+                    <ImageList className={classes.list} cols={cols}>
                         { recommendations.map((recommendation, index) => {
                             return this.renderRecommendation(recommendation, index, count);
                         })}
-                    </GridList>
+                    </ImageList>
                 </div>
                 { hasMore &&
                     <div className={classes.actionContainer}>
@@ -80,18 +80,22 @@ class ItemRecommendations extends React.Component {
 
         return (
             <Fade in={this.state.showMore || index < count} key={index} mountOnEnter={true} unmountOnExit={true}>
-                <GridListTile cols={1}>
-                    <img src={image} alt={title} />
-                    <GridListTileBar
+                <ImageListItem key={image}>
+                    <img
+                        src={image}
+                        alt={title}
+                        loading="lazy"
+                    />
+                    <ImageListItemBar
                         title={title}
                         subtitle={release}
                         actionIcon={
                             <IconButton className={classes.icon} component={Link} to={address}>
                                 <Information />
                             </IconButton>
-                        }>
-                    </GridListTileBar>
-                </GridListTile>
+                        }
+                    />
+                    </ImageListItem>
             </Fade>
         )
     }
@@ -114,14 +118,14 @@ const styles = theme => ({
     },
     header: {
         textTransform: 'uppercase',
-        marginBottom: theme.spacing.unit / 2,
+        marginBottom: theme.spacing(0.5),
     },
     actionContainer: {
         width: '100%',
         textAlign: 'right',
     },
     more: {
-        margin: theme.spacing.unit / 2,
+        margin: theme.spacing(0.5),
     },
     icon: {
         color: 'rgba(255, 255, 255, 0.54)',

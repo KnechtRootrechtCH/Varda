@@ -133,20 +133,20 @@ const styles = theme => ({
     root: {
     },
     action: {
-        marginTop: theme.spacing.unit,
-        marginLeft: theme.spacing.unit * 2,
-        marginBottom: theme.spacing.unit,
+        marginTop: theme.spacing(1),
+        marginLeft: theme.spacing(2),
+        marginBottom: theme.spacing(1),
     },
     buttonContainer: {
         textAlign: 'right',
     },
     buttonIcon: {
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
         marginLeft: 0,
     },
     header: {
         textTransform: 'uppercase',
-        marginBottom: theme.spacing.unit / 2,
+        marginBottom: theme.spacing(0.5),
     },
 });
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import {inject, observer} from 'mobx-react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
@@ -15,6 +14,7 @@ import Export from './Export';
 import History from './History';
 import ItemDetails from './ItemDetails';
 import DownloadList from './DownloadList';
+import ListSearch from './ListSearch';
 import Messages from './Messages';
 import NavigationBar from './navigation/NavigationBar';
 import NavigationDrawer from './navigation/NavigationDrawer';
@@ -59,9 +59,7 @@ class PrivateRouter extends React.Component {
                             <CircularProgress className={classes.progress} color='secondary'/>
                         </div>
                     :
-                        <main className={classNames(classes.content, {
-                            [classes.contentShift]: drawerOpen,
-                        })}>
+                        <main className={drawerOpen ? classes.contentShift : classes.content}>
                             <Switch>
                                 <Route
                                     exact
@@ -75,6 +73,10 @@ class PrivateRouter extends React.Component {
                                     exact
                                     path='/settings/export'
                                     component={Export}/>
+                                <Route
+                                    exact
+                                    path='/settings/listsearch'
+                                    component={ListSearch}/>
                                 <Route
                                     exact
                                     path='/browse'
@@ -124,6 +126,7 @@ const drawerWidth = 220;
 
 const styles = theme => ({
     root: {
+        color: theme.palette.text.primary,
     },
     content: {
         transition: theme.transitions.create('margin', {

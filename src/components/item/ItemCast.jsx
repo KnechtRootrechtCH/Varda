@@ -7,9 +7,9 @@ import { withStyles } from '@material-ui/core/styles';
 import {
     Button,
     Fade,
-    GridList,
-    GridListTile,
-    GridListTileBar,
+    ImageList,
+    ImageListItem,
+    ImageListItemBar,
     IconButton,
     Typography } from '@material-ui/core';
 
@@ -54,11 +54,11 @@ class ItemCast extends React.Component {
             <div className={classes.root}>
                 <Typography className={classes.header} variant='body2'>{t('details.cast')}</Typography>
                 <div className={classes.content}>
-                    <GridList className={classes.list} cols={cols}>
+                    <ImageList className={classes.list} cols={cols}>
                         { cast.map((profile, index) => {
                             return this.renderCastMember(profile, index, count);
                         })}
-                    </GridList>
+                    </ImageList>
                 </div>
                 { hasMore &&
                     <div className={classes.actionContainer}>
@@ -78,18 +78,22 @@ class ItemCast extends React.Component {
 
         return (
             <Fade in={this.state.showMore || index < count} key={index} mountOnEnter={true} unmountOnExit={true}>
-                <GridListTile cols={1}>
-                    <img src={profileImage} alt={profile.name} />
-                    <GridListTileBar
+                <ImageListItem key={profileImage}>
+                    <img
+                        src={profileImage}
+                        alt={profile.name}
+                        loading="lazy"
+                    />
+                    <ImageListItemBar
                         title={profile.name}
                         subtitle={profile.character}
                         actionIcon={
                             <IconButton className={classes.icon} onClick={() => this.handleOpenUrl(url)}>
                                 <Information />
                             </IconButton>
-                          }>
-                    </GridListTileBar>
-                </GridListTile>
+                        }
+                    />
+                    </ImageListItem>
             </Fade>
         )
     }
@@ -112,14 +116,14 @@ const styles = theme => ({
     },
     header: {
         textTransform: 'uppercase',
-        marginBottom: theme.spacing.unit / 2,
+        marginBottom: theme.spacing(0.5),
     },
     actionContainer: {
         width: '100%',
         textAlign: 'right',
     },
     more: {
-        marginTop: theme.spacing.unit / 2,
+        marginTop: theme.spacing(0.5),
         marginRight: 0,
         marginLeft: 'auto',
     },
