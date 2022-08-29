@@ -41,7 +41,7 @@ class CloudFunctionSettings extends React.Component {
         const countUpdateString = countUpdateTimestamp ? `${t('settings.lastUpdate')}: ${countUpdateTimestamp.format('DD.MM.YYYY HH:mm')}` : t('settings.neverRun');
 
         const requeueItems = this.props.CloudFunctionsStore.requeueItemsTimestamp;
-        const requeueItemsTimestamp = requeueItems ? Moment(requeueItems) : null;
+        const requeueItemsTimestamp = requeueItems ? Moment(requeueItems.toDate()) : null;
         const requeueItemsString = requeueItemsTimestamp ? `${t('settings.lastUpdate')}: ${requeueItemsTimestamp.format('DD.MM.YYYY HH:mm')}` : t('settings.neverRun');
 
         return (

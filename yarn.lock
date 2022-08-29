@@ -6034,7 +6034,7 @@
     "@google-cloud/firestore" "^5.0.2"
     "@google-cloud/storage" "^6.1.0"
 
-"firebase-functions@^3.16.0":
+"firebase-functions@^3.22.0":
   "integrity" "sha512-d1BxBpT95MhvVqXkpLWDvWbyuX7e2l69cFAiqG3U1XQDaMV88bM9S+Zg7H8i9pitEGFr+76ErjKgrY0n+g3ZDA=="
   "resolved" "https://registry.npmjs.org/firebase-functions/-/firebase-functions-3.22.0.tgz"
   "version" "3.22.0"
