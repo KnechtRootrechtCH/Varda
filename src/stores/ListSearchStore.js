@@ -47,9 +47,9 @@ class ListSearchStore {
             if(result) {
                 this.items[index].resultId = result.id;
                 this.items[index].result = result;
-                this.items[index].searchString = MetadataService.getTitle(result);;
+                this.items[index].searchString = MetadataService.getTitle(result);
+                DownloadStatusStore.loadStatus(result);
             }
-
         });
     }
 
@@ -99,7 +99,7 @@ class ListSearchStore {
 
     filter(text) {
         if (text.trim().length <= 0) {
-            console.debug(`ListSearchStore.filter() string.empty => ignore`,);
+            console.debug(`ListSearchStore.filter() string.empty => ignore`);
             return true;
         }
 
@@ -162,6 +162,12 @@ class ListSearchStore {
             text = text.replace(s, '');
         });
         text = text.replaceAll('.', ' ');
+        text = text.replaceAll('ae', 'a');
+        text = text.replaceAll('oe', 'o');
+        text = text.replaceAll('ue', 'u');
+        text = text.replaceAll('ä', 'a');
+        text = text.replaceAll('ö', 'o');
+        text = text.replaceAll('ü', 'u');
         text = text.trim();
         // console.debug(`ListSearchStore.transform() ${original} => ${text}`,);
         return text.trim();
