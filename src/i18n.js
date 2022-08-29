@@ -51,7 +51,7 @@ i18n.init({
                         removed: '',
                         queued: 'Todo',
                         notReleased: 'Unreleased',
-                        notAvailable: 'Not yey available',
+                        notAvailable: 'Not yet available',
                         notFound: 'Not found',
                         redownload: 'Retry',
                         downloading: 'Downloading',
