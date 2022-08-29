@@ -157,9 +157,9 @@ exports.updateItemStatus = functions.https.onCall((data, context) => {
             snapshot.forEach(doc => {
                 const item = doc.data();
                 const status = item.status;
-                const release = item.release ? item.release.toDate() : now;
+                const release = item.release ? item.release.toDate() : null;
                 let newStatus = null;
-                if (status === 'queued' && now < release) {
+                if ((status === 'queued' || status === 'redownload' || status === 'notFound' || status === 'notAvailable') && (release === null || now < release)) {
                     newStatus = 'notReleased';
                 } else if (status === 'notReleased' && now > release) {
                     newStatus = 'queued';
