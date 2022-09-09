@@ -61,6 +61,7 @@ class ItemDownloadLinks extends React.Component {
                         { links.map((link, index) => {
                             return this.renderRow(link, index, title, originalTitle, imdbId);
                         })}
+                        { this.renderCopyPasteRow(title, originalTitle, imdbId) }
                     </tbody>
                 </table>
             </div>
@@ -139,6 +140,67 @@ class ItemDownloadLinks extends React.Component {
         )
     }
 
+    renderCopyPasteRow (title, originalTitle, imdbId) {
+        const classes = this.props.classes;
+        const t = this.props.t;
+
+        const titleSanitized = MetadataService.sanitizeSearchString(title);
+        const originalTitleSanitized = MetadataService.sanitizeSearchString(originalTitle);
+
+        const titleDeUmlauted = MetadataService.deUmlautSearchString(title);
+        const originalTitleDeUmlauted = MetadataService.deUmlautSearchString(originalTitle);
+
+        const titleSanitizedAndDeUmlauted = MetadataService.deUmlautSearchString(titleSanitized);
+        const originalTitleSanitizedAndDeUmlauted = MetadataService.deUmlautSearchString(originalTitleSanitized);
+
+        const links = [];
+        links.push({
+            label: title,
+            paramValue: title,
+        })
+        if (titleSanitizedAndDeUmlauted !== titleSanitized) {
+            links.push({
+                label: titleDeUmlauted,
+                paramValue: titleDeUmlauted,
+            })
+        }
+
+        if (originalTitleSanitized !== titleSanitized) {
+            links.push({
+                label: originalTitle,
+                paramValue: originalTitle,
+            })
+            if (originalTitleSanitizedAndDeUmlauted !== originalTitleSanitized) {
+                links.push({
+                    label: originalTitleDeUmlauted,
+                    paramValue: originalTitleDeUmlauted,
+                })
+            }
+        }
+
+        if (imdbId !== null) {
+            links.push({
+                label: `IMDB-ID (${imdbId})`,
+                paramValue: imdbId,
+            })
+        }
+
+        return (
+            <tr key="copypaste">
+                <td className={classes.labelCell}>
+                    <Typography variant='body2'>
+                        <span className={classes.label}>
+                            {t('common.copyPaste')}
+                        </span>
+                    </Typography>
+                </td>
+                {links.map((link, index) => {
+                    return this.renderCopyPasteLinks(link, index)
+                })}
+            </tr>
+        )
+    }
+
     renderLinks (link, index) {
         const classes = this.props.classes;
         return (
@@ -164,9 +226,59 @@ class ItemDownloadLinks extends React.Component {
                     }
                 </Typography>
             </td>
-
         )
     }
+
+    renderCopyPasteLinks (link, index) {
+        const classes = this.props.classes;
+        return (
+            <td className={classes.dataCell} key={index}>
+                <Typography  variant='body2' component={'span'} >
+                    <Typography variant='body2' className={classes.link} onClick={() => this.copyTextToClipboard(link.paramValue)}>
+                        {link.label}
+                        <LinkVariant className={classes.linkIcon} color='primary'/>
+                    </Typography>
+                </Typography>
+            </td>
+        )
+    }
+
+
+    copyTextToClipboard(text) {
+        if (!navigator.clipboard) {
+            this.fallbackCopyTextToClipboard(text);
+            return;
+        }
+        navigator.clipboard.writeText(text).then(function() {
+            console.debug('ItemDownloadLinks.copyTextToClipboard() : Copying to clipboard was successful', text);
+        }, function(err) {
+            console.error('ItemDownloadLinks.copyTextToClipboard() : Could not copy text', text, err);
+        });
+    }
+
+    fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.debug(`ItemDownloadLinks.fallbackCopyTextToClipboard() : Copying to clipboard was ${msg}}`, text);
+        } catch (err) {
+            console.error('ItemDownloadLinks.copyTextTfallbackCopyTextToClipboardoClipboard() : Could not copy text', text, err);
+        }
+
+        document.body.removeChild(textArea);
+      }
 }
 
 const styles = theme => ({

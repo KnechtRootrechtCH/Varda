@@ -45,6 +45,7 @@ i18n.init({
                     episodes: 'Episodes',
                     episode: 'Episode',
                     searching: 'Searching…',
+                    copyPaste: 'Clipboard',
                     status: {
                         label: 'Status',
                         none: 'All',
@@ -389,6 +390,7 @@ i18n.init({
                     episodes: 'Episoden',
                     episode: 'Episode',
                     searching: 'Suche…',
+                    copyPaste: 'Zwischenablage',
                     status: {
                         label: 'Status',
                         none: 'Alle',
