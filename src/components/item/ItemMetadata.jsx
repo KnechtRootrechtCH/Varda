@@ -158,7 +158,7 @@ class ItemMetadata extends React.Component {
         }
 
         // rating
-        const rating = item.vote_average;
+        const rating = Number(item.vote_average).toFixed(1);
         rows.push({
             key: 'rating',
             value: `${rating}/10`,
