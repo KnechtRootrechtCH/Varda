@@ -73,21 +73,65 @@ exports.updateItemCounts = functions.https.onCall(async (data, context) => {
             .doc(uid)
             .collection('items')
             .get();
-        let itemCounts = new Object();
+
+        let total = 0;
+        let removed = 0;
+        let queued = 0;
+        let notReleased = 0;
+        let notAvailable = 0;
+        let notFound = 0;
+        let redownload = 0;
+        let downloading = 0;
+        let downloaded = 0;
+
         snapshot.forEach(doc => {
             const item = doc.data();
-            if (item.status && item.status !== 'removed') {
-                let total = itemCounts['total'];
-                total = total ? total + 1 : 1;
-                itemCounts['total'] = total;
 
-                let value_1 = itemCounts[item.status];
-                value_1 = value_1 ? value_1 + 1 : 1;
-                itemCounts[item.status] = value_1;
+            if (item.status === 'removed') {
+                removed += 1;
+            }
+            if (item.status === 'queued') {
+                queued += 1;
+                total += 1;
+            }
+            if (item.status === 'notReleased') {
+                notReleased += 1;
+                total += 1;
+            }
+            if (item.status === 'notAvailable') {
+                notAvailable += 1;
+                total += 1;
+            }
+            if (item.status === 'notFound') {
+                notFound += 1;
+                total += 1;
+            }
+            if (item.status === 'redownload') {
+                redownload += 1;
+                total += 1;
+            }
+            if (item.status === 'downloading') {
+                downloading += 1;
+                total += 1;
+            }
+            if (item.status === 'downloaded') {
+                downloaded += 1;
+                total += 1;
             }
         });
 
-        itemCounts['timestamp'] = new Date();
+        let itemCounts = {};
+        itemCounts.total = total;
+        itemCounts.removed = removed;
+        itemCounts.queued = queued;
+        itemCounts.notReleased = notReleased;
+        itemCounts.notAvailable = notAvailable;
+        itemCounts.notFound = notFound;
+        itemCounts.redownload = redownload;
+        itemCounts.downloading = downloading;
+        itemCounts.downloaded = downloaded;
+        itemCounts.timestamp = new Date();
+
         const plain = JSON.parse(JSON.stringify(itemCounts));
         result.itemCounts = plain;
         console.log('item count complete => saving', plain);
